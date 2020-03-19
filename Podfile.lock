@@ -1,0 +1,41 @@
+PODS:
+  - ALCameraViewController (3.1)
+  - AudioKit (4.9.4):
+    - AudioKit/Core (= 4.9.4)
+    - AudioKit/UI (= 4.9.4)
+  - AudioKit/Core (4.9.4)
+  - AudioKit/UI (4.9.4):
+    - AudioKit/Core
+  - AudioPlayerSwift (2.0.0)
+  - SnapKit (5.0.1)
+  - SoundWave (0.1.4)
+  - SwiftySound (1.2.0)
+
+DEPENDENCIES:
+  - ALCameraViewController
+  - AudioKit
+  - AudioPlayerSwift
+  - SnapKit (~> 5.0.0)
+  - SoundWave
+  - SwiftySound
+
+SPEC REPOS:
+  trunk:
+    - ALCameraViewController
+    - AudioKit
+    - AudioPlayerSwift
+    - SnapKit
+    - SoundWave
+    - SwiftySound
+
+SPEC CHECKSUMS:
+  ALCameraViewController: 144dea45fd749a623aafd8cb7b10cea88499fcc3
+  AudioKit: 2ad2c0c546f53134967e4a381dfd8691b7674093
+  AudioPlayerSwift: 26d1c95f177f5bd195be482a41538d7ab8d04dd9
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SoundWave: d98ffaa863570b29d991da32a09b7ce1b4aaf2d4
+  SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
+
+PODFILE CHECKSUM: 294229528f70facdead4c04a31df446c18a52867
+
+COCOAPODS: 1.9.1

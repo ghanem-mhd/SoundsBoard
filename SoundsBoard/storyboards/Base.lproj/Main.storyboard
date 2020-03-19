@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Uio-O0-l4W">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Favorite-->
+        <scene sceneID="QQI-ud-Dam">
+            <objects>
+                <viewController id="YGe-Aq-jnl" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4QQ-tO-f5s">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="vbr-7i-wpl"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Favorite" image="round_favorite_black_48pt" id="htn-bS-xIJ">
+                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="gtd-0K-RhI"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hvD-7F-omf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3286" y="2366"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="g5n-Yg-X4f">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Uio-O0-l4W" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eog-f2-B8B">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="P4s-D6-OI9" kind="relationship" relationship="rootViewController" id="GzP-ix-Gnf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZaS-Rv-pEu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1889.8550724637682" y="1486.6071428571429"/>
+        </scene>
+        <!--Sounds Board-->
+        <scene sceneID="RmS-yg-hMY">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="P4s-D6-OI9" customClass="HomeController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Sounds Board" id="Twt-ca-vOU">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="eb6-PX-L7G">
+                            <connections>
+                                <segue destination="97R-1e-L4P" kind="show" id="oYI-Q2-nHg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Q9T-lV-O5P">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="YGe-Aq-jnl" kind="relationship" relationship="viewControllers" id="a3d-Q5-WAQ"/>
+                        <segue destination="cDh-Fg-ZjF" kind="relationship" relationship="viewControllers" id="9Mf-fA-URH"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sGm-ZA-46Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2798.5507246376815" y="1486.6071428571429"/>
+        </scene>
+        <!--All-->
+        <scene sceneID="1Xo-Da-fYA">
+            <objects>
+                <viewController id="cDh-Fg-ZjF" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eSp-55-LI0">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="HuE-tv-9oX"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="All" image="round_volume_up_black_48pt" id="QSK-2r-oqC">
+                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                    </tabBarItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WeQ-KY-gea" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2362" y="2366"/>
+        </scene>
+        <!--Add Sound Controller-->
+        <scene sceneID="AFl-mK-h77">
+            <objects>
+                <viewController id="97R-1e-L4P" customClass="AddSoundController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VyM-nM-hd0">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="hyg-s7-47N"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="JnN-Dv-l8o"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jG8-RQ-HH0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3813" y="948"/>
+        </scene>
+        <!--Recroder-->
+        <scene sceneID="Mgs-YR-Fnj">
+            <objects>
+                <viewController title="Recroder" id="t2q-1S-lT7" customClass="AudioRecorderController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8O8-HZ-uXn">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="SWr-zH-lWz"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Recrod Sound" id="zuq-Jg-Vnd"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z3X-Yj-BN4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4470" y="938"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="round_favorite_black_48pt" width="48" height="48"/>
+        <image name="round_volume_up_black_48pt" width="48" height="48"/>
+    </resources>
+</document>
