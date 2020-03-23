@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FC2EA8AE2416D07B00BF9E99 /* AudioRecorderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC2EA8AD2416D07B00BF9E99 /* AudioRecorderController.swift */; };
+		294A805F24281D51007BE86A /* FavoriteControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A805E24281D51007BE86A /* FavoriteControllers.swift */; };
+		294A80622428206E007BE86A /* FavoriteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A80612428206E007BE86A /* FavoriteCellView.swift */; };
 		FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */; };
 		FC362FA22418F103007E43E4 /* cat.wav in Resources */ = {isa = PBXBuildFile; fileRef = FC362FA12418F102007E43E4 /* cat.wav */; };
 		FC362FA524193D8D007E43E4 /* SoundsFilesManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362FA424193D8D007E43E4 /* SoundsFilesManger.swift */; };
@@ -21,7 +22,7 @@
 		FC736A4F241189ED00D6966B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC736A4E241189ED00D6966B /* Assets.xcassets */; };
 		FC736A52241189ED00D6966B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC736A50241189ED00D6966B /* LaunchScreen.storyboard */; };
 		FC736A6224145FE000D6966B /* AddSoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A6124145FE000D6966B /* AddSoundController.swift */; };
-		FCC59E1624216F9800B38213 /* Audio2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC59E1524216F9800B38213 /* Audio2.swift */; };
+		FCC59E1624216F9800B38213 /* AudioRecorderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC59E1524216F9800B38213 /* AudioRecorderController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,10 +50,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		294A805E24281D51007BE86A /* FavoriteControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteControllers.swift; sourceTree = "<group>"; };
+		294A80612428206E007BE86A /* FavoriteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCellView.swift; sourceTree = "<group>"; };
 		A8987BD69F325177FE0A53C8 /* Pods-SoundsBoard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundsBoard.release.xcconfig"; path = "Target Support Files/Pods-SoundsBoard/Pods-SoundsBoard.release.xcconfig"; sourceTree = "<group>"; };
 		B586485B1E100EF6651BB447 /* Pods-SoundsBoard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundsBoard.debug.xcconfig"; path = "Target Support Files/Pods-SoundsBoard/Pods-SoundsBoard.debug.xcconfig"; sourceTree = "<group>"; };
 		F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SoundsBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FC2EA8AD2416D07B00BF9E99 /* AudioRecorderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderController.swift; sourceTree = "<group>"; };
 		FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressRecordButton.swift; sourceTree = "<group>"; };
 		FC362FA12418F102007E43E4 /* cat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cat.wav; sourceTree = "<group>"; };
 		FC362FA424193D8D007E43E4 /* SoundsFilesManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsFilesManger.swift; sourceTree = "<group>"; };
@@ -67,7 +69,7 @@
 		FC736A51241189ED00D6966B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC736A53241189ED00D6966B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FC736A6124145FE000D6966B /* AddSoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSoundController.swift; sourceTree = "<group>"; };
-		FCC59E1524216F9800B38213 /* Audio2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio2.swift; sourceTree = "<group>"; };
+		FCC59E1524216F9800B38213 /* AudioRecorderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		294A806024282055007BE86A /* views */ = {
+			isa = PBXGroup;
+			children = (
+				294A80612428206E007BE86A /* FavoriteCellView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
 		4A0CE9DC72527AAEABEBA588 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +146,7 @@
 		FC736A41241189EB00D6966B /* SoundsBoard */ = {
 			isa = PBXGroup;
 			children = (
+				294A806024282055007BE86A /* views */,
 				FC362FC8241D6CFC007E43E4 /* SoundsBoard.entitlements */,
 				FC362FA324193D5C007E43E4 /* utilities */,
 				FC362F9E24183F37007E43E4 /* custom-views */,
@@ -162,8 +173,8 @@
 			children = (
 				FC736A46241189EB00D6966B /* HomeController.swift */,
 				FC736A6124145FE000D6966B /* AddSoundController.swift */,
-				FC2EA8AD2416D07B00BF9E99 /* AudioRecorderController.swift */,
-				FCC59E1524216F9800B38213 /* Audio2.swift */,
+				FCC59E1524216F9800B38213 /* AudioRecorderController.swift */,
+				294A805E24281D51007BE86A /* FavoriteControllers.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -320,9 +331,10 @@
 				FC736A43241189EB00D6966B /* AppDelegate.swift in Sources */,
 				FC736A45241189EB00D6966B /* SceneDelegate.swift in Sources */,
 				FC736A6224145FE000D6966B /* AddSoundController.swift in Sources */,
+				294A805F24281D51007BE86A /* FavoriteControllers.swift in Sources */,
 				FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */,
-				FC2EA8AE2416D07B00BF9E99 /* AudioRecorderController.swift in Sources */,
-				FCC59E1624216F9800B38213 /* Audio2.swift in Sources */,
+				294A80622428206E007BE86A /* FavoriteCellView.swift in Sources */,
+				FCC59E1624216F9800B38213 /* AudioRecorderController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

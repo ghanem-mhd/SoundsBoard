@@ -12,4 +12,5 @@ target 'SoundsBoard' do
   pod 'AudioPlayerSwift'
   pod 'AudioKit'
   pod "SoundWave"
+  pod 'NVActivityIndicatorView'
 end

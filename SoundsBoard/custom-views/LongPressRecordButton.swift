@@ -282,7 +282,7 @@ private extension NSAttributedString {
 
 private extension Int {
     var radians : CGFloat {
-        return CGFloat(self) * CGFloat(M_PI) / 180.0
+        return CGFloat(self) * CGFloat(Double.pi) / 180.0
     }
 }
 
