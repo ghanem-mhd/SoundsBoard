@@ -47,10 +47,14 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         collectionview.register(FavoriteCellView.self, forCellWithReuseIdentifier: cellId)
         collectionview.showsVerticalScrollIndicator = false
         collectionview.backgroundColor = .white
+        collectionview.dragInteractionEnabled = true
         self.view.addSubview(collectionview)
         
         
         initializeFetchedResultsController()
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
+        collectionview.addGestureRecognizer(longPressGesture)
     }
     
     func initializeFetchedResultsController() {
@@ -105,6 +109,7 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
     
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
         switch type {
         case .insert:
             collectionview.insertItems(at: [newIndexPath!])
@@ -130,6 +135,32 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         let clickedSound = controller.object(at: indexPath)
         if let soundGeneratedName = clickedSound.generatedName{
             Sound.play(url: SoundsFilesManger.getSoundURL(soundGeneratedName))
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
+        switch(gesture.state) {
+        case .began:
+            guard let selectedIndexPath = collectionview.indexPathForItem(at: gesture.location(in: collectionview)) else {
+                break
+            }
+            collectionview.beginInteractiveMovementForItem(at: selectedIndexPath)
+        case .changed:
+            collectionview.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
+        case .ended:
+            collectionview.endInteractiveMovement()
+        default:
+            collectionview.cancelInteractiveMovement()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        guard let controller = fetchedResultsController else {
+            fatalError("No fetchedResultsController")
         }
     }
 

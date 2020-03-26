@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Favorite-->
+        <!--Favorite Controller-->
         <scene sceneID="QQI-ud-Dam">
             <objects>
                 <viewController id="YGe-Aq-jnl" customClass="FavoriteController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,14 +18,12 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="vbr-7i-wpl"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Favorite" image="round_favorite_black_48pt" id="htn-bS-xIJ">
-                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="htn-bS-xIJ"/>
                     <navigationItem key="navigationItem" id="gtd-0K-RhI"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hvD-7F-omf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3286" y="2366"/>
+            <point key="canvasLocation" x="2393" y="2447"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="g5n-Yg-X4f">
@@ -71,23 +69,21 @@
             </objects>
             <point key="canvasLocation" x="2798.5507246376815" y="1486.6071428571429"/>
         </scene>
-        <!--All-->
+        <!--All Sounds Controller-->
         <scene sceneID="1Xo-Da-fYA">
             <objects>
-                <viewController id="cDh-Fg-ZjF" sceneMemberID="viewController">
+                <viewController id="cDh-Fg-ZjF" customClass="AllSoundsController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eSp-55-LI0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="HuE-tv-9oX"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="All" image="round_volume_up_black_48pt" id="QSK-2r-oqC">
-                        <inset key="imageInsets" minX="6" minY="6" maxX="6" maxY="6"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="" systemItem="more" id="QSK-2r-oqC"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WeQ-KY-gea" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2362" y="2366"/>
+            <point key="canvasLocation" x="3190" y="2447"/>
         </scene>
         <!--Add Sound Controller-->
         <scene sceneID="AFl-mK-h77">
@@ -122,8 +118,4 @@
             <point key="canvasLocation" x="4470" y="938"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="round_favorite_black_48pt" width="48" height="48"/>
-        <image name="round_volume_up_black_48pt" width="48" height="48"/>
-    </resources>
 </document>

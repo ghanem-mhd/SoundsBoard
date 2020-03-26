@@ -11,19 +11,26 @@ import AVFoundation
 import CoreData
 import SwiftySound
 
-class HomeController: UITabBarController {
+class HomeController: UITabBarController,UITabBarControllerDelegate {
     
     var moc : NSManagedObjectContext!
+    lazy var editButton     = UIBarButtonItem(title: "Edit", style: .done, target: self, action: #selector(editButtonClicked))
+
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.delegate = self
         
         // getting appDelegate's reference
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
         self.moc = appDelegate.persistentContainer.viewContext
+        
+        self.navigationItem.leftBarButtonItem = editButton
+        editButtonToggle(isEnabled: false)
                  
         do {
             let fetchRequest = NSFetchRequest<SoundObject>(entityName: "SoundObject")
@@ -35,6 +42,38 @@ class HomeController: UITabBarController {
             fatalError("Failed to fetch employees: \(error)")
         }
         
+    }
+    
+    @objc func editButtonClicked(_ sender: Any){
+        if let controller = selectedViewController as? AllSoundsController{
+            controller.onEditButtonClicked(editButton)
+        }
+    }
+    
+    // UITabBarDelegate
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+    }
+
+    // UITabBarControllerDelegate
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if viewController is AllSoundsController{
+            editButtonToggle(isEnabled: true)
+        }
+        
+        if viewController is FavoriteController{
+            editButtonToggle(isEnabled: false)
+        }
+    }
+    
+    private func editButtonToggle(isEnabled:Bool){
+        if isEnabled{
+            self.editButton.isEnabled = true
+            self.editButton.tintColor    = nil
+        }else{
+            self.editButton.isEnabled = false
+            self.editButton.tintColor    = .clear
+        }
     }
 }
 
