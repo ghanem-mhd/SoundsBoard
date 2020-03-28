@@ -10,9 +10,14 @@ import UIKit
 import ALCameraViewController
 import SwiftySound
 import CoreData
+import MobileCoreServices
+import NVActivityIndicatorView
 
 
-class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate {
+
+class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate, UIDocumentPickerDelegate, NVActivityIndicatorViewable, SoundsFilesMangerCopyDelegate{
+
+    
     
     lazy var doneButton         = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonClicked))
     lazy var addImageButton     = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
@@ -188,7 +193,9 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate 
     }
     
     @objc func onOpenFileButton(_ sender: UIButton){
-        
+        let importMenu = UIDocumentPickerViewController(documentTypes: ["public.audiovisual-content"], in: .open)
+        importMenu.delegate = self
+        self.present(importMenu, animated: true, completion: nil)
     }
     
     func audioRecorderFinished(_ generatedName: String) {
@@ -253,6 +260,40 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate 
                 print(error)
                 moc.rollback()
             }
+        }
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        let fileType = SoundsFilesManger.checkFileType(url)
+        if fileType == SupportedFileTypes.unknowen{
+            AlertsManager.showFileNotSuportedAlert(self)
+            return
+        }
+        SoundsFilesManger.copyFile(url, self)
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func copyDidStart() {
+        startAnimating()
+    }
+    
+    func copyDidFinish(_ soundGeneratedName: String) {
+        stopAnimating()
+        self.generatedName = soundGeneratedName
+        playerView.isHidden = false
+    }
+    
+    func copyDidFaild(_ erorr: Error) {
+        stopAnimating()
+        AlertsManager.showCopyFaildAlert(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if let soundGenratedName = generatedName{
+            SoundsFilesManger.deleteSoundFile(soundGenratedName)
         }
     }
 }

@@ -21,6 +21,8 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(SoundsFilesManger.getFilesFromDocumentsFolder())
+        
         self.delegate = self
         
         // getting appDelegate's reference

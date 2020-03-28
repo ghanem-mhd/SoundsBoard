@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29272D39242EC06F0023C703 /* AlertsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29272D38242EC06F0023C703 /* AlertsManager.swift */; };
 		294A805F24281D51007BE86A /* FavoriteControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A805E24281D51007BE86A /* FavoriteControllers.swift */; };
 		294A80622428206E007BE86A /* FavoriteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A80612428206E007BE86A /* FavoriteCellView.swift */; };
 		2975A379242AAE1E00F5FE4F /* AllSoundsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A378242AAE1E00F5FE4F /* AllSoundsController.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		29272D38242EC06F0023C703 /* AlertsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsManager.swift; sourceTree = "<group>"; };
 		294A805E24281D51007BE86A /* FavoriteControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteControllers.swift; sourceTree = "<group>"; };
 		294A80612428206E007BE86A /* FavoriteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCellView.swift; sourceTree = "<group>"; };
 		2975A378242AAE1E00F5FE4F /* AllSoundsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllSoundsController.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				FC362FA424193D8D007E43E4 /* SoundsFilesManger.swift */,
+				29272D38242EC06F0023C703 /* AlertsManager.swift */,
 			);
 			path = utilities;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */,
 				294A80622428206E007BE86A /* FavoriteCellView.swift in Sources */,
 				FCC59E1624216F9800B38213 /* AudioRecorderController.swift in Sources */,
+				29272D39242EC06F0023C703 /* AlertsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

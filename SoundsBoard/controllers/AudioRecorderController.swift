@@ -37,8 +37,8 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     var soundGeneratedName: String?
     var milliseconds: Int = 0
 
-    var player =  AKPlayer()
-    var mic    = AKMicrophone()
+    //var player =  AKPlayer()
+    //var mic    = AKMicrophone()
     
     var isRecored = false
     
@@ -53,13 +53,12 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         self.view.backgroundColor = .white
             
         do {
-            player.completionHandler = playingEnded
-            self.plotView.node = mic
-            AudioKit.output = player
-            try AudioKit.start()
+            //player.completionHandler = playingEnded
+            //self.plotView.node = mic
+            //AudioKit.output = player
+            //try AudioKit.start()
                 
             soundGeneratedName = SoundsFilesManger.generateSoundName()
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
             try recorder = AVAudioRecorder(url: SoundsFilesManger.getSoundURL(soundGeneratedName!), settings: recordingSettings)
         } catch let error {
             print(error)
@@ -67,7 +66,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     }
     
     func longPressRecordButtonDidStartLongPress(_ button: LongPressRecordButton) {
-        plotView.node = mic
+       // plotView.node = mic
         if let r = recorder{
             try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
             milliseconds = 0
@@ -106,7 +105,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     
     override func viewDidDisappear(_ animated: Bool) {
         do {
-            try AudioKit.stop()
+            //try AudioKit.stop()
         }
         catch let error {
             print(error)
@@ -187,9 +186,9 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     @objc func onPlayButtonClicked(_ sender: UIButton){
         do {
             try AKSettings.setSession(category: .playback)
-            try player.load(url: SoundsFilesManger.getSoundURL(soundGeneratedName!))
-            plotView.node = player
-            player.play()
+            //try player.load(url: SoundsFilesManger.getSoundURL(soundGeneratedName!))
+            //plotView.node = player
+            //player.play()
         }catch let error {
             print(error)
         }
@@ -197,14 +196,12 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     }
     
     func playingEnded() {
-        self.plotView.node = self.mic
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
+        //self.plotView.node = self.mic
     }
     
     @objc func onStopButtonClicked(_ sender: UIButton){
-        player.stop()
-        plotView.node = mic
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
+        //player.stop()
+        //plotView.node = mic
     }
     
     let recordingSettings = [AVFormatIDKey: NSNumber(value: kAudioFormatMPEG4AAC),
