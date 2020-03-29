@@ -9,9 +9,8 @@
 import UIKit
 import SnapKit
 import AVFoundation
-import SwiftySound
-import AudioKit
-import AudioKitUI
+import NVActivityIndicatorView
+
 
 protocol AudioRecorderViewControllerDelegate: class {
     func audioRecorderFinished(_ generatedName: String)
@@ -29,16 +28,15 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     lazy var playButton     = UIButton()
     lazy var stopButton     = UIButton()
     lazy var pauseButton    = UIButton()
-    lazy var plotView       = AKNodeOutputPlot()
+    lazy var animation      = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     
+    let recordindAnimationType:NVActivityIndicatorType = .ballClipRotateMultiple
+    let playingAnimationType:NVActivityIndicatorType = .audioEqualizer
     
     var timeTimer:Timer?
     var recorder: AVAudioRecorder?
     var soundGeneratedName: String?
     var milliseconds: Int = 0
-
-    //var player =  AKPlayer()
-    //var mic    = AKMicrophone()
     
     var isRecored = false
     
@@ -51,13 +49,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         super.viewDidLoad()
         self.title = "Recorder"
         self.view.backgroundColor = .white
-            
         do {
-            //player.completionHandler = playingEnded
-            //self.plotView.node = mic
-            //AudioKit.output = player
-            //try AudioKit.start()
-                
             soundGeneratedName = SoundsFilesManger.generateSoundName()
             try recorder = AVAudioRecorder(url: SoundsFilesManger.getSoundURL(soundGeneratedName!), settings: recordingSettings)
         } catch let error {
@@ -66,9 +58,12 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     }
     
     func longPressRecordButtonDidStartLongPress(_ button: LongPressRecordButton) {
-       // plotView.node = mic
+        animation.stopAnimating()
+        AudioPlayer.sharedInstance.stop()
+        animation.type = recordindAnimationType
+        animation.startAnimating()
         if let r = recorder{
-            try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
+            try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.record)
             milliseconds = 0
             timeLabel.text = "00:00"
             timeTimer = Timer.scheduledTimer(timeInterval: 0.0167, target: self, selector: #selector(updateTimeLabel), userInfo: nil, repeats: true)
@@ -79,6 +74,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     }
     
     func longPressRecordButtonDidStopLongPress(_ button: LongPressRecordButton) {
+        animation.stopAnimating()
         if let r = recorder{
             r.stop()
             timeTimer?.invalidate()
@@ -100,24 +96,17 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         milliseconds += 1
         let sec = (milliseconds / 60) % 60
         let min = milliseconds / 3600
-        timeLabel.text = NSString(format: "%02d:%02d", min, sec) as String
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        do {
-            //try AudioKit.stop()
-        }
-        catch let error {
-            print(error)
-        }
+        self.timeLabel.text =  String(format: "%02d:%02d", min, sec)
     }
     
     func setUpViews(){
-        self.view.addSubview(plotView)
-        plotView.snp.makeConstraints{ (make) -> Void in
-            make.height.equalTo(50)
-            make.width.equalTo(self.view.snp.width)
-            make.center.equalTo(self.view.snp.center)
+        animation.color = .systemBlue
+        self.view.addSubview(animation)
+        animation.snp.makeConstraints{ (make) -> Void in
+            make.bottom.equalTo(self.view.snp.centerY).offset(-32)
+            make.width.equalTo(self.view.snp.width).offset(-64)
+            make.centerX.equalTo(self.view.snp.centerX)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(32)
         }
         
         let label = UILabel()
@@ -125,22 +114,23 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         label.textAlignment = NSTextAlignment.center
         label.text = "Press and hold to recrod the sound!"
         label.snp.makeConstraints{ (make) -> Void in
+            make.height.equalTo(100)
             make.width.equalTo(self.view.snp.width)
             make.centerX.equalTo(self.view.snp.centerX)
-            make.bottom.equalTo(self.plotView.snp.top).offset(-50)
+            make.centerY.equalTo(self.view.snp.centerY).offset(50)
         }
         
-
+        
         self.view.addSubview(timeLabel)
         timeLabel.text = "00:00"
         timeLabel.textAlignment = .center
         timeLabel.snp.makeConstraints{ (make) -> Void in
             make.width.equalTo(150)
-            make.top.equalTo(self.plotView.snp.bottom).offset(50)
             make.centerX.equalTo(self.view.snp.centerX)
+            make.centerY.equalTo(label.snp.centerY).offset(32)
         }
         
-
+        
         self.view.addSubview(recordButton)
         recordButton.delegate = self
         recordButton.snp.makeConstraints{ (make) -> Void in
@@ -184,27 +174,36 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     }
     
     @objc func onPlayButtonClicked(_ sender: UIButton){
-        do {
-            try AKSettings.setSession(category: .playback)
-            //try player.load(url: SoundsFilesManger.getSoundURL(soundGeneratedName!))
-            //plotView.node = player
-            //player.play()
-        }catch let error {
-            print(error)
+        if !isRecored{
+            return
         }
-
+        if let soundName = soundGeneratedName{
+            animation.type = .audioEqualizer
+            animation.startAnimating()
+            AudioPlayer.sharedInstance.play(url: SoundsFilesManger.getSoundURL(soundName), checkPlayed: false, delegate: self)
+        }
     }
     
-    func playingEnded() {
-        //self.plotView.node = self.mic
-    }
     
     @objc func onStopButtonClicked(_ sender: UIButton){
-        //player.stop()
-        //plotView.node = mic
+        animation.stopAnimating()
+        AudioPlayer.sharedInstance.stop()
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        animation.stopAnimating()
     }
     
     let recordingSettings = [AVFormatIDKey: NSNumber(value: kAudioFormatMPEG4AAC),
-                    AVSampleRateKey: NSNumber(value: 44100),
-                    AVNumberOfChannelsKey: NSNumber(value: 2)]
+                             AVSampleRateKey: NSNumber(value: 44100),
+                             AVNumberOfChannelsKey: NSNumber(value: 2)]
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if isMovingFromParent {
+            if let r = recorder{
+                r.deleteRecording()
+            }
+        }
+        AudioPlayer.sharedInstance.stop()
+    }
 }

@@ -7,17 +7,13 @@
 //
 
 import UIKit
-import ALCameraViewController
 import SwiftySound
 import CoreData
 import MobileCoreServices
 import NVActivityIndicatorView
+import MultiSlider
 
-
-
-class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate, UIDocumentPickerDelegate, NVActivityIndicatorViewable, SoundsFilesMangerCopyDelegate{
-
-    
+class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate, UIDocumentPickerDelegate, NVActivityIndicatorViewable, SoundsFilesMangerCopyDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     lazy var doneButton         = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonClicked))
     lazy var addImageButton     = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
@@ -29,10 +25,12 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
     lazy var pauseButton        = UIButton()
     lazy var openRecorderButton = UIButton(type: .system)
     lazy var openFileButton     = UIButton(type: .system)
+    lazy var playerSlider       = MultiSlider()
+    lazy var currentTimeLabel   = UILabel()
+    lazy var durationLabel      = UILabel()
     
     var generatedName: String?
     var soundImage:UIImage?
-    var playedSound: Sound?
     var moc : NSManagedObjectContext!
     
     override func viewDidLoad() {
@@ -90,14 +88,49 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
     
     
     @objc func addImageButtonClicked(_ sender: UIButton){
-        let cameraViewController = CameraViewController(croppingParameters: CroppingParameters(isEnabled: true, allowResizing: false), allowsLibraryAccess: true) { [weak self] image, asset in
-            if let chosenImage = image {
-                self?.soundImage = chosenImage
-                self?.addImageButton.setImage(chosenImage, for: .normal)
-            }
-            self?.dismiss(animated: true, completion: nil)
+        let alert = UIAlertController(title:nil, message:nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Take Photo", style: .default , handler:{ (UIAlertAction)in
+            self.openCamera()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Choose Photo", style: .default , handler:{ (UIAlertAction)in
+            self.openGallary()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler:{ (UIAlertAction)in
+            print("User click Dismiss button")
+        }))
+        
+        self.present(alert, animated: true, completion: {
+            print("completion block")
+        })
+    }
+    
+    func openCamera(){
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.allowsEditing = true
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    func openGallary(){
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.allowsEditing = true
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true)
+        
+        guard let image = info[.editedImage] as? UIImage else {
+            print("No image found")
+            return
         }
-        present(cameraViewController, animated: true, completion: nil)
+        self.soundImage = image
+        self.addImageButton.setImage(image, for: .normal)
     }
     
     func setUpAudioPickerView(){
@@ -138,6 +171,7 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
         openRecorderButton.addTarget(self, action: #selector(onOpenRecorderButton), for: .touchUpInside)
         openFileButton.addTarget(self, action: #selector(onOpenFileButton), for: .touchUpInside)
     }
+    
     
     func setUpPlayerView(){
         
@@ -183,6 +217,89 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
         playButton.addTarget(self, action: #selector(onPlayButtonClicked), for: .touchUpInside)
         pauseButton.addTarget(self, action: #selector(onPauseButtonClicked), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(onStopButtonClicked), for: .touchUpInside)
+        
+        
+    
+       
+       
+
+        
+    
+        playerSlider = MultiSlider()
+        self.view.addSubview(playerSlider)
+        playerSlider.orientation = .horizontal
+        playerSlider.minimumValue = 0
+        playerSlider.maximumValue = 1
+        playerSlider.outerTrackColor = .gray
+        playerSlider.valueLabelPosition = .top
+        playerSlider.tintColor = .systemBlue
+        playerSlider.trackWidth = 16
+        playerSlider.thumbCount = 1
+        playerSlider.value = [0]
+        playerSlider.valueLabels[0].isHidden = true
+        playerSlider.disabledThumbIndices = [0]
+        playerSlider.hasRoundTrackEnds = true
+
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            let randomNumber = Int.random(in: 0...100)
+            print("Number: \(randomNumber)")
+            let currentTime = AudioPlayer.sharedInstance.getCurrentTime()
+            let duration = AudioPlayer.sharedInstance.getDuration()
+            if currentTime != 0 || duration != 0{
+                self.playerSlider.value = [CGFloat(currentTime/duration)]
+                var minutes = duration/60
+                var seconds = duration - minutes * 60
+                self.durationLabel.text = String(format: "%02d:%02d", minutes,seconds)
+                
+            
+                minutes = currentTime/60
+                seconds = currentTime - minutes * 60
+                self.currentTimeLabel.text = String(format: "%02d:%02d", minutes,seconds)
+            }
+        }
+        
+        self.view.addSubview(currentTimeLabel)
+        currentTimeLabel.text = "00:01"
+        currentTimeLabel.font = currentTimeLabel.font.withSize(16)
+
+        currentTimeLabel.snp.makeConstraints{ (make) -> Void in
+            make.left.equalTo(self.view.snp.left).offset(16)
+            make.centerY.equalTo(self.playerSlider.snp.centerY)
+        }
+
+        
+        self.view.addSubview(durationLabel)
+        durationLabel.text = "00:06"
+        durationLabel.font = durationLabel.font.withSize(16)
+
+        durationLabel.snp.makeConstraints{ (make) -> Void in
+            make.right.equalTo(self.view.snp.right).offset(-16)
+            make.centerY.equalTo(self.playerSlider.snp.centerY)
+        }
+        
+        
+        playerSlider.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(self.playerView.snp.bottom).offset(24)
+            make.left.equalTo(currentTimeLabel.snp.right).offset(16)
+            make.right.equalTo(durationLabel.snp.left).offset(-16)
+            make.centerX.equalTo(self.view.snp.centerX)
+        }
+        playerSlider.addTarget(self, action: #selector(sliderChanged(_:)), for: .valueChanged) // continuous changes
+        playerSlider.addTarget(self, action: #selector(sliderDragEnded(_:)), for: . touchUpInside) // sent when drag ends
+        
+
+
+        
+    }
+    
+    @objc func sliderChanged(_ slider: MultiSlider){
+
+        
+    }
+    
+    @objc func sliderDragEnded(_ slider: MultiSlider){
+
+        
     }
     
     @objc func onOpenRecorderButton(_ sender: UIButton){
@@ -199,34 +316,26 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
     }
     
     func audioRecorderFinished(_ generatedName: String) {
+        if let old = self.generatedName{
+            AudioPlayer.sharedInstance.stop()
+            SoundsFilesManger.deleteSoundFile(old)
+        }
         self.generatedName = generatedName
         playerView.isHidden = false
     }
     
     @objc func onPlayButtonClicked(_ sender: UIButton){
         if let generatedName = generatedName{
-            if playedSound == nil{
-                playedSound = Sound.init(url: SoundsFilesManger.getSoundURL(generatedName))
-                playedSound?.play()
-            }else{
-                if playedSound?.paused ?? false{
-                    playedSound?.resume()
-                }else{
-                    if !(playedSound?.playing ?? true){
-                        playedSound?.play()
-                    }
-                }
-            }
+            AudioPlayer.sharedInstance.play(url: SoundsFilesManger.getSoundURL(generatedName), checkPlayed: true)
         }
     }
     
     @objc func onPauseButtonClicked(_ sender: UIButton){
-        playedSound?.pause()
+        AudioPlayer.sharedInstance.pause()
     }
     
     @objc func onStopButtonClicked(_ sender: UIButton){
-        playedSound?.stop()
-        playedSound = nil
+        AudioPlayer.sharedInstance.stop()
     }
     
     
@@ -248,6 +357,8 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
         self.navigationController?.popViewController(animated: true)
     }
     
+    var soundSaved = false
+    
     func saveNewSound(soundName:String, soundImage:UIImage, generatedName:String){
         if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
             let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
@@ -256,6 +367,7 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
             soundObject.setValue(generatedName, forKeyPath: "generatedName")
             do {
                 try moc.save()
+                soundSaved = true
             } catch let error as NSError {
                 print(error)
                 moc.rollback()
@@ -282,6 +394,10 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
     
     func copyDidFinish(_ soundGeneratedName: String) {
         stopAnimating()
+        if let old = self.generatedName{
+            AudioPlayer.sharedInstance.stop()
+            SoundsFilesManger.deleteSoundFile(old)
+        }
         self.generatedName = soundGeneratedName
         playerView.isHidden = false
     }
@@ -292,8 +408,14 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if let soundGenratedName = generatedName{
-            SoundsFilesManger.deleteSoundFile(soundGenratedName)
+        guard !soundSaved else{
+            return
+        }
+        if isMovingFromParent {
+            if let soundGenratedName = generatedName{
+                AudioPlayer.sharedInstance.stop()
+                SoundsFilesManger.deleteSoundFile(soundGenratedName)
+            }
         }
     }
 }

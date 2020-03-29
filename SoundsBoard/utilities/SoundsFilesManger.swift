@@ -35,7 +35,8 @@ class SoundsFilesManger{
             print("Deleting file at \(url)")
             try FileManager.default.removeItem(at: url)
         } catch let error as NSError {
-            print("Error: \(error.domain)")
+            print("Error Domain: \(error.domain)")
+            print("Error: \(error)")
         }
     }
     

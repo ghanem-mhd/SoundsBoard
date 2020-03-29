@@ -6,11 +6,11 @@ target 'SoundsBoard' do
   use_frameworks!
 
   # Pods for SoundsBoard
-  pod 'ALCameraViewController'
   pod 'SnapKit', '~> 5.0.0'
   pod 'SwiftySound'
   pod 'AudioPlayerSwift'
   pod 'AudioKit'
   pod "SoundWave"
   pod 'NVActivityIndicatorView'
+  pod 'MultiSlider'
 end
