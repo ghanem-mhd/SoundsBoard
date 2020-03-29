@@ -20,14 +20,14 @@ enum SupportedFileTypes {
 
 protocol SoundsFilesMangerCopyDelegate: class {
     func copyDidStart()
-    func copyDidFinish(_ soundGeneratedName: String)
+    func copyDidFinish(_ soundFileName: String)
     func copyDidFaild(_ erorr: Error)
 }
 
 class SoundsFilesManger{
     
-    static func deleteSoundFile(_ soundGeneratedName:String){
-        deleteFile(getSoundURL(soundGeneratedName))
+    static func deleteSoundFile(_ soundFileName:String){
+        deleteFile(getSoundURL(soundFileName))
     }
     
     static func deleteFile(_ url:URL){
@@ -47,16 +47,16 @@ class SoundsFilesManger{
         return try? fileMngr.contentsOfDirectory(atPath:docs)
     }
     
-    static func getSoundURL(_ soundGeneratedName:String) -> URL {
-        return getDocumentsDirectory().appendingPathComponent(soundGeneratedName)
+    static func getSoundURL(_ soundFileName:String) -> URL {
+        return getDocumentsDirectory().appendingPathComponent(soundFileName)
     }
     
     static func getTemporalURL() -> URL {
-        let name = generateSoundName()
-        return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name)
+        let fileName = generateSoundFileName()
+        return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
     }
     
-    static func generateSoundName() -> String {
+    static func generateSoundFileName() -> String {
         return "\(NSUUID().uuidString).m4a"
     }
     
@@ -95,8 +95,8 @@ class SoundsFilesManger{
     }
     
     static func coptyAudioFile(_ fileURL: URL, _ deleget: SoundsFilesMangerCopyDelegate){
-        let soundGeneratedName = SoundsFilesManger.generateSoundName();
-        let dstURL = SoundsFilesManger.getSoundURL(soundGeneratedName)
+        let soundFileName = SoundsFilesManger.generateSoundFileName();
+        let dstURL = SoundsFilesManger.getSoundURL(soundFileName)
         deleget.copyDidStart()
         DispatchQueue.global(qos: .background).async {
             let isSecuredURL = fileURL.startAccessingSecurityScopedResource() == true
@@ -114,15 +114,15 @@ class SoundsFilesManger{
                 fileURL.stopAccessingSecurityScopedResource()
             }
             DispatchQueue.main.async {
-                deleget.copyDidFinish(soundGeneratedName)
+                deleget.copyDidFinish(soundFileName)
             }
         }
     }
     
     static func coptyVideoFile(_ fileURL: URL, _ deleget: SoundsFilesMangerCopyDelegate){
         let temporal = getTemporalURL()
-        let soundGeneratedName = SoundsFilesManger.generateSoundName()
-        let dstURL2 = SoundsFilesManger.getSoundURL(soundGeneratedName)
+        let soundFileName = SoundsFilesManger.generateSoundFileName()
+        let dstURL2 = SoundsFilesManger.getSoundURL(soundFileName)
         deleget.copyDidStart()
         DispatchQueue.global(qos: .background).async {
             let isSecuredURL = fileURL.startAccessingSecurityScopedResource() == true
@@ -144,7 +144,7 @@ class SoundsFilesManger{
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    deleget.copyDidFinish(soundGeneratedName)
+                                    deleget.copyDidFinish(soundFileName)
                                 }
                             }
                         })

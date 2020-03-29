@@ -13,23 +13,29 @@ import MobileCoreServices
 import NVActivityIndicatorView
 import MultiSlider
 
-class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate, UIDocumentPickerDelegate, NVActivityIndicatorViewable, SoundsFilesMangerCopyDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate, UIDocumentPickerDelegate, NVActivityIndicatorViewable, SoundsFilesMangerCopyDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AudioPlayerCustomDelegate{
+
     
     lazy var doneButton         = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonClicked))
     lazy var addImageButton     = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     lazy var nameTextInput      = UITextField()
     lazy var inputTypesView     = UIStackView()
-    lazy var playerView         = UIStackView()
+    
     lazy var playButton         = UIButton()
     lazy var stopButton         = UIButton()
     lazy var pauseButton        = UIButton()
     lazy var openRecorderButton = UIButton(type: .system)
     lazy var openFileButton     = UIButton(type: .system)
-    lazy var playerSlider       = MultiSlider()
-    lazy var currentTimeLabel   = UILabel()
-    lazy var durationLabel      = UILabel()
     
-    var generatedName: String?
+    lazy var playerControllersView         = UIStackView()
+    lazy var trimSlider       = MultiSlider()
+    lazy var startTimeLabel   = UILabel()
+    lazy var endTimeLabel     = UILabel()
+    lazy var playBackDurationView = UILabel()
+    lazy var trimmedDuration  = UILabel()
+    lazy var hintLabel        = UILabel()
+    
+    var soundFileName: String?
     var soundImage:UIImage?
     var moc : NSManagedObjectContext!
     
@@ -71,7 +77,7 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
     
     func setUpNameInputView(){
         self.view.addSubview(nameTextInput)
-        nameTextInput.placeholder = "Enter text here"
+        nameTextInput.placeholder = "Sound name"
         nameTextInput.font = UIFont.systemFont(ofSize: 15)
         nameTextInput.borderStyle = UITextField.BorderStyle.roundedRect
         nameTextInput.autocorrectionType = UITextAutocorrectionType.no
@@ -86,6 +92,320 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
         }
     }
     
+    func setUpAudioPickerView(){
+        
+        self.view.addSubview(inputTypesView)
+        
+        inputTypesView.axis             = NSLayoutConstraint.Axis.horizontal
+        inputTypesView.distribution     = UIStackView.Distribution.fillEqually
+        inputTypesView.alignment        = UIStackView.Alignment.center
+        inputTypesView.spacing          = 16
+        
+        openRecorderButton.setTitle("Record Audio", for: .normal)
+        openFileButton.setTitle("Pick Audio File", for: .normal)
+        
+        openRecorderButton.clipsToBounds = true
+        openRecorderButton.layer.borderWidth = 0.5
+        openRecorderButton.layer.cornerRadius    = (openRecorderButton.frame.size.width) / 2
+        openRecorderButton.layer.borderColor = UIColor.lightGray.cgColor
+        
+        
+        openRecorderButton.clipsToBounds = true
+        openFileButton.layer.borderWidth = 0.5
+        openFileButton.layer.borderColor = UIColor.lightGray.cgColor
+        openFileButton.layer.cornerRadius    = (openFileButton.frame.size.width) / 2
+        
+        
+        inputTypesView.addArrangedSubview(openRecorderButton)
+        inputTypesView.addArrangedSubview(openFileButton)
+        inputTypesView.backgroundColor = .yellow
+        
+        inputTypesView.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(self.nameTextInput.snp.bottom).offset(32)
+            make.width.equalTo(self.view.snp.width).inset(UIEdgeInsets(top: 0,left: 16,bottom: 0,right: 16))
+            make.centerX.equalTo(self.view.snp.centerX)
+        }
+        
+        openRecorderButton.addTarget(self, action: #selector(onOpenRecorderButton), for: .touchUpInside)
+        openFileButton.addTarget(self, action: #selector(onOpenFileButton), for: .touchUpInside)
+    }
+    
+    
+    func setUpPlayerView(){
+
+        trimSlider = MultiSlider()
+        self.view.addSubview(trimSlider)
+        trimSlider.inputView?.isUserInteractionEnabled = false
+        trimSlider.orientation = .horizontal
+        trimSlider.outerTrackColor = .red
+        trimSlider.minimumValue = 0
+        trimSlider.maximumValue = 100
+        trimSlider.snapStepSize = 1
+        trimSlider.isHapticSnap = true
+        trimSlider.valueLabelPosition = .notAnAttribute
+        trimSlider.tintColor = .systemBlue
+        trimSlider.trackWidth = 8
+        trimSlider.hasRoundTrackEnds = true
+        trimSlider.thumbCount = 2
+        
+        self.view.addSubview(startTimeLabel)
+        startTimeLabel.text = "00:00"
+        startTimeLabel.font =  UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
+        startTimeLabel.snp.makeConstraints{ (make) -> Void in
+            make.left.equalTo(self.view.snp.left).offset(16)
+            make.centerY.equalTo(self.trimSlider.snp.centerY)
+        }
+        
+        self.view.addSubview(endTimeLabel)
+        endTimeLabel.text = "00:00"
+        endTimeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
+        endTimeLabel.snp.makeConstraints{ (make) -> Void in
+            make.right.equalTo(self.view.snp.right).offset(-16)
+            make.centerY.equalTo(self.trimSlider.snp.centerY)
+        }
+        
+        trimSlider.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(self.inputTypesView.snp.bottom).offset(82)
+            make.left.equalTo(startTimeLabel.snp.right).offset(8)
+            make.right.equalTo(endTimeLabel.snp.left).offset(-8)
+            make.centerX.equalTo(self.view.snp.centerX)
+        }
+        trimSlider.addTarget(self, action: #selector(sliderChanged(_:)), for: .valueChanged) // continuous changes
+        trimSlider.addTarget(self, action: #selector(sliderDragEnded(_:)), for: . touchUpInside) // sent when drag ends
+        
+        self.view.addSubview(hintLabel)
+        hintLabel.text = "Move the slider thumbs to trim the sound."
+        hintLabel.textColor = .lightGray
+        hintLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
+        hintLabel.textAlignment = .center
+        hintLabel.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(self.trimSlider.snp.bottom).offset(16)
+            make.width.equalTo(self.view.snp.width)
+        }
+        
+        self.view.addSubview(playBackDurationView)
+        playBackDurationView.text = "00:00 - 04:58"
+        playBackDurationView.font = UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
+        playBackDurationView.textColor = .lightGray
+        playBackDurationView.textAlignment = .center
+        playBackDurationView.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(hintLabel.snp.bottom).offset(16)
+            make.width.equalTo(self.view.snp.width)
+        }
+        
+        self.view.addSubview(playerControllersView)
+                
+        playerControllersView.axis             = NSLayoutConstraint.Axis.horizontal
+        playerControllersView.distribution     = UIStackView.Distribution.equalCentering
+        playerControllersView.alignment        = UIStackView.Alignment.center
+        
+        playerControllersView.addArrangedSubview(stopButton)
+        playerControllersView.addArrangedSubview(playButton)
+        playerControllersView.addArrangedSubview(pauseButton)
+        
+        playerControllersView.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(self.inputTypesView.snp.bottom).offset(32)
+            make.width.equalTo(self.view.frame.width / 2)
+            make.centerX.equalTo(self.view.snp.centerX)
+        }
+        
+        if let playIcon = UIImage(named:"round_play_arrow_black_48pt"){
+            playButton.setImage(playIcon, for: .normal)
+            playButton.snp.makeConstraints{ (make) -> Void in
+                make.width.height.equalTo(50)
+            }
+        }
+        
+        if let pauseIcon = UIImage(named: "round_pause_black_48pt"){
+            pauseButton.setImage(pauseIcon , for: .normal)
+            pauseButton.snp.makeConstraints{ (make) -> Void in
+                make.width.height.equalTo(50)
+            }
+        }
+        
+        if let stopIcon = UIImage(named: "round_stop_black_48pt"){
+            stopButton.setImage(stopIcon , for: .normal)
+            stopButton.snp.makeConstraints{ (make) -> Void in
+                make.width.height.equalTo(50)
+            }
+        }
+        
+        playButton.addTarget(self, action: #selector(onPlayButtonClicked), for: .touchUpInside)
+        pauseButton.addTarget(self, action: #selector(onPauseButtonClicked), for: .touchUpInside)
+        stopButton.addTarget(self, action: #selector(onStopButtonClicked), for: .touchUpInside)
+        
+        playerVisiblity(isHidden: false)
+    }
+
+     // MARK: - Player Controllers
+    
+    func playerVisiblity(isHidden:Bool){
+        playerControllersView.isHidden = isHidden
+        startTimeLabel.isHidden = isHidden
+        endTimeLabel.isHidden = isHidden
+        trimSlider.isHidden = isHidden
+        hintLabel.isHidden = isHidden
+        playBackDurationView.isHidden = isHidden
+    }
+    
+    @objc func onPlayButtonClicked(_ sender: UIButton){
+        if let soundFileName = soundFileName{
+            let startTime = TimeInterval(exactly: trimSlider.value[0])
+            let endTime = TimeInterval(exactly: trimSlider.value[1])
+            AudioPlayer.sharedInstance.play(soundFileName: soundFileName, startTime: startTime, endTime: endTime, checkPlayed: true, customDelegate: self)
+        }
+    }
+    
+    @objc func onPauseButtonClicked(_ sender: UIButton){
+        AudioPlayer.sharedInstance.pause()
+    }
+    
+    @objc func onStopButtonClicked(_ sender: UIButton){
+        AudioPlayer.sharedInstance.stop()
+    }
+    
+    @objc func sliderChanged(_ slider: MultiSlider){
+        updateStartEndTrimmingViews(start: Float(slider.value[0]), end: Float(slider.value[1]))
+    }
+    
+    @objc func sliderDragEnded(_ slider: MultiSlider){
+
+    }
+    
+    func updateStartEndTrimmingViews(start:Float, end:Float){
+        AudioPlayer.sharedInstance.stop()
+        self.startTimeLabel.text = AudioPlayer.sharedInstance.getFormatedTime(timeInSeconds: start)
+        self.endTimeLabel.text = AudioPlayer.sharedInstance.getFormatedTime(timeInSeconds: end)
+        let newDuraiton = end - start
+        self.newDurationString = AudioPlayer.sharedInstance.getFormatedTime(timeInSeconds: newDuraiton)
+        self.playBackDurationView.text = "00:00 - \(newDurationString)"
+    }
+    
+    var newDurationString = ""
+    
+    func setUpTrimmer(_ soundFileName: String){
+        let soundDuration:Int = Int(AudioPlayer.sharedInstance.getDuration(soundFileName: soundFileName))
+        self.endTimeLabel.text = AudioPlayer.sharedInstance.getFormatedTime(timeInSeconds: soundDuration)
+        self.trimSlider.maximumValue = CGFloat(soundDuration)
+        self.trimSlider.value = [0,CGFloat(soundDuration)]
+        self.newDurationString = AudioPlayer.sharedInstance.getFormatedTime(timeInSeconds: soundDuration)
+        self.playBackDurationView.text = "00:00 - \(newDurationString)"
+    }
+    
+    func currentTimePlayed(currentTime: TimeInterval) {
+        let currentTimePlayedString = AudioPlayer.sharedInstance.getFormatedTime(timeInSeconds: Int(currentTime))
+        self.playBackDurationView.text = "\(currentTimePlayedString) - \(newDurationString)"
+    }
+    
+    // MARK: - Audio Recorder
+    
+    @objc func onOpenRecorderButton(_ sender: UIButton){
+        let audioRecorderController = AudioRecorderController()
+        audioRecorderController.audioRecorderDelegate = self
+        self.navigationController!.pushViewController(audioRecorderController, animated: true)
+        
+    }
+    
+    func audioRecorderFinished(_ soundFileName: String) {
+        newSoundReady(soundFileName: soundFileName)
+    }
+    
+    func newSoundReady(soundFileName: String){
+        if let old = self.soundFileName{
+            AudioPlayer.sharedInstance.stop()
+            SoundsFilesManger.deleteSoundFile(old)
+        }
+        self.soundFileName = soundFileName
+        playerVisiblity(isHidden: false)
+        setUpTrimmer(soundFileName)
+    }
+    
+     // MARK: - Audio Picker
+    
+    @objc func onOpenFileButton(_ sender: UIButton){
+        let importMenu = UIDocumentPickerViewController(documentTypes: ["public.audiovisual-content"], in: .open)
+        importMenu.delegate = self
+        self.present(importMenu, animated: true, completion: nil)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        let fileType = SoundsFilesManger.checkFileType(url)
+        if fileType == SupportedFileTypes.unknowen{
+            AlertsManager.showFileNotSuportedAlert(self)
+            return
+        }
+        SoundsFilesManger.copyFile(url, self)
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func copyDidStart() {
+        startAnimating()
+    }
+    
+    func copyDidFinish(_ soundsoundFileName: String) {
+        stopAnimating()
+        newSoundReady(soundFileName: soundsoundFileName)
+    }
+    
+    func copyDidFaild(_ erorr: Error) {
+        stopAnimating()
+        AlertsManager.showCopyFaildAlert(self)
+    }
+    
+    // MARK: - Saving & Closing
+    
+    @objc func doneButtonClicked(_ sender: Any){
+        guard let name = nameTextInput.text, name.isNotEmpty else{
+            print("Name is empty")
+            return
+        }
+        guard let image = self.soundImage else{
+            print("Image is empty")
+            return
+        }
+        
+        guard let soundFileName = self.soundFileName else{
+            print("geneeratedName is empty")
+            return
+        }
+        saveNewSound(soundName: name, soundImage: image, soundFileName: soundFileName)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    var soundSaved = false
+    
+    func saveNewSound(soundName:String, soundImage:UIImage, soundFileName:String){
+        if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
+            let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
+            soundObject.setValue(soundName, forKeyPath: "name")
+            soundObject.setValue(soundImage.pngData(), forKeyPath: "image")
+            soundObject.setValue(soundFileName, forKeyPath: "soundFileName")
+            do {
+                try moc.save()
+                soundSaved = true
+            } catch let error as NSError {
+                print(error)
+                moc.rollback()
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        guard !soundSaved else{
+            return
+        }
+        if isMovingFromParent {
+            if let soundGenratedName = soundFileName{
+                AudioPlayer.sharedInstance.stop()
+                SoundsFilesManger.deleteSoundFile(soundGenratedName)
+            }
+        }
+    }
+    
+     // MARK: - Image Pickers
     
     @objc func addImageButtonClicked(_ sender: UIButton){
         let alert = UIAlertController(title:nil, message:nil, preferredStyle: .actionSheet)
@@ -131,291 +451,5 @@ class AddSoundController: UIViewController, AudioRecorderViewControllerDelegate,
         }
         self.soundImage = image
         self.addImageButton.setImage(image, for: .normal)
-    }
-    
-    func setUpAudioPickerView(){
-        
-        self.view.addSubview(inputTypesView)
-        
-        inputTypesView.axis             = NSLayoutConstraint.Axis.horizontal
-        inputTypesView.distribution     = UIStackView.Distribution.fillEqually
-        inputTypesView.alignment        = UIStackView.Alignment.center
-        inputTypesView.spacing          = 16
-        
-        
-        openRecorderButton.setTitle("Record Audio", for: .normal)
-        openFileButton.setTitle("Pick Audio File", for: .normal)
-        
-        openRecorderButton.clipsToBounds = true
-        openRecorderButton.layer.borderWidth = 0.5
-        openRecorderButton.layer.cornerRadius    = (openRecorderButton.frame.size.width) / 2
-        openRecorderButton.layer.borderColor = UIColor.lightGray.cgColor
-        
-        
-        openRecorderButton.clipsToBounds = true
-        openFileButton.layer.borderWidth = 0.5
-        openFileButton.layer.borderColor = UIColor.lightGray.cgColor
-        openFileButton.layer.cornerRadius    = (openFileButton.frame.size.width) / 2
-        
-        
-        inputTypesView.addArrangedSubview(openRecorderButton)
-        inputTypesView.addArrangedSubview(openFileButton)
-        inputTypesView.backgroundColor = .yellow
-        
-        inputTypesView.snp.makeConstraints{ (make) -> Void in
-            make.top.equalTo(self.nameTextInput.snp.bottom).offset(16)
-            make.width.equalTo(self.view.snp.width).inset(UIEdgeInsets(top: 0,left: 16,bottom: 0,right: 16))
-            make.centerX.equalTo(self.view.snp.centerX)
-        }
-        
-        openRecorderButton.addTarget(self, action: #selector(onOpenRecorderButton), for: .touchUpInside)
-        openFileButton.addTarget(self, action: #selector(onOpenFileButton), for: .touchUpInside)
-    }
-    
-    
-    func setUpPlayerView(){
-        
-        self.view.addSubview(playerView)
-        
-        playerView.isHidden = true
-        
-        playerView.axis             = NSLayoutConstraint.Axis.horizontal
-        playerView.distribution     = UIStackView.Distribution.equalCentering
-        playerView.alignment        = UIStackView.Alignment.center
-        
-        playerView.addArrangedSubview(stopButton)
-        playerView.addArrangedSubview(playButton)
-        playerView.addArrangedSubview(pauseButton)
-        
-        playerView.snp.makeConstraints{ (make) -> Void in
-            make.top.equalTo(self.inputTypesView.snp.bottom).offset(24)
-            make.width.equalTo(self.view.frame.width / 2)
-            make.centerX.equalTo(self.view.snp.centerX)
-        }
-        
-        if let playIcon = UIImage(named:"round_play_arrow_black_48pt"){
-            playButton.setImage(playIcon, for: .normal)
-            playButton.snp.makeConstraints{ (make) -> Void in
-                make.width.height.equalTo(50)
-            }
-        }
-        
-        if let pauseIcon = UIImage(named: "round_pause_black_48pt"){
-            pauseButton.setImage(pauseIcon , for: .normal)
-            pauseButton.snp.makeConstraints{ (make) -> Void in
-                make.width.height.equalTo(50)
-            }
-        }
-        
-        if let stopIcon = UIImage(named: "round_stop_black_48pt"){
-            stopButton.setImage(stopIcon , for: .normal)
-            stopButton.snp.makeConstraints{ (make) -> Void in
-                make.width.height.equalTo(50)
-            }
-        }
-        
-        playButton.addTarget(self, action: #selector(onPlayButtonClicked), for: .touchUpInside)
-        pauseButton.addTarget(self, action: #selector(onPauseButtonClicked), for: .touchUpInside)
-        stopButton.addTarget(self, action: #selector(onStopButtonClicked), for: .touchUpInside)
-        
-        
-    
-       
-       
-
-        
-    
-        playerSlider = MultiSlider()
-        self.view.addSubview(playerSlider)
-        playerSlider.orientation = .horizontal
-        playerSlider.minimumValue = 0
-        playerSlider.maximumValue = 1
-        playerSlider.outerTrackColor = .gray
-        playerSlider.valueLabelPosition = .top
-        playerSlider.tintColor = .systemBlue
-        playerSlider.trackWidth = 16
-        playerSlider.thumbCount = 1
-        playerSlider.value = [0]
-        playerSlider.valueLabels[0].isHidden = true
-        playerSlider.disabledThumbIndices = [0]
-        playerSlider.hasRoundTrackEnds = true
-
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            let randomNumber = Int.random(in: 0...100)
-            print("Number: \(randomNumber)")
-            let currentTime = AudioPlayer.sharedInstance.getCurrentTime()
-            let duration = AudioPlayer.sharedInstance.getDuration()
-            if currentTime != 0 || duration != 0{
-                self.playerSlider.value = [CGFloat(currentTime/duration)]
-                var minutes = duration/60
-                var seconds = duration - minutes * 60
-                self.durationLabel.text = String(format: "%02d:%02d", minutes,seconds)
-                
-            
-                minutes = currentTime/60
-                seconds = currentTime - minutes * 60
-                self.currentTimeLabel.text = String(format: "%02d:%02d", minutes,seconds)
-            }
-        }
-        
-        self.view.addSubview(currentTimeLabel)
-        currentTimeLabel.text = "00:01"
-        currentTimeLabel.font = currentTimeLabel.font.withSize(16)
-
-        currentTimeLabel.snp.makeConstraints{ (make) -> Void in
-            make.left.equalTo(self.view.snp.left).offset(16)
-            make.centerY.equalTo(self.playerSlider.snp.centerY)
-        }
-
-        
-        self.view.addSubview(durationLabel)
-        durationLabel.text = "00:06"
-        durationLabel.font = durationLabel.font.withSize(16)
-
-        durationLabel.snp.makeConstraints{ (make) -> Void in
-            make.right.equalTo(self.view.snp.right).offset(-16)
-            make.centerY.equalTo(self.playerSlider.snp.centerY)
-        }
-        
-        
-        playerSlider.snp.makeConstraints{ (make) -> Void in
-            make.top.equalTo(self.playerView.snp.bottom).offset(24)
-            make.left.equalTo(currentTimeLabel.snp.right).offset(16)
-            make.right.equalTo(durationLabel.snp.left).offset(-16)
-            make.centerX.equalTo(self.view.snp.centerX)
-        }
-        playerSlider.addTarget(self, action: #selector(sliderChanged(_:)), for: .valueChanged) // continuous changes
-        playerSlider.addTarget(self, action: #selector(sliderDragEnded(_:)), for: . touchUpInside) // sent when drag ends
-        
-
-
-        
-    }
-    
-    @objc func sliderChanged(_ slider: MultiSlider){
-
-        
-    }
-    
-    @objc func sliderDragEnded(_ slider: MultiSlider){
-
-        
-    }
-    
-    @objc func onOpenRecorderButton(_ sender: UIButton){
-        let audioRecorderController = AudioRecorderController()
-        audioRecorderController.audioRecorderDelegate = self
-        self.navigationController!.pushViewController(audioRecorderController, animated: true)
-        
-    }
-    
-    @objc func onOpenFileButton(_ sender: UIButton){
-        let importMenu = UIDocumentPickerViewController(documentTypes: ["public.audiovisual-content"], in: .open)
-        importMenu.delegate = self
-        self.present(importMenu, animated: true, completion: nil)
-    }
-    
-    func audioRecorderFinished(_ generatedName: String) {
-        if let old = self.generatedName{
-            AudioPlayer.sharedInstance.stop()
-            SoundsFilesManger.deleteSoundFile(old)
-        }
-        self.generatedName = generatedName
-        playerView.isHidden = false
-    }
-    
-    @objc func onPlayButtonClicked(_ sender: UIButton){
-        if let generatedName = generatedName{
-            AudioPlayer.sharedInstance.play(url: SoundsFilesManger.getSoundURL(generatedName), checkPlayed: true)
-        }
-    }
-    
-    @objc func onPauseButtonClicked(_ sender: UIButton){
-        AudioPlayer.sharedInstance.pause()
-    }
-    
-    @objc func onStopButtonClicked(_ sender: UIButton){
-        AudioPlayer.sharedInstance.stop()
-    }
-    
-    
-    @objc func doneButtonClicked(_ sender: Any){
-        guard let name = nameTextInput.text, name.isNotEmpty else{
-            print("Name is empty")
-            return
-        }
-        guard let image = self.soundImage else{
-            print("Image is empty")
-            return
-        }
-        
-        guard let generatedName = self.generatedName else{
-            print("geneeratedName is empty")
-            return
-        }
-        saveNewSound(soundName: name, soundImage: image, generatedName: generatedName)
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    var soundSaved = false
-    
-    func saveNewSound(soundName:String, soundImage:UIImage, generatedName:String){
-        if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
-            let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
-            soundObject.setValue(soundName, forKeyPath: "name")
-            soundObject.setValue(soundImage.pngData(), forKeyPath: "image")
-            soundObject.setValue(generatedName, forKeyPath: "generatedName")
-            do {
-                try moc.save()
-                soundSaved = true
-            } catch let error as NSError {
-                print(error)
-                moc.rollback()
-            }
-        }
-    }
-    
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        let fileType = SoundsFilesManger.checkFileType(url)
-        if fileType == SupportedFileTypes.unknowen{
-            AlertsManager.showFileNotSuportedAlert(self)
-            return
-        }
-        SoundsFilesManger.copyFile(url, self)
-    }
-    
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func copyDidStart() {
-        startAnimating()
-    }
-    
-    func copyDidFinish(_ soundGeneratedName: String) {
-        stopAnimating()
-        if let old = self.generatedName{
-            AudioPlayer.sharedInstance.stop()
-            SoundsFilesManger.deleteSoundFile(old)
-        }
-        self.generatedName = soundGeneratedName
-        playerView.isHidden = false
-    }
-    
-    func copyDidFaild(_ erorr: Error) {
-        stopAnimating()
-        AlertsManager.showCopyFaildAlert(self)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        guard !soundSaved else{
-            return
-        }
-        if isMovingFromParent {
-            if let soundGenratedName = generatedName{
-                AudioPlayer.sharedInstance.stop()
-                SoundsFilesManger.deleteSoundFile(soundGenratedName)
-            }
-        }
     }
 }

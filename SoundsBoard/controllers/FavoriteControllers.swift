@@ -39,6 +39,7 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
         layout.minimumLineSpacing = spacing
         layout.minimumInteritemSpacing = spacing
+        
 
         
         collectionview = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
@@ -49,7 +50,6 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         collectionview.backgroundColor = .white
         collectionview.dragInteractionEnabled = true
         self.view.addSubview(collectionview)
-        
         
         initializeFetchedResultsController()
         

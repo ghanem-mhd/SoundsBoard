@@ -50,7 +50,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         self.title = "Recorder"
         self.view.backgroundColor = .white
         do {
-            soundGeneratedName = SoundsFilesManger.generateSoundName()
+            soundGeneratedName = SoundsFilesManger.generateSoundFileName()
             try recorder = AVAudioRecorder(url: SoundsFilesManger.getSoundURL(soundGeneratedName!), settings: recordingSettings)
         } catch let error {
             print(error)
@@ -201,7 +201,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     override func viewWillDisappear(_ animated: Bool) {
         if isMovingFromParent {
             if let r = recorder{
-                r.deleteRecording()
+                //r.deleteRecording()
             }
         }
         AudioPlayer.sharedInstance.stop()
