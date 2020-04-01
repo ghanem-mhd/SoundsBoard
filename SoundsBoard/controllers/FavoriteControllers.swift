@@ -13,7 +13,7 @@ import Foundation
 import SnapKit
 import CoreData
 import SwiftySound
-
+import Sprin
 
 class FavoriteController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
    
@@ -21,7 +21,6 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
     var cellId = "Cell"
     var moc: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController<SoundObject>?
-
     
     private let spacing:CGFloat = 16.0
 
@@ -133,8 +132,11 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
             fatalError("Attempt to configure cell without a managed object")
         }
         let clickedSound = controller.object(at: indexPath)
-        if let soundGeneratedName = clickedSound.generatedName{
-            Sound.play(url: SoundsFilesManger.getSoundURL(soundGeneratedName))
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell.animation = "squeezeDown"
+        cell.animate()
+        if let soundGeneratedName = clickedSound.fileName{
+            AudioPlayer.sharedInstance.play(soundFileName: soundGeneratedName)
         }
     }
     

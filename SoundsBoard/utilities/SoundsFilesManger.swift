@@ -13,15 +13,22 @@ import AVFoundation
 
 
 enum SupportedFileTypes {
-    case audio
+    case m4a
+    case mp3
     case video
     case unknowen
 }
 
 protocol SoundsFilesMangerCopyDelegate: class {
     func copyDidStart()
-    func copyDidFinish(_ soundFileName: String)
-    func copyDidFaild(_ erorr: Error)
+    func convertDidStart()
+    func copyAndConvertDidFinish(_ soundFileName: String)
+    func copyDidFaild(_ erorr: Error, fileName: String)
+}
+
+protocol SoundsFilesMangerTrimDelegate: class {
+    func trimDidFinshed()
+    func trimDidFaild(_ erorr: Error)
 }
 
 class SoundsFilesManger{
@@ -33,9 +40,12 @@ class SoundsFilesManger{
     static func deleteFile(_ url:URL){
         do {
             print("Deleting file at \(url)")
-            try FileManager.default.removeItem(at: url)
+            if FileManager.default.fileExists(atPath: url.path){
+                try FileManager.default.removeItem(at: url)
+            }else{
+                print("\(url) Not found")
+            }
         } catch let error as NSError {
-            print("Error Domain: \(error.domain)")
             print("Error: \(error)")
         }
     }
@@ -51,8 +61,8 @@ class SoundsFilesManger{
         return getDocumentsDirectory().appendingPathComponent(soundFileName)
     }
     
-    static func getTemporalURL() -> URL {
-        let fileName = generateSoundFileName()
+    static func getTemporalURL(_ extention:String = ".m4a") -> URL {
+        let fileName = "\(NSUUID().uuidString).\(extention)"
         return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
     }
     
@@ -68,12 +78,14 @@ class SoundsFilesManger{
     static func checkFileType(_ url:URL) -> SupportedFileTypes{
         let urlExtension = NSURL(fileURLWithPath: url.path).pathExtension
         guard let uti = UTTypeCreatePreferredIdentifierForTag( kUTTagClassFilenameExtension,urlExtension! as CFString,nil) else {
-             return SupportedFileTypes.unknowen
+            return SupportedFileTypes.unknowen
         }
         let fileUTI = uti.takeRetainedValue()
-        
         if UTTypeConformsTo(fileUTI, kUTTypeMP3){
-            return SupportedFileTypes.audio
+            return SupportedFileTypes.mp3
+        }
+        if UTTypeConformsTo(fileUTI, kUTTypeMPEG4Audio){
+            return SupportedFileTypes.m4a
         }
         if  (UTTypeConformsTo(fileUTI, kUTTypeMovie) ||
             UTTypeConformsTo(fileUTI, kUTTypeQuickTimeMovie) ||
@@ -86,15 +98,18 @@ class SoundsFilesManger{
     
     static func copyFile(_ fileURL: URL, _ deleget: SoundsFilesMangerCopyDelegate){
         let fileType = checkFileType(fileURL)
-        if fileType == .audio{
-            coptyAudioFile(fileURL, deleget)
+        if fileType == .m4a{
+            copyAudioFile(fileURL, deleget)
+        }
+        if fileType == .mp3{
+            convertAndCopy(fileURL, deleget)
         }
         if fileType == .video{
-            coptyVideoFile(fileURL, deleget)
+            convertAndCopy(fileURL, deleget)
         }
     }
     
-    static func coptyAudioFile(_ fileURL: URL, _ deleget: SoundsFilesMangerCopyDelegate){
+    static func copyAudioFile(_ fileURL: URL, _ deleget: SoundsFilesMangerCopyDelegate){
         let soundFileName = SoundsFilesManger.generateSoundFileName();
         let dstURL = SoundsFilesManger.getSoundURL(soundFileName)
         deleget.copyDidStart()
@@ -104,23 +119,23 @@ class SoundsFilesManger{
             var error: NSError?
             coordinator.coordinate(readingItemAt: fileURL, options: [], error: &error) { (url) -> Void in
                 do {
-                    try FileManager.default.copyItem(at: fileURL, to: dstURL)
+                    try FileManager.default.copyItem(at: url, to: dstURL)
                 }  catch let error {
                     print(error)
-                    deleget.copyDidFaild(error)
+                    deleget.copyDidFaild(error, fileName: fileURL.lastPathComponent + fileURL.pathExtension)
                 }
             }
             if (isSecuredURL) {
                 fileURL.stopAccessingSecurityScopedResource()
             }
             DispatchQueue.main.async {
-                deleget.copyDidFinish(soundFileName)
+                deleget.copyAndConvertDidFinish(soundFileName)
             }
         }
     }
     
-    static func coptyVideoFile(_ fileURL: URL, _ deleget: SoundsFilesMangerCopyDelegate){
-        let temporal = getTemporalURL()
+    static func convertAndCopy(_ fileURL: URL, _ deleget: SoundsFilesMangerCopyDelegate){
+        let temporal = getTemporalURL(fileURL.pathExtension)
         let soundFileName = SoundsFilesManger.generateSoundFileName()
         let dstURL2 = SoundsFilesManger.getSoundURL(soundFileName)
         deleget.copyDidStart()
@@ -130,27 +145,30 @@ class SoundsFilesManger{
             var error: NSError?
             coordinator.coordinate(readingItemAt: fileURL, options: [], error: &error) { (url) -> Void in
                 do {
-                    try FileManager.default.copyItem(at: fileURL, to: temporal)
+                    try FileManager.default.copyItem(at: url, to: temporal)
                     var options = AKConverter.Options()
                         options.format = "m4a"
                         options.sampleRate = 48000
                         options.bitDepth = 24
                         let converter = AKConverter(inputURL: temporal, outputURL: dstURL2, options: options)
+                        DispatchQueue.main.async {
+                            deleget.convertDidStart()
+                        }
                         converter.start(completionHandler: { error in
                             deleteFile(temporal)
                             if let error = error {
                                 DispatchQueue.main.async {
-                                    deleget.copyDidFaild(error)
+                                    deleget.copyDidFaild(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    deleget.copyDidFinish(soundFileName)
+                                    deleget.copyAndConvertDidFinish(soundFileName)
                                 }
                             }
                         })
                   }  catch let error {
                       print(error)
-                      deleget.copyDidFaild(error)
+                    deleget.copyDidFaild(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
                   }
                 
     
@@ -158,7 +176,36 @@ class SoundsFilesManger{
             if (isSecuredURL) {
                 fileURL.stopAccessingSecurityScopedResource()
             }
-
+            
+        }
+    }
+    
+    static func trimSound(soundFileName:String, startTime: Int, endTime:Int, delegate: SoundsFilesMangerTrimDelegate){
+        AKSettings.enableLogging = true
+        let temporal = getTemporalURL()
+        let originalSoundFile = getSoundURL(soundFileName)
+        do {
+            try FileManager.default.copyItem(at: originalSoundFile, to: temporal)
+            let audiofile = try AKAudioFile(forReading: temporal)
+            audiofile.exportAsynchronously(name: soundFileName,
+                                      baseDir: .documents,
+                                      exportFormat: .m4a,
+                                      fromSample: Int64(startTime * 44_100),
+                                      toSample: Int64(endTime * 44_100))
+            {_, exportError in
+                if let error = exportError {
+                    DispatchQueue.main.async {
+                        delegate.trimDidFaild(error)
+                    }
+                  
+                } else {
+                    DispatchQueue.main.async {
+                        delegate.trimDidFinshed()
+                    }
+                }
+            }
+        } catch let error {
+            print(error)
         }
     }
 }

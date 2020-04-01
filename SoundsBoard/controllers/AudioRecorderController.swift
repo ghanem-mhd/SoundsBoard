@@ -35,7 +35,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     
     var timeTimer:Timer?
     var recorder: AVAudioRecorder?
-    var soundGeneratedName: String?
+    var soundFileName: String?
     var milliseconds: Int = 0
     
     var isRecored = false
@@ -50,8 +50,8 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         self.title = "Recorder"
         self.view.backgroundColor = .white
         do {
-            soundGeneratedName = SoundsFilesManger.generateSoundFileName()
-            try recorder = AVAudioRecorder(url: SoundsFilesManger.getSoundURL(soundGeneratedName!), settings: recordingSettings)
+            soundFileName = SoundsFilesManger.generateSoundFileName()
+            try recorder = AVAudioRecorder(url: SoundsFilesManger.getSoundURL(soundFileName!), settings: recordingSettings)
         } catch let error {
             print(error)
         }
@@ -86,7 +86,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         if !isRecored{
             return
         }
-        if let soundName = soundGeneratedName, let delegate = audioRecorderDelegate{
+        if let soundName = soundFileName, let delegate = audioRecorderDelegate{
             delegate.audioRecorderFinished(soundName)
             self.navigationController?.popViewController(animated: true)
         }
@@ -113,6 +113,8 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         self.view.addSubview(label)
         label.textAlignment = NSTextAlignment.center
         label.text = "Press and hold to recrod the sound!"
+        label.textColor = .lightGray
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 20, weight: UIFont.Weight.light)
         label.snp.makeConstraints{ (make) -> Void in
             make.height.equalTo(100)
             make.width.equalTo(self.view.snp.width)
@@ -124,8 +126,10 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         self.view.addSubview(timeLabel)
         timeLabel.text = "00:00"
         timeLabel.textAlignment = .center
+        timeLabel.textColor = .lightGray
+        timeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 20, weight: UIFont.Weight.light)
         timeLabel.snp.makeConstraints{ (make) -> Void in
-            make.width.equalTo(150)
+            make.width.equalTo(self.view.snp.width)
             make.centerX.equalTo(self.view.snp.centerX)
             make.centerY.equalTo(label.snp.centerY).offset(32)
         }
@@ -177,10 +181,10 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         if !isRecored{
             return
         }
-        if let soundName = soundGeneratedName{
+        if let soundName = soundFileName{
             animation.type = .audioEqualizer
             animation.startAnimating()
-            AudioPlayer.sharedInstance.play(url: SoundsFilesManger.getSoundURL(soundName), checkPlayed: false, delegate: self)
+            AudioPlayer.sharedInstance.play(soundFileName: soundName, checkPlayed: false, delegate: self)
         }
     }
     
@@ -188,6 +192,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     @objc func onStopButtonClicked(_ sender: UIButton){
         animation.stopAnimating()
         AudioPlayer.sharedInstance.stop()
+        timeLabel.text = "00:00"
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {

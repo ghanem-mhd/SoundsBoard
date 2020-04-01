@@ -11,15 +11,23 @@ import UIKit
 
 class AlertsManager{
     
-    public static func showFileNotSuportedAlert(_ viewController: UIViewController){
-        let alert = UIAlertController(title: "Opps", message: "The file type is not suported!", preferredStyle: .alert)
+    public static func showAlert(_ viewController: UIViewController, _ title: String, _ message: String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
         viewController.present(alert, animated: true)
     }
     
-    public static func showCopyFaildAlert(_ viewController: UIViewController){
-        let alert = UIAlertController(title: "Opps", message: "The file can not be imported!", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-        viewController.present(alert, animated: true)
+    public static func showFileNotSuportedAlert(_ viewController: UIViewController){
+        AlertsManager.showAlert(viewController, "Opps", "The file type is not suported!")
     }
+    
+    public static func showImportFailedAlert(_ viewController: UIViewController, fileName: String){
+        AlertsManager.showAlert(viewController, "Opps", "Can't import \(fileName)!")
+    }
+    
+    public static func showPlayingAlert(_ viewController: UIViewController){
+        AlertsManager.showAlert(viewController, "Opps", "Unable to play the sound!")
+    }
+    
+    
 }

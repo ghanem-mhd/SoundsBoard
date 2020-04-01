@@ -18,7 +18,7 @@ class FavoriteCellView: UICollectionViewCell {
     public let label: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.backgroundColor = color
+        //label.backgroundColor = color
         label.textColor = .white
         label.layer.cornerRadius = cornerRadius
         label.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
@@ -37,6 +37,7 @@ class FavoriteCellView: UICollectionViewCell {
     
     public let playIcon: UIImageView = {
         let image = UIImageView()
+        image.isHidden = true
         if let playIcon = UIImage(named:"round_play_arrow_black_48pt"){
             image.image = playIcon
         }
@@ -72,6 +73,7 @@ class FavoriteCellView: UICollectionViewCell {
         image.snp.makeConstraints{ (make) -> Void in
             make.edges.equalTo(self)
         }
+        
         addSubview(blacklayer)
         blacklayer.snp.makeConstraints{ (make) -> Void in
             make.edges.equalTo(self)
@@ -80,7 +82,8 @@ class FavoriteCellView: UICollectionViewCell {
         addSubview(label)
         label.snp.makeConstraints{ (make) -> Void in
             make.centerX.equalTo(self.snp.centerX)
-            make.bottom.equalTo(self.snp.bottom)
+            make.centerY.equalTo(self.snp.centerY)
+            //make.bottom.equalTo(self.snp.bottom)
             make.width.equalTo(self.frame.width)
         }
         addSubview(playIcon)
@@ -90,9 +93,7 @@ class FavoriteCellView: UICollectionViewCell {
         }
 
     }
-
-
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -103,5 +104,7 @@ class FavoriteCellView: UICollectionViewCell {
             image.image = UIImage(data: soundImageData)
         }
     }
+    
+    
 
 }
