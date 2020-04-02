@@ -15,7 +15,6 @@ PODS:
   - NVActivityIndicatorView/Presenter (4.8.0)
   - SnapKit (5.0.1)
   - SoundWave (0.1.4)
-  - Spring (1.0.5)
   - SweeterSwift (1.1.3)
   - SwiftySound (1.2.0)
 
@@ -26,7 +25,6 @@ DEPENDENCIES:
   - NVActivityIndicatorView
   - SnapKit (~> 5.0.0)
   - SoundWave
-  - Spring
   - SwiftySound
 
 SPEC REPOS:
@@ -38,7 +36,6 @@ SPEC REPOS:
     - NVActivityIndicatorView
     - SnapKit
     - SoundWave
-    - Spring
     - SweeterSwift
     - SwiftySound
 
@@ -50,10 +47,9 @@ SPEC CHECKSUMS:
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SoundWave: d98ffaa863570b29d991da32a09b7ce1b4aaf2d4
-  Spring: 17901566c8ecf3a1327902b940406c64512f9bb1
   SweeterSwift: d909211f6833405628c8c7c6bf9f8f2e8a0e9df9
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
 
-PODFILE CHECKSUM: a867a8e3522820abf5659eb755a30c5e36632291
+PODFILE CHECKSUM: 02070decf8223851468523d043c8de4106e0b715
 
 COCOAPODS: 1.9.1

@@ -13,7 +13,6 @@ import Foundation
 import SnapKit
 import CoreData
 import SwiftySound
-import Sprin
 
 class FavoriteController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
    
@@ -133,8 +132,6 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         }
         let clickedSound = controller.object(at: indexPath)
         let cell = collectionView.cellForItem(at: indexPath)
-        cell.animation = "squeezeDown"
-        cell.animate()
         if let soundGeneratedName = clickedSound.fileName{
             AudioPlayer.sharedInstance.play(soundFileName: soundGeneratedName)
         }
