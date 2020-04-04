@@ -61,6 +61,7 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         let fetchRequest = NSFetchRequest<SoundObject>(entityName: "SoundObject")
         let nameSort = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [nameSort]
+        fetchRequest.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         guard let controller = fetchedResultsController else{
             return
@@ -174,6 +175,10 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         guard let controller = fetchedResultsController else {
             fatalError("No fetchedResultsController")
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        AudioPlayer.sharedInstance.stop()
     }
     
 }

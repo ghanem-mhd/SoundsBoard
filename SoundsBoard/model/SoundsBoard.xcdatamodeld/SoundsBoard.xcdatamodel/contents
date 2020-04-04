@@ -3,9 +3,10 @@
     <entity name="SoundObject" representedClassName="SoundObject" syncable="YES" codeGenerationType="class">
         <attribute name="fileName" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="SoundObject" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="SoundObject" positionX="-63" positionY="-18" width="128" height="103"/>
     </elements>
 </model>

@@ -14,7 +14,7 @@ class AudioPlayer {
     private var playedURL:URL?
     private var stopTimer = Timer()
     
-    func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil){
+    func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil){
         let url = SoundsFilesManger.getSoundURL(soundFileName)
         play(url: url, startTime: startTime, endTime:endTime,checkPlayed: checkPlayed, delegate: delegate)
     }
@@ -22,7 +22,11 @@ class AudioPlayer {
     func play(url: URL, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil) {
         if checkPlayed, let player = player, let playedURL = playedURL{
             if playedURL == url{
-                player.resume()
+                if player.isPlaying{
+                    player.pause()
+                }else{
+                    player.resume()
+                }
                 return
             }else{
                 stop()

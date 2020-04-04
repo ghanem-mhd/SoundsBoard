@@ -75,12 +75,14 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SoundCellView", for: indexPath) as! SoundCellView
-        
         // instead of using static source, the fetchedResultsController is used
         guard let soundObject = self.fetchedResultsController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")
         }
         cell.update(soundObject)
+        cell.favoriteClick = {
+            self.toggleIsFavorite(soundObject)
+        }
         return cell
     }
     
@@ -156,9 +158,9 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = fetchedResultsController.object(at: indexPath)
+        let object = fetchedResultsController.object(at: indexPath)
         let addEditSoundController = AddEditSoundController()
-        addEditSoundController.editableSound = cell
+        addEditSoundController.editableSound = object
         self.navigationController!.pushViewController(addEditSoundController, animated: true)
 
         self.tableView?.deselectRow(at: indexPath, animated: true)
@@ -170,5 +172,14 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
         return true
     }
     
+    func toggleIsFavorite(_ soundObject: SoundObject){
+        soundObject.isFavorite = !soundObject.isFavorite
+        do {
+            try moc.save()
+        } catch let error as NSError {
+            print(error)
+            moc.rollback()
+        }
+    }
 }
 

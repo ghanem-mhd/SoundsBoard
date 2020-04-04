@@ -42,6 +42,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
                 return
             }
             setUpPlayerView(nameTextInput)
+            fillSoundNameAndImage(sound)
             newSoundReady(soundFileName)
          }else{
             setUpInputTypesView()
@@ -305,6 +306,13 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         }
     }
     
+    func fillSoundNameAndImage(_ sound:SoundObject){
+        nameTextInput.text = sound.name
+        if let soundImageData = sound.image{
+            addImageButton.setImage(UIImage(data: soundImageData), for: .normal)
+        }
+    }
+    
     // MARK: - Audio Picker
     
     @objc func onOpenFileButton(_ sender: UIButton){
@@ -377,7 +385,9 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         if isMovingFromParent {
             if let soundGenratedName = currentSoundFileName{
                 AudioPlayer.sharedInstance.stop()
-                SoundsFilesManger.deleteSoundFile(soundGenratedName)
+                if editableSound == nil{
+                    SoundsFilesManger.deleteSoundFile(soundGenratedName)
+                }
             }
         }
     }
