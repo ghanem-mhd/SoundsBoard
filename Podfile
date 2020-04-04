@@ -13,4 +13,6 @@ target 'SoundsBoard' do
   pod "SoundWave"
   pod 'NVActivityIndicatorView'
   pod 'MultiSlider'
+  pod "ViewAnimator"
+  pod 'KYCircularProgress'
 end

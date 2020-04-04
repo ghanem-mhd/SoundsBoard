@@ -24,18 +24,14 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-        
         self.moc = appDelegate.persistentContainer.viewContext
-        
         tableView = UITableView(frame: self.view.frame)
-        
         if let tb = tableView{
             tb.dataSource = self
             tb.delegate = self
             tb.register(SoundCellView.self, forCellReuseIdentifier: "SoundCellView")
             self.view.addSubview(tb)
         }
-        
         initializeFetchedResultsController()
     }
     
@@ -92,10 +88,6 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
         return UITableViewCell.EditingStyle.delete
     }
     
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -131,6 +123,10 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
         }
     }
     
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView?.beginUpdates()
+    }
+    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView?.endUpdates()
     }
@@ -150,16 +146,29 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
              }
          }
     }
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView?.beginUpdates()
-    }
-    
+
     public func onEditButtonClicked(_ editButton: UIBarButtonItem){
         if let tb = tableView{
             tb.setEditing(!tb.isEditing, animated: true)
             editButton.title = tb.isEditing ? "Done" : "Edit"
         }
     }
+
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = fetchedResultsController.object(at: indexPath)
+        let addEditSoundController = AddEditSoundController()
+        addEditSoundController.editableSound = cell
+        self.navigationController!.pushViewController(addEditSoundController, animated: true)
+
+        self.tableView?.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // Override to support conditional rearranging of the table view.
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the item to be re-orderable.
+        return true
+    }
+    
 }
 

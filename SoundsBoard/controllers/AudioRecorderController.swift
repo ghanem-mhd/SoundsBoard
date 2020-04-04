@@ -112,7 +112,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         let label = UILabel()
         self.view.addSubview(label)
         label.textAlignment = NSTextAlignment.center
-        label.text = "Press and hold to recrod the sound!"
+        label.text = "Press and hold to record the sound!"
         label.textColor = .lightGray
         label.font = UIFont.monospacedDigitSystemFont(ofSize: 20, weight: UIFont.Weight.light)
         label.snp.makeConstraints{ (make) -> Void in

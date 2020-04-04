@@ -13,16 +13,18 @@ import Foundation
 import SnapKit
 import CoreData
 import SwiftySound
+import ViewAnimator
+
 
 class FavoriteController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
-   
+    
     var collectionview: UICollectionView!
     var cellId = "Cell"
     var moc: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController<SoundObject>?
     
     private let spacing:CGFloat = 16.0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,13 +34,13 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         
         // save ManagedObjectContext in class attribute
         self.moc = appDelegate.persistentContainer.viewContext
-
+        
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
         layout.minimumLineSpacing = spacing
         layout.minimumInteritemSpacing = spacing
         
-
+        
         
         collectionview = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionview.dataSource = self
@@ -70,18 +72,18 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
             fatalError("Failed to initialize FetchedResultsController: \(error)")
         }
     }
-
-   
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let numberOfItemsPerRow:CGFloat = 2
         let spacingBetweenCells:CGFloat = 16
-    
+        
         let totalSpacing = (2 * self.spacing) + ((numberOfItemsPerRow - 1) * spacingBetweenCells) //Amount of total spacing in a row
         let width = (collectionView.frame.size.width - totalSpacing)/numberOfItemsPerRow
         return CGSize(width: width, height: width)
-      }
+    }
     
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let controller = fetchedResultsController, let sections = controller.sections else {
             fatalError("No sections in fetchedResultsController")
@@ -89,12 +91,12 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         let sectionInfo = sections[section]
         return sectionInfo.numberOfObjects
     }
-        
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
-
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionview.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FavoriteCellView
         guard let controller = fetchedResultsController else {
@@ -132,6 +134,17 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         }
         let clickedSound = controller.object(at: indexPath)
         let cell = collectionView.cellForItem(at: indexPath)
+        
+        UIView.animate(withDuration: 0.3,
+                         animations: {
+                          cell?.alpha = 0.8
+          }) { (completed) in
+              UIView.animate(withDuration: 0.3,
+                             animations: {
+                              cell?.alpha = 1
+              })
+          }
+        
         if let soundGeneratedName = clickedSound.fileName{
             AudioPlayer.sharedInstance.play(soundFileName: soundGeneratedName)
         }
@@ -162,7 +175,7 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
             fatalError("No fetchedResultsController")
         }
     }
-
+    
 }
 
 

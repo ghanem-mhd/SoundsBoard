@@ -25,7 +25,7 @@
 		FC736A4D241189EB00D6966B /* SoundsBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC736A4B241189EB00D6966B /* SoundsBoard.xcdatamodeld */; };
 		FC736A4F241189ED00D6966B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC736A4E241189ED00D6966B /* Assets.xcassets */; };
 		FC736A52241189ED00D6966B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC736A50241189ED00D6966B /* LaunchScreen.storyboard */; };
-		FC736A6224145FE000D6966B /* AddSoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A6124145FE000D6966B /* AddSoundController.swift */; };
+		FC736A6224145FE000D6966B /* AddEditSoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A6124145FE000D6966B /* AddEditSoundController.swift */; };
 		FCC59E1624216F9800B38213 /* AudioRecorderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC59E1524216F9800B38213 /* AudioRecorderController.swift */; };
 /* End PBXBuildFile section */
 
@@ -76,7 +76,7 @@
 		FC736A4E241189ED00D6966B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FC736A51241189ED00D6966B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC736A53241189ED00D6966B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FC736A6124145FE000D6966B /* AddSoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSoundController.swift; sourceTree = "<group>"; };
+		FC736A6124145FE000D6966B /* AddEditSoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditSoundController.swift; sourceTree = "<group>"; };
 		FCC59E1524216F9800B38213 /* AudioRecorderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -183,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				FC736A46241189EB00D6966B /* HomeController.swift */,
-				FC736A6124145FE000D6966B /* AddSoundController.swift */,
+				FC736A6124145FE000D6966B /* AddEditSoundController.swift */,
 				FCC59E1524216F9800B38213 /* AudioRecorderController.swift */,
 				294A805E24281D51007BE86A /* FavoriteControllers.swift */,
 				2975A378242AAE1E00F5FE4F /* AllSoundsController.swift */,
@@ -345,7 +345,7 @@
 				FC736A47241189EB00D6966B /* HomeController.swift in Sources */,
 				FC736A43241189EB00D6966B /* AppDelegate.swift in Sources */,
 				FC736A45241189EB00D6966B /* SceneDelegate.swift in Sources */,
-				FC736A6224145FE000D6966B /* AddSoundController.swift in Sources */,
+				FC736A6224145FE000D6966B /* AddEditSoundController.swift in Sources */,
 				294A805F24281D51007BE86A /* FavoriteControllers.swift in Sources */,
 				FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */,
 				294A80622428206E007BE86A /* FavoriteCellView.swift in Sources */,

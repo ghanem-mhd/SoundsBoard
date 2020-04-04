@@ -51,7 +51,7 @@
                     <navigationItem key="navigationItem" title="Sounds Board" id="Twt-ca-vOU">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="eb6-PX-L7G">
                             <connections>
-                                <segue destination="97R-1e-L4P" kind="show" id="oYI-Q2-nHg"/>
+                                <segue destination="97R-1e-L4P" kind="show" identifier="editSound" id="oYI-Q2-nHg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -85,10 +85,10 @@
             </objects>
             <point key="canvasLocation" x="3190" y="2447"/>
         </scene>
-        <!--Add Sound Controller-->
+        <!--Add Edit Sound Controller-->
         <scene sceneID="AFl-mK-h77">
             <objects>
-                <viewController id="97R-1e-L4P" customClass="AddSoundController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="97R-1e-L4P" customClass="AddEditSoundController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VyM-nM-hd0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
