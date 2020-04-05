@@ -15,13 +15,27 @@ import MultiSlider
 
 class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UINavigationControllerDelegate{
     
+    enum ControllerState{
+        case Add
+        case Edit
+    }
+    
     public var editableSound:SoundObject?
     var currentSoundFileName: String?
-    var currentSoundImage = UIImage(named: "baseline_image_black_48pt")
+    var currentSoundImage: UIImage?
     var moc : NSManagedObjectContext!
+    var state:ControllerState = .Add
+    var soundSaved = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if editableSound == nil{
+            state = .Add
+        }else{
+            state = .Edit
+        }
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -37,14 +51,14 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     func setUpUI(){
         setUpAddImageButtonView()
         setUpNameInputView()
-        if let sound = editableSound{
-            guard let soundFileName = sound.fileName else {
+        if state == .Edit{
+            guard let soundFileName = editableSound!.fileName else {
                 return
             }
+            fillSoundNameAndImage(editableSound!)
             setUpPlayerView(nameTextInput)
-            fillSoundNameAndImage(sound)
             newSoundReady(soundFileName)
-         }else{
+        }else{
             setUpInputTypesView()
             setUpPlayerView(inputTypesView)
         }
@@ -309,6 +323,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     func fillSoundNameAndImage(_ sound:SoundObject){
         nameTextInput.text = sound.name
         if let soundImageData = sound.image{
+            currentSoundImage = UIImage(data: soundImageData)
             addImageButton.setImage(UIImage(data: soundImageData), for: .normal)
         }
     }
@@ -355,26 +370,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             let endTime = Int(trimSlider.value[1])
             SoundsFilesManger.trimSound(soundFileName: soundFileName, startTime: startTime, endTime: endTime, delegate: self)
         }else{
-            saveNewSound(soundName: name, soundImage: image, soundFileName: soundFileName)
-        }
-    }
-    
-    var soundSaved = false
-    
-    func saveNewSound(soundName:String, soundImage:UIImage, soundFileName:String){
-        if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
-            let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
-            soundObject.setValue(soundName, forKeyPath: "name")
-            soundObject.setValue(soundImage.pngData(), forKeyPath: "image")
-            soundObject.setValue(soundFileName, forKeyPath: "fileName")
-            do {
-                try moc.save()
-                soundSaved = true
-                self.navigationController?.popViewController(animated: true)
-            } catch let error as NSError {
-                print(error)
-                moc.rollback()
-            }
+            saveSound(name, image, soundFileName)
         }
     }
     
@@ -385,7 +381,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         if isMovingFromParent {
             if let soundGenratedName = currentSoundFileName{
                 AudioPlayer.sharedInstance.stop()
-                if editableSound == nil{
+                if state == .Add{
                     SoundsFilesManger.deleteSoundFile(soundGenratedName)
                 }
             }
@@ -508,7 +504,7 @@ extension AddEditSoundController: UIImagePickerControllerDelegate{
 extension AddEditSoundController: SoundsFilesMangerTrimDelegate{
     func trimDidFinshed() {
         stopAnimating()
-        saveNewSound(soundName: nameTextInput.text!, soundImage: currentSoundImage!, soundFileName: currentSoundFileName!)
+        saveSound(nameTextInput.text!, currentSoundImage!, currentSoundFileName!)
     }
     
     func trimDidFaild(_ erorr: Error) {
@@ -521,5 +517,51 @@ extension AddEditSoundController: UITextFieldDelegate{
     func textFieldShouldReturn(_ scoreText: UITextField) -> Bool {
         self.view.endEditing(true)
         return true
+    }
+}
+
+
+extension AddEditSoundController{
+    
+    func saveSound(_ soundName:String, _ soundImage:UIImage, _ soundFileName:String){
+        if state == .Add{
+             saveNewSound(soundName, soundImage, soundFileName)
+        }else{
+            saveExsitSound(soundName, soundImage, soundFileName)
+        }
+    }
+    
+    func saveExsitSound(_ newSoundName:String, _ newSoundImage:UIImage, _ newSoundFileName:String){
+        guard let exsitSound = editableSound else{
+            return
+        }
+        exsitSound.name = newSoundName
+        exsitSound.image = newSoundImage.pngData()
+        exsitSound.fileName = newSoundFileName
+        do {
+            try moc.save()
+            soundSaved = true
+            self.navigationController?.popViewController(animated: true)
+        } catch let error as NSError {
+            print(error)
+            moc.rollback()
+        }
+    }
+    
+    func saveNewSound(_ soundName:String, _ soundImage:UIImage, _ soundFileName:String){
+        if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
+            let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
+            soundObject.setValue(soundName, forKeyPath: "name")
+            soundObject.setValue(soundImage.pngData(), forKeyPath: "image")
+            soundObject.setValue(soundFileName, forKeyPath: "fileName")
+            do {
+                try moc.save()
+                soundSaved = true
+                self.navigationController?.popViewController(animated: true)
+            } catch let error as NSError {
+                print(error)
+                moc.rollback()
+            }
+        }
     }
 }
