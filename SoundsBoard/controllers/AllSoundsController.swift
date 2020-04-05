@@ -160,6 +160,7 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let object = fetchedResultsController.object(at: indexPath)
         let addEditSoundController = AddEditSoundController()
+        addEditSoundController.state = .Edit
         addEditSoundController.editableSound = object
         self.navigationController!.pushViewController(addEditSoundController, animated: true)
 

@@ -51,7 +51,7 @@
                     <navigationItem key="navigationItem" title="Sounds Board" id="Twt-ca-vOU">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="eb6-PX-L7G">
                             <connections>
-                                <segue destination="97R-1e-L4P" kind="show" identifier="editSound" id="oYI-Q2-nHg"/>
+                                <action selector="onAddButtonClicked:" destination="P4s-D6-OI9" id="m84-7T-jqu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

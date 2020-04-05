@@ -15,7 +15,7 @@ import MultiSlider
 
 class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UINavigationControllerDelegate{
     
-    enum ControllerState{
+    public enum ControllerState{
         case Add
         case Edit
     }
@@ -29,12 +29,6 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if editableSound == nil{
-            state = .Add
-        }else{
-            state = .Edit
-        }
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return

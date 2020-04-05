@@ -69,6 +69,12 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
         }
     }
     
+    @IBAction func onAddButtonClicked(_ sender: Any) {
+        let addEditSoundController = AddEditSoundController()
+        addEditSoundController.state = .Add
+        self.navigationController!.pushViewController(addEditSoundController, animated: true)
+    }
+    
     private func editButtonToggle(isEnabled:Bool){
         if isEnabled{
             self.editButton.isEnabled = true
