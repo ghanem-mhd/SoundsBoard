@@ -17,11 +17,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window : UIWindow?
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        let navigationController = app.windows[0].rootViewController as! UINavigationController
+        let addEditSoundController = AddEditSoundController()
+        addEditSoundController.state = .AddExternal
+        addEditSoundController.externalAudioURL = url
+        navigationController.pushViewController(addEditSoundController, animated: true)
         return true
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        print("LaunchOptionsKey")
         return true
     }
 

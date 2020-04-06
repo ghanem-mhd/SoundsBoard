@@ -10,30 +10,10 @@
 			<key>CFBundleTypeIconFiles</key>
 			<array/>
 			<key>CFBundleTypeName</key>
-			<string>Audio</string>
+			<string>Audio &amp; Video</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.apple.m4a-audio</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeIconFiles</key>
-			<array/>
-			<key>CFBundleTypeName</key>
-			<string>Audio</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.audio</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeIconFiles</key>
-			<array/>
-			<key>CFBundleTypeName</key>
-			<string>Video</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.movie</string>
+				<string>public.audiovisual-content</string>
 			</array>
 		</dict>
 	</array>
@@ -49,21 +29,6 @@
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLIconFile</key>
-			<string>test</string>
-			<key>CFBundleURLName</key>
-			<string>test</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>test</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>

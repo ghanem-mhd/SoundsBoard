@@ -18,14 +18,18 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     public enum ControllerState{
         case Add
         case Edit
+        case AddExternal
     }
     
     public var editableSound:SoundObject?
+    public var externalAudioURL:URL?
+    
     var currentSoundFileName: String?
     var currentSoundImage: UIImage?
     var moc : NSManagedObjectContext!
     var state:ControllerState = .Add
     var soundSaved = false
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,9 +56,16 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             fillSoundNameAndImage(editableSound!)
             setUpPlayerView(nameTextInput)
             newSoundReady(soundFileName)
-        }else{
+        }
+        
+        if state == .Add{
             setUpInputTypesView()
             setUpPlayerView(inputTypesView)
+        }
+        
+        if state == .AddExternal{
+            setUpPlayerView(nameTextInput)
+            handleURL(externalAudioURL!)
         }
     }
     
@@ -447,16 +458,20 @@ extension AddEditSoundController: AudioRecorderViewControllerDelegate{
 
 extension AddEditSoundController: UIDocumentPickerDelegate{
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        handleURL(url)
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func handleURL(_ url:URL){
         let fileType = SoundsFilesManger.checkFileType(url)
         if fileType == SupportedFileTypes.unknowen{
             AlertsManager.showFileNotSuportedAlert(self)
             return
         }
         SoundsFilesManger.copyFile(url, self)
-    }
-    
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        dismiss(animated: true, completion: nil)
     }
 }
 
