@@ -24,10 +24,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.pushViewController(addEditSoundController, animated: true)
         return true
     }
+    
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        if userActivity.activityType == "com.example.SoundsBoard.play.sound"{
+            let soundFileName = Array(userActivity.keywords)[0]
+            AudioPlayer.sharedInstance.play(soundFileName: soundFileName)
+        }
+        return true
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        print("LaunchOptionsKey")
         return true
     }
 

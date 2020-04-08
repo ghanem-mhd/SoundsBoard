@@ -12,6 +12,8 @@ import CoreData
 import MobileCoreServices
 import NVActivityIndicatorView
 import MultiSlider
+import Intents
+import IntentsUI
 
 class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UINavigationControllerDelegate{
     
@@ -50,6 +52,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         setUpAddImageButtonView()
         setUpNameInputView()
         if state == .Edit{
+            
             guard let soundFileName = editableSound!.fileName else {
                 return
             }
@@ -128,7 +131,6 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         
         inputTypesView.addArrangedSubview(openRecorderButton)
         inputTypesView.addArrangedSubview(openFileButton)
-        inputTypesView.backgroundColor = .yellow
         
         inputTypesView.snp.makeConstraints{ (make) -> Void in
             make.top.equalTo(self.nameTextInput.snp.bottom).offset(32)
@@ -246,6 +248,23 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         playerVisiblity(isHidden: true)
     }
     
+    func setUpSiriShortcutButton(){
+        self.view.addSubview(addSiriShortcut)
+        addSiriShortcut.setTitle("Add Siri shortcut", for: .normal)
+        
+        addSiriShortcut.clipsToBounds = true
+        addSiriShortcut.layer.borderWidth = 0.5
+        addSiriShortcut.layer.cornerRadius   = (addSiriShortcut.frame.size.width) / 2
+        addSiriShortcut.layer.borderColor = UIColor.lightGray.cgColor
+        
+        addSiriShortcut.snp.makeConstraints{ (make) -> Void in
+            make.width.equalTo(self.view.frame.width/2)
+            make.top.equalTo(playBackDurationView.snp.bottom).offset(16)
+            make.centerX.equalTo(self.view.snp.centerX)
+        }
+        addSiriShortcut.addTarget(self, action: #selector(presentSiriViewController), for: .touchUpInside)
+    }
+    
     // MARK: - Player Controllers
     
     func playerVisiblity(isHidden:Bool){
@@ -319,6 +338,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             SoundsFilesManger.deleteSoundFile(newSoundFileName)
             AlertsManager.showPlayingAlert(self)
         }else{
+            setUpSiriShortcutButton()
             playerVisiblity(isHidden: false)
             self.currentSoundFileName = newSoundFileName
             setUpTrimmer(Int(soundOriginalDuration))
@@ -448,6 +468,8 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     lazy var playBackDurationView   = UILabel()
     lazy var trimmedDuration        = UILabel()
     lazy var hintLabel              = UILabel()
+    
+    lazy var addSiriShortcut        = UIButton(type: .system)
 }
 
 extension AddEditSoundController: AudioRecorderViewControllerDelegate{
@@ -533,7 +555,7 @@ extension AddEditSoundController: UITextFieldDelegate{
 extension AddEditSoundController{
     
     func saveSound(_ soundName:String, _ soundImage:UIImage, _ soundFileName:String){
-        if state == .Add{
+        if state == .Add || state == .AddExternal{
              saveNewSound(soundName, soundImage, soundFileName)
         }else{
             saveExsitSound(soundName, soundImage, soundFileName)
@@ -572,5 +594,38 @@ extension AddEditSoundController{
                 moc.rollback()
             }
         }
+    }
+}
+
+
+extension AddEditSoundController {
+    @objc func presentSiriViewController() {
+        guard let soundName = nameTextInput.text, let soundFileName = currentSoundFileName else {
+            return
+        }
+        guard soundName.isNotEmpty else{
+            return
+        }
+        let activity = NSUserActivity(activityType: "com.example.SoundsBoard.play.sound")
+        activity.title = soundName
+        activity.keywords = Set([soundFileName])
+        activity.isEligibleForHandoff = true
+        activity.isEligibleForSearch = true
+        activity.isEligibleForPublicIndexing = true
+        activity.suggestedInvocationPhrase = "Play \(String(describing: soundName)) on SoundBoard"
+        let viewController = INUIAddVoiceShortcutViewController(shortcut: INShortcut(userActivity: activity))
+        viewController.modalPresentationStyle = .formSheet
+        viewController.delegate = self
+        present(viewController, animated: true, completion: nil)
+    }
+}
+
+extension AddEditSoundController: INUIAddVoiceShortcutViewControllerDelegate {
+    func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+
+    func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
+        controller.dismiss(animated: true)
     }
 }
