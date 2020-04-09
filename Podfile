@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '12.4'
 
 target 'SoundsBoard' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -8,11 +8,7 @@ target 'SoundsBoard' do
   # Pods for SoundsBoard
   pod 'SnapKit', '~> 5.0.0'
   pod 'SwiftySound'
-  pod 'AudioPlayerSwift'
   pod 'AudioKit'
-  pod "SoundWave"
   pod 'NVActivityIndicatorView'
   pod 'MultiSlider'
-  pod "ViewAnimator"
-  pod 'KYCircularProgress'
 end

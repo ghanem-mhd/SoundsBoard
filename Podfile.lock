@@ -5,9 +5,7 @@ PODS:
   - AudioKit/Core (4.9.4)
   - AudioKit/UI (4.9.4):
     - AudioKit/Core
-  - AudioPlayerSwift (2.0.0)
   - AvailableHapticFeedback (1.0.2)
-  - KYCircularProgress (1.2.1)
   - MultiSlider (1.10.8):
     - AvailableHapticFeedback
     - SweeterSwift
@@ -15,49 +13,35 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 4.8.0)
   - NVActivityIndicatorView/Presenter (4.8.0)
   - SnapKit (5.0.1)
-  - SoundWave (0.1.4)
   - SweeterSwift (1.1.3)
   - SwiftySound (1.2.0)
-  - ViewAnimator (2.7.0)
 
 DEPENDENCIES:
   - AudioKit
-  - AudioPlayerSwift
-  - KYCircularProgress
   - MultiSlider
   - NVActivityIndicatorView
   - SnapKit (~> 5.0.0)
-  - SoundWave
   - SwiftySound
-  - ViewAnimator
 
 SPEC REPOS:
   trunk:
     - AudioKit
-    - AudioPlayerSwift
     - AvailableHapticFeedback
-    - KYCircularProgress
     - MultiSlider
     - NVActivityIndicatorView
     - SnapKit
-    - SoundWave
     - SweeterSwift
     - SwiftySound
-    - ViewAnimator
 
 SPEC CHECKSUMS:
   AudioKit: 2ad2c0c546f53134967e4a381dfd8691b7674093
-  AudioPlayerSwift: 26d1c95f177f5bd195be482a41538d7ab8d04dd9
   AvailableHapticFeedback: 9b21b9f6d3e4566015988b5de35b40abefe6c09a
-  KYCircularProgress: caa1a8d1defa2acf05d2f84ea681467fbdb6d353
   MultiSlider: a4fdcb3fb058a0af95720570b44d8683da5312c8
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SoundWave: d98ffaa863570b29d991da32a09b7ce1b4aaf2d4
   SweeterSwift: d909211f6833405628c8c7c6bf9f8f2e8a0e9df9
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
-  ViewAnimator: 5af1c6f3b310f012bf081259c43717aa54fbae73
 
-PODFILE CHECKSUM: 59af6a5447562c475dc2bc1319ca3c6081dc2d51
+PODFILE CHECKSUM: 3a957053fb56b66777c4cd6adb65b86b83cb6141
 
 COCOAPODS: 1.9.1

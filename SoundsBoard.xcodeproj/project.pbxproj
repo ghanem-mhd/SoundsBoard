@@ -494,7 +494,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B586485B1E100EF6651BB447 /* Pods-SoundsBoard.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SoundsBoard/SoundsBoard.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -518,7 +518,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A8987BD69F325177FE0A53C8 /* Pods-SoundsBoard.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SoundsBoard/SoundsBoard.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";

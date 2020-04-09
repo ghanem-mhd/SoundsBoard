@@ -205,9 +205,6 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     
     override func viewWillDisappear(_ animated: Bool) {
         if isMovingFromParent {
-            if let r = recorder{
-                //r.deleteRecording()
-            }
         }
         AudioPlayer.sharedInstance.stop()
     }
