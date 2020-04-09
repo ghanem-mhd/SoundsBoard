@@ -67,7 +67,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sGm-ZA-46Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2798.5507246376815" y="1486.6071428571429"/>
+            <point key="canvasLocation" x="2829" y="1487"/>
         </scene>
         <!--All Sounds Controller-->
         <scene sceneID="1Xo-Da-fYA">
@@ -88,7 +88,7 @@
         <!--Add Edit Sound Controller-->
         <scene sceneID="AFl-mK-h77">
             <objects>
-                <viewController id="97R-1e-L4P" customClass="AddEditSoundController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddEditSoundController" id="97R-1e-L4P" customClass="AddEditSoundController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VyM-nM-hd0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -99,12 +99,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jG8-RQ-HH0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3813" y="948"/>
+            <point key="canvasLocation" x="3597" y="913"/>
         </scene>
-        <!--Recroder-->
+        <!--Recorder-->
         <scene sceneID="Mgs-YR-Fnj">
             <objects>
-                <viewController title="Recroder" id="t2q-1S-lT7" customClass="AudioRecorderController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AudioRecorderController" title="Recorder" id="t2q-1S-lT7" customClass="AudioRecorderController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8O8-HZ-uXn">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -115,7 +115,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z3X-Yj-BN4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4470" y="938"/>
+            <point key="canvasLocation" x="3596" y="1626"/>
         </scene>
     </scenes>
 </document>

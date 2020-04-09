@@ -13,7 +13,6 @@ import Foundation
 import SnapKit
 import CoreData
 import SwiftySound
-import ViewAnimator
 
 
 class FavoriteController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
@@ -172,7 +171,7 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        guard let controller = fetchedResultsController else {
+        guard fetchedResultsController != nil else {
             fatalError("No fetchedResultsController")
         }
     }
