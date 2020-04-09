@@ -17,7 +17,7 @@ PODS:
   - SwiftySound (1.2.0)
 
 DEPENDENCIES:
-  - AudioKit
+  - AudioKit (~> 4.0)
   - MultiSlider
   - NVActivityIndicatorView
   - SnapKit (~> 5.0.0)
@@ -42,6 +42,6 @@ SPEC CHECKSUMS:
   SweeterSwift: d909211f6833405628c8c7c6bf9f8f2e8a0e9df9
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
 
-PODFILE CHECKSUM: 3a957053fb56b66777c4cd6adb65b86b83cb6141
+PODFILE CHECKSUM: 72199be9f5e86b665e0ee843516fca6e898dfdb7
 
 COCOAPODS: 1.9.1

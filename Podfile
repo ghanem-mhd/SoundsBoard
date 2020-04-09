@@ -8,7 +8,7 @@ target 'SoundsBoard' do
   # Pods for SoundsBoard
   pod 'SnapKit', '~> 5.0.0'
   pod 'SwiftySound'
-  pod 'AudioKit'
+  pod 'AudioKit', '~> 4.0'
   pod 'NVActivityIndicatorView'
   pod 'MultiSlider'
 end
