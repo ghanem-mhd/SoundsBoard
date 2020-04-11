@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreData
+import SBKit
 
 class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate {
     
@@ -20,11 +21,8 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // getting the appDelegate's reference
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        self.moc = appDelegate.persistentContainer.viewContext
+
+        self.moc = CoreDataManager.shared.persistentContainer.viewContext
         tableView = UITableView(frame: self.view.frame)
         if let tb = tableView{
             tb.dataSource = self

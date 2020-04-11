@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import AVFoundation
 import NVActivityIndicatorView
+import SBKit
 
 
 protocol AudioRecorderViewControllerDelegate: class {

@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import CoreData
 import SwiftySound
+import SBKit
 
 class HomeController: UITabBarController,UITabBarControllerDelegate {
     
@@ -26,11 +27,8 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
         
         self.delegate = self
         
-        // getting appDelegate's reference
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        self.moc = appDelegate.persistentContainer.viewContext
+
+        self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
         self.navigationItem.leftBarButtonItem = editButton
         editButtonToggle(isEnabled: false)

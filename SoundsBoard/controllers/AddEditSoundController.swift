@@ -14,6 +14,7 @@ import NVActivityIndicatorView
 import MultiSlider
 import Intents
 import IntentsUI
+import SBKit
 
 class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UINavigationControllerDelegate{
     
@@ -36,10 +37,8 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        self.moc = appDelegate.persistentContainer.viewContext
+
+        self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
         self.title = "Create new Sound"
         self.view.backgroundColor = .white

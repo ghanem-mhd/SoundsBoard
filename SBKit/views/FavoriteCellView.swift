@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class FavoriteCellView: UICollectionViewCell {
+public class FavoriteCellView: UICollectionViewCell {
 
     static let cornerRadius:CGFloat = 10.0
     static let color:UIColor = .lightGray

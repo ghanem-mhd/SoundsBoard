@@ -9,8 +9,7 @@
 import UIKit
 import CoreData
 import AVFoundation
-import SwiftySound
-import AudioKit
+import SBKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -56,46 +55,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Core Data stack
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        let modelName = "SoundsBoard"
-        var container: NSPersistentContainer!
-        if #available(iOS 13.0, *) {
-            container = NSPersistentContainer(name: modelName)
-        } else {
-            var modelURL = Bundle(for: type(of: self)).url(forResource: modelName, withExtension: "momd")!
-            let versionInfoURL = modelURL.appendingPathComponent("VersionInfo.plist")
-            if let versionInfoNSDictionary = NSDictionary(contentsOf: versionInfoURL),
-                let version = versionInfoNSDictionary.object(forKey: "NSManagedObjectModel_CurrentVersionName") as? String {
-                modelURL.appendPathComponent("\(version).mom")
-                let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
-                container = NSPersistentContainer(name: modelName, managedObjectModel: managedObjectModel!)
-            } else {
-                //fall back solution; runs fine despite "Failed to load optimized model" warning
-                container = NSPersistentContainer(name: modelName)
-            }
-        }
-        
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-
-    // MARK: - Core Data Saving support
-
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
 
 }

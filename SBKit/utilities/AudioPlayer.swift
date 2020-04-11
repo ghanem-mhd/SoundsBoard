@@ -7,19 +7,20 @@
 //
 
 import AVFoundation
+import SwiftySound
 
-class AudioPlayer {
-    static let sharedInstance = AudioPlayer()
+public class AudioPlayer {
+    public static let sharedInstance = AudioPlayer()
     private var player: AVAudioPlayer?
     private var playedURL:URL?
     private var stopTimer = Timer()
     
-    func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil){
+    public func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil){
         let url = SoundsFilesManger.getSoundURL(soundFileName)
         play(url: url, startTime: startTime, endTime:endTime,checkPlayed: checkPlayed, delegate: delegate)
     }
     
-    func play(url: URL, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil) {
+    public func play(url: URL, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil) {
         if checkPlayed, let player = player, let playedURL = playedURL{
             if playedURL == url{
                 if player.isPlaying{
@@ -52,7 +53,7 @@ class AudioPlayer {
         }
     }
     
-    @objc func stop() {
+    @objc public func stop() {
         stopTimer.invalidate()
         if let p = player{
             p.stop()
@@ -61,18 +62,18 @@ class AudioPlayer {
         player = nil
     }
     
-    func pause() {
+   public func pause() {
         player?.pause()
     }
     
-    func getDuration() -> TimeInterval{
+    public func getDuration() -> TimeInterval{
         if let p = player{
             return p.duration
         }
         return TimeInterval(exactly: 0)!
     }
     
-    func getCurrentTime() -> TimeInterval{
+    public func getCurrentTime() -> TimeInterval{
         if let p = player{
             return p.currentTime
         }
@@ -80,7 +81,7 @@ class AudioPlayer {
     }
     //onError:(_ error:Error) -> Void
     //onError: { (Error) in }))
-    func getDuration(soundFileName: String) ->TimeInterval{
+    public func getDuration(soundFileName: String) ->TimeInterval{
         let url = SoundsFilesManger.getSoundURL(soundFileName)
         do {
             let player = try AVAudioPlayer(contentsOf: url)
@@ -91,11 +92,11 @@ class AudioPlayer {
         return TimeInterval(exactly: 0)!
     }
     
-    func getFormatedTime(timeInSeconds: Int)->String{
+    public func getFormatedTime(timeInSeconds: Int)->String{
         return String(format: "%02d:%02d", (timeInSeconds) / 60, (timeInSeconds) % 60)
     }
     
-    func getFormatedTime(timeInSeconds: Float)->String{
+    public func getFormatedTime(timeInSeconds: Float)->String{
         return getFormatedTime(timeInSeconds: (Int)(timeInSeconds))
     }
 }

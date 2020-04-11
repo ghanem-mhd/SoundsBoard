@@ -10,70 +10,29 @@ import Foundation
 import MobileCoreServices
 import AudioKit
 import AVFoundation
+import SBKit
 
 
-enum SupportedFileTypes {
+public enum SupportedFileTypes {
     case m4a
     case mp3
     case video
     case unknowen
 }
 
-protocol SoundsFilesMangerCopyDelegate: class {
+public protocol SoundsFilesMangerCopyDelegate: class {
     func copyDidStart()
     func convertDidStart()
     func copyAndConvertDidFinish(_ soundFileName: String)
     func copyDidFaild(_ erorr: Error, fileName: String)
 }
 
-protocol SoundsFilesMangerTrimDelegate: class {
+public protocol SoundsFilesMangerTrimDelegate: class {
     func trimDidFinshed()
     func trimDidFaild(_ erorr: Error)
 }
 
-class SoundsFilesManger{
-    
-    static func deleteSoundFile(_ soundFileName:String){
-        deleteFile(getSoundURL(soundFileName))
-    }
-    
-    static func deleteFile(_ url:URL){
-        do {
-            print("Deleting file at \(url)")
-            if FileManager.default.fileExists(atPath: url.path){
-                try FileManager.default.removeItem(at: url)
-            }else{
-                print("\(url) Not found")
-            }
-        } catch let error as NSError {
-            print("Error: \(error)")
-        }
-    }
-    
-    static func getFilesFromDocumentsFolder() -> [String]?
-    {
-        let fileMngr = FileManager.default;
-        let docs = fileMngr.urls(for: .documentDirectory, in: .userDomainMask)[0].path
-        return try? fileMngr.contentsOfDirectory(atPath:docs)
-    }
-    
-    static func getSoundURL(_ soundFileName:String) -> URL {
-        return getDocumentsDirectory().appendingPathComponent(soundFileName)
-    }
-    
-    static func getTemporalURL(_ extention:String = ".m4a") -> URL {
-        let fileName = "\(NSUUID().uuidString).\(extention)"
-        return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
-    }
-    
-    static func generateSoundFileName() -> String {
-        return "\(NSUUID().uuidString).m4a"
-    }
-    
-    static func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
-    }
+public extension SoundsFilesManger{
     
     static func checkFileType(_ url:URL) -> SupportedFileTypes{
         let urlExtension = NSURL(fileURLWithPath: url.path).pathExtension

@@ -13,6 +13,7 @@ import Foundation
 import SnapKit
 import CoreData
 import SwiftySound
+import SBKit
 
 
 class FavoriteController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
@@ -27,12 +28,9 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
         
         // save ManagedObjectContext in class attribute
-        self.moc = appDelegate.persistentContainer.viewContext
+        self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
