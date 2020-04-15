@@ -398,7 +398,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         guard !soundSaved else{
             return
         }

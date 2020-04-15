@@ -18,3 +18,8 @@ end
 target 'SBKit' do
     shared_pods
 end
+
+target 'SBWidget' do
+    shared_pods
+end
+

@@ -19,7 +19,14 @@
 		29FCBE9A24426ABD0062253F /* FavoriteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FCBE9924426ABD0062253F /* FavoriteCellView.swift */; };
 		29FCBE9C24426B740062253F /* SoundsBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC736A4B241189EB00D6966B /* SoundsBoard.xcdatamodeld */; };
 		29FCBE9E24426C390062253F /* CoreDateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FCBE9D24426C390062253F /* CoreDateManager.swift */; };
+		29FCBEA5244275130062253F /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBEA4244275130062253F /* NotificationCenter.framework */; };
+		29FCBEA8244275130062253F /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FCBEA7244275130062253F /* TodayViewController.swift */; };
+		29FCBEAB244275130062253F /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29FCBEA9244275130062253F /* MainInterface.storyboard */; };
+		29FCBEAF244275130062253F /* SBWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 29FCBEA3244275130062253F /* SBWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		29FCBEB52442754F0062253F /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; };
+		29FCBEB6244278920062253F /* SoundCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A37A242AAF2A00F5FE4F /* SoundCellView.swift */; };
 		47E67CBE910BC05E6FF3B28E /* Pods_SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE300823239CAAA720D25730 /* Pods_SBKit.framework */; };
+		7C1CC2F019AAA108AA951643 /* Pods_SBWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751A441148BADCA55FEE0059 /* Pods_SBWidget.framework */; };
 		FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */; };
 		FC362FA22418F103007E43E4 /* cat.wav in Resources */ = {isa = PBXBuildFile; fileRef = FC362FA12418F102007E43E4 /* cat.wav */; };
 		FC362FA524193D8D007E43E4 /* SoundsFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362FA424193D8D007E43E4 /* SoundsFilesManager.swift */; };
@@ -43,6 +50,20 @@
 			remoteGlobalIDString = 29FCBE84244267040062253F;
 			remoteInfo = SBKit;
 		};
+		29FCBEAD244275130062253F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC736A37241189EB00D6966B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29FCBEA2244275130062253F;
+			remoteInfo = SBWidget;
+		};
+		29FCBEB32442752A0062253F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC736A37241189EB00D6966B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29FCBE84244267040062253F;
+			remoteInfo = SBKit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,6 +73,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				29FCBEAF244275130062253F /* SBWidget.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,6 +105,15 @@
 		29FCBE96244268670062253F /* SoundsFilesManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsFilesManger.swift; sourceTree = "<group>"; };
 		29FCBE9924426ABD0062253F /* FavoriteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCellView.swift; sourceTree = "<group>"; };
 		29FCBE9D24426C390062253F /* CoreDateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDateManager.swift; sourceTree = "<group>"; };
+		29FCBEA3244275130062253F /* SBWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SBWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		29FCBEA4244275130062253F /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		29FCBEA7244275130062253F /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		29FCBEAA244275130062253F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		29FCBEAC244275130062253F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		29FCBED0244282F60062253F /* SBWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SBWidget.entitlements; sourceTree = "<group>"; };
+		68C38BD092EAB442AE937226 /* Pods-SBWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBWidget.debug.xcconfig"; path = "Target Support Files/Pods-SBWidget/Pods-SBWidget.debug.xcconfig"; sourceTree = "<group>"; };
+		751A441148BADCA55FEE0059 /* Pods_SBWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SBWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F1429072493C79148CC0787 /* Pods-SBWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBWidget.release.xcconfig"; path = "Target Support Files/Pods-SBWidget/Pods-SBWidget.release.xcconfig"; sourceTree = "<group>"; };
 		A8987BD69F325177FE0A53C8 /* Pods-SoundsBoard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundsBoard.release.xcconfig"; path = "Target Support Files/Pods-SoundsBoard/Pods-SoundsBoard.release.xcconfig"; sourceTree = "<group>"; };
 		AE55983EC9EC90D40EECB8ED /* Pods-SBKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBKit.debug.xcconfig"; path = "Target Support Files/Pods-SBKit/Pods-SBKit.debug.xcconfig"; sourceTree = "<group>"; };
 		B586485B1E100EF6651BB447 /* Pods-SoundsBoard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundsBoard.debug.xcconfig"; path = "Target Support Files/Pods-SoundsBoard/Pods-SoundsBoard.debug.xcconfig"; sourceTree = "<group>"; };
@@ -111,6 +142,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				47E67CBE910BC05E6FF3B28E /* Pods_SBKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29FCBEA0244275130062253F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29FCBEB52442754F0062253F /* SBKit.framework in Frameworks */,
+				29FCBEA5244275130062253F /* NotificationCenter.framework in Frameworks */,
+				7C1CC2F019AAA108AA951643 /* Pods_SBWidget.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,11 +214,24 @@
 			path = model;
 			sourceTree = "<group>";
 		};
+		29FCBEA6244275130062253F /* SBWidget */ = {
+			isa = PBXGroup;
+			children = (
+				29FCBED0244282F60062253F /* SBWidget.entitlements */,
+				29FCBEA7244275130062253F /* TodayViewController.swift */,
+				29FCBEA9244275130062253F /* MainInterface.storyboard */,
+				29FCBEAC244275130062253F /* Info.plist */,
+			);
+			path = SBWidget;
+			sourceTree = "<group>";
+		};
 		4A0CE9DC72527AAEABEBA588 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */,
 				DE300823239CAAA720D25730 /* Pods_SBKit.framework */,
+				29FCBEA4244275130062253F /* NotificationCenter.framework */,
+				751A441148BADCA55FEE0059 /* Pods_SBWidget.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -189,6 +243,8 @@
 				A8987BD69F325177FE0A53C8 /* Pods-SoundsBoard.release.xcconfig */,
 				AE55983EC9EC90D40EECB8ED /* Pods-SBKit.debug.xcconfig */,
 				1073CEF685BAA46FD5A0F904 /* Pods-SBKit.release.xcconfig */,
+				68C38BD092EAB442AE937226 /* Pods-SBWidget.debug.xcconfig */,
+				7F1429072493C79148CC0787 /* Pods-SBWidget.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -207,6 +263,7 @@
 			children = (
 				FC736A41241189EB00D6966B /* SoundsBoard */,
 				29FCBE86244267040062253F /* SBKit */,
+				29FCBEA6244275130062253F /* SBWidget */,
 				FC736A40241189EB00D6966B /* Products */,
 				DACDE840125A51533FD1CBEA /* Pods */,
 				4A0CE9DC72527AAEABEBA588 /* Frameworks */,
@@ -218,6 +275,7 @@
 			children = (
 				FC736A3F241189EB00D6966B /* SoundsBoard.app */,
 				29FCBE85244267040062253F /* SBKit.framework */,
+				29FCBEA3244275130062253F /* SBWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -309,6 +367,25 @@
 			productReference = 29FCBE85244267040062253F /* SBKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		29FCBEA2244275130062253F /* SBWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 29FCBEB0244275130062253F /* Build configuration list for PBXNativeTarget "SBWidget" */;
+			buildPhases = (
+				6FFC9AA6E1C3AEF6F6556199 /* [CP] Check Pods Manifest.lock */,
+				29FCBE9F244275130062253F /* Sources */,
+				29FCBEA0244275130062253F /* Frameworks */,
+				29FCBEA1244275130062253F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				29FCBEB42442752A0062253F /* PBXTargetDependency */,
+			);
+			name = SBWidget;
+			productName = SBWidget;
+			productReference = 29FCBEA3244275130062253F /* SBWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		FC736A3E241189EB00D6966B /* SoundsBoard */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC736A56241189ED00D6966B /* Build configuration list for PBXNativeTarget "SoundsBoard" */;
@@ -325,6 +402,7 @@
 			);
 			dependencies = (
 				29FCBE8B244267040062253F /* PBXTargetDependency */,
+				29FCBEAE244275130062253F /* PBXTargetDependency */,
 			);
 			name = SoundsBoard;
 			productName = SoundsBoard;
@@ -337,13 +415,16 @@
 		FC736A37241189EB00D6966B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1120;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Mohammed Ghannm";
 				TargetAttributes = {
 					29FCBE84244267040062253F = {
 						CreatedOnToolsVersion = 11.3.1;
 						LastSwiftMigration = 1130;
+					};
+					29FCBEA2244275130062253F = {
+						CreatedOnToolsVersion = 11.3.1;
 					};
 					FC736A3E241189EB00D6966B = {
 						CreatedOnToolsVersion = 11.2.1;
@@ -366,6 +447,7 @@
 			targets = (
 				FC736A3E241189EB00D6966B /* SoundsBoard */,
 				29FCBE84244267040062253F /* SBKit */,
+				29FCBEA2244275130062253F /* SBWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -375,6 +457,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29FCBEA1244275130062253F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29FCBEAB244275130062253F /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +498,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-SoundsBoard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6FFC9AA6E1C3AEF6F6556199 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SBWidget-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -468,6 +580,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		29FCBE9F244275130062253F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29FCBEB6244278920062253F /* SoundCellView.swift in Sources */,
+				29FCBEA8244275130062253F /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FC736A3B241189EB00D6966B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -494,9 +615,27 @@
 			target = 29FCBE84244267040062253F /* SBKit */;
 			targetProxy = 29FCBE8A244267040062253F /* PBXContainerItemProxy */;
 		};
+		29FCBEAE244275130062253F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29FCBEA2244275130062253F /* SBWidget */;
+			targetProxy = 29FCBEAD244275130062253F /* PBXContainerItemProxy */;
+		};
+		29FCBEB42442752A0062253F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29FCBE84244267040062253F /* SBKit */;
+			targetProxy = 29FCBEB32442752A0062253F /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		29FCBEA9244275130062253F /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29FCBEAA244275130062253F /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		FC736A48241189EB00D6966B /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -520,6 +659,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AE55983EC9EC90D40EECB8ED /* Pods-SBKit.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -541,9 +681,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.SBKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -553,6 +694,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1073CEF685BAA46FD5A0F904 /* Pods-SBKit.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -573,10 +715,60 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.SBKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		29FCBEB1244275130062253F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68C38BD092EAB442AE937226 /* Pods-SBWidget.debug.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = SBWidget/SBWidget.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7D6V6TM4RZ;
+				INFOPLIST_FILE = SBWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundsBoard.SBWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		29FCBEB2244275130062253F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F1429072493C79148CC0787 /* Pods-SBWidget.release.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = SBWidget/SBWidget.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7D6V6TM4RZ;
+				INFOPLIST_FILE = SBWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundsBoard.SBWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -753,6 +945,15 @@
 			buildConfigurations = (
 				29FCBE8E244267040062253F /* Debug */,
 				29FCBE8F244267040062253F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29FCBEB0244275130062253F /* Build configuration list for PBXNativeTarget "SBWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29FCBEB1244275130062253F /* Debug */,
+				29FCBEB2244275130062253F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -173,6 +173,7 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
     
     func toggleIsFavorite(_ soundObject: SoundObject){
         soundObject.isFavorite = !soundObject.isFavorite
+        SoundsFilesManger.copySoundToAppContainer(soundObject: soundObject)
         do {
             try moc.save()
         } catch let error as NSError {

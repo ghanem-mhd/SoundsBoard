@@ -15,6 +15,12 @@ public class AudioPlayer {
     private var playedURL:URL?
     private var stopTimer = Timer()
     
+
+    public func playInAppContainer(soundFileName: String){
+        let url = SoundsFilesManger.getAppGroupDirectorySoundURL(soundFileName)
+        play(url: url, startTime: nil, endTime:nil,checkPlayed: true, delegate: nil)
+    }
+    
     public func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil){
         let url = SoundsFilesManger.getSoundURL(soundFileName)
         play(url: url, startTime: startTime, endTime:endTime,checkPlayed: checkPlayed, delegate: delegate)

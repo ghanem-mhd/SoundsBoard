@@ -106,31 +106,31 @@ public extension SoundsFilesManger{
                 do {
                     try FileManager.default.copyItem(at: url, to: temporal)
                     var options = AKConverter.Options()
-                        options.format = "m4a"
-                        options.sampleRate = 48000
-                        options.bitDepth = 24
-                        let converter = AKConverter(inputURL: temporal, outputURL: dstURL2, options: options)
-                        DispatchQueue.main.async {
-                            deleget.convertDidStart()
-                        }
-                        converter.start(completionHandler: { error in
-                            deleteFile(temporal)
-                            if let error = error {
-                                DispatchQueue.main.async {
-                                    deleget.copyDidFaild(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    deleget.copyAndConvertDidFinish(soundFileName)
-                                }
+                    options.format = "m4a"
+                    options.sampleRate = 48000
+                    options.bitDepth = 24
+                    let converter = AKConverter(inputURL: temporal, outputURL: dstURL2, options: options)
+                    DispatchQueue.main.async {
+                        deleget.convertDidStart()
+                    }
+                    converter.start(completionHandler: { error in
+                        deleteFile(temporal)
+                        if let error = error {
+                            DispatchQueue.main.async {
+                                deleget.copyDidFaild(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
                             }
-                        })
-                  }  catch let error {
-                      print(error)
+                        } else {
+                            DispatchQueue.main.async {
+                                deleget.copyAndConvertDidFinish(soundFileName)
+                            }
+                        }
+                    })
+                }  catch let error {
+                    print(error)
                     deleget.copyDidFaild(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
-                  }
+                }
                 
-    
+                
             }
             if (isSecuredURL) {
                 fileURL.stopAccessingSecurityScopedResource()
@@ -147,16 +147,16 @@ public extension SoundsFilesManger{
             try FileManager.default.copyItem(at: originalSoundFile, to: temporal)
             let audiofile = try AKAudioFile(forReading: temporal)
             audiofile.exportAsynchronously(name: soundFileName,
-                                      baseDir: .documents,
-                                      exportFormat: .m4a,
-                                      fromSample: Int64(startTime * 44_100),
-                                      toSample: Int64(endTime * 44_100))
+                                           baseDir: .documents,
+                                           exportFormat: .m4a,
+                                           fromSample: Int64(startTime * 44_100),
+                                           toSample: Int64(endTime * 44_100))
             {_, exportError in
                 if let error = exportError {
                     DispatchQueue.main.async {
                         delegate.trimDidFaild(error)
                     }
-                  
+                    
                 } else {
                     DispatchQueue.main.async {
                         delegate.trimDidFinshed()
@@ -165,6 +165,25 @@ public extension SoundsFilesManger{
             }
         } catch let error {
             print(error)
+        }
+    }
+    
+    static func copySoundToAppContainer(soundObject:SoundObject){
+        guard let soundFileName = soundObject.fileName, let appGroupURL = SoundsFilesManger.getAppGroupDirectory()  else {
+            return
+        }
+        let appContainerURL = appGroupURL.appendingPathComponent(soundFileName)
+        let originalSoundFileURL = getSoundURL(soundFileName)
+        if soundObject.isFavorite{
+            DispatchQueue.global(qos: .background).async {
+                do {
+                    try FileManager.default.copyItem(at: originalSoundFileURL, to: appContainerURL)
+                } catch let error {
+                    print(error)
+                }
+            }
+        }else{
+            deleteFile(appContainerURL)
         }
     }
 }

@@ -44,7 +44,7 @@ public class SoundsFilesManger{
         let fileName = "\(NSUUID().uuidString).\(extention)"
         return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
     }
-    
+        
     public static func generateSoundFileName() -> String {
         return "\(NSUUID().uuidString).m4a"
     }
@@ -52,5 +52,15 @@ public class SoundsFilesManger{
     public static func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
+    }
+    
+    
+    public static func getAppGroupDirectory() -> URL? {
+        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.SoundsBoard")
+
+    }
+    
+    public static func getAppGroupDirectorySoundURL(_ soundFileName:String) -> URL {
+        return getAppGroupDirectory()!.appendingPathComponent(soundFileName) //TODO
     }
 }
