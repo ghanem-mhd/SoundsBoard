@@ -25,6 +25,7 @@ class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate,
         self.moc = CoreDataManager.shared.persistentContainer.viewContext
         tableView = UITableView(frame: self.view.frame)
         if let tb = tableView{
+            tb.rowHeight = 44
             tb.dataSource = self
             tb.delegate = self
             tb.register(SoundCellView.self, forCellReuseIdentifier: "SoundCellView")
