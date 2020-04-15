@@ -42,7 +42,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         
         self.title = "Create new Sound"
         self.view.backgroundColor = .white
-        self.navigationItem.rightBarButtonItem = doneButton
+        self.navigationItem.rightBarButtonItem = saveButton
         
         setUpUI()
     }
@@ -373,17 +373,12 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         return soundOriginalDuration != newDuraiton
     }
     
-    @objc func doneButtonClicked(_ sender: Any){
+    @objc func saveButtonClicked(_ sender: Any){
         AudioPlayer.sharedInstance.stop()
         guard let name = nameTextInput.text, name.isNotEmpty else{
             print("Name is empty")
             return
         }
-        guard let image = self.currentSoundImage else{
-            print("Image is empty")
-            return
-        }
-        
         guard let soundFileName = self.currentSoundFileName else{
             print("geneeratedName is empty")
             return
@@ -394,7 +389,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             let endTime = Int(trimSlider.value[1])
             SoundsFilesManger.trimSound(soundFileName: soundFileName, startTime: startTime, endTime: endTime, delegate: self)
         }else{
-            saveSound(name, image, soundFileName)
+            saveSound(name, self.currentSoundImage, soundFileName)
         }
     }
     
@@ -449,7 +444,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         present(vc, animated: true)
     }
     
-    lazy var doneButton         = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonClicked))
+    lazy var saveButton         = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonClicked))
     lazy var addImageButton     = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     lazy var nameTextInput      = UITextField()
     lazy var inputTypesView     = UIStackView()
@@ -553,7 +548,7 @@ extension AddEditSoundController: UITextFieldDelegate{
 
 extension AddEditSoundController{
     
-    func saveSound(_ soundName:String, _ soundImage:UIImage, _ soundFileName:String){
+    func saveSound(_ soundName:String, _ soundImage:UIImage?, _ soundFileName:String){
         if state == .Add || state == .AddExternal{
              saveNewSound(soundName, soundImage, soundFileName)
         }else{
@@ -561,12 +556,14 @@ extension AddEditSoundController{
         }
     }
     
-    func saveExsitSound(_ newSoundName:String, _ newSoundImage:UIImage, _ newSoundFileName:String){
+    func saveExsitSound(_ newSoundName:String, _ newSoundImage:UIImage?, _ newSoundFileName:String){
         guard let exsitSound = editableSound else{
             return
         }
         exsitSound.name = newSoundName
-        exsitSound.image = newSoundImage.pngData()
+        if let image = newSoundImage{
+            exsitSound.image = image.pngData()
+        }
         exsitSound.fileName = newSoundFileName
         do {
             try moc.save()
@@ -578,11 +575,13 @@ extension AddEditSoundController{
         }
     }
     
-    func saveNewSound(_ soundName:String, _ soundImage:UIImage, _ soundFileName:String){
+    func saveNewSound(_ soundName:String, _ soundImage:UIImage?, _ soundFileName:String){
         if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
             let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
             soundObject.setValue(soundName, forKeyPath: "name")
-            soundObject.setValue(soundImage.pngData(), forKeyPath: "image")
+            if let image = soundImage{
+                soundObject.setValue(image.pngData(), forKeyPath: "image")
+            }
             soundObject.setValue(soundFileName, forKeyPath: "fileName")
             do {
                 try moc.save()
