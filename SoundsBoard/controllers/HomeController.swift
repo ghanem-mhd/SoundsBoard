@@ -46,7 +46,7 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
     }
     
     @objc func editButtonClicked(_ sender: Any){
-        if let controller = selectedViewController as? AllSoundsController{
+        if let controller = selectedViewController as? MoreController{
             controller.onEditButtonClicked(editButton)
         }
     }
@@ -58,7 +58,7 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
 
     // UITabBarControllerDelegate
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if viewController is AllSoundsController{
+        if viewController is MoreController{
             editButtonToggle(isEnabled: true)
         }
         

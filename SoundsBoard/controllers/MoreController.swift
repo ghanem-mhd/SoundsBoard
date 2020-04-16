@@ -11,7 +11,7 @@ import UIKit
 import CoreData
 import SBKit
 
-class AllSoundsController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate {
+class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var tableView:UITableView?
     var fetchRequest: NSFetchRequest<SoundObject>?
