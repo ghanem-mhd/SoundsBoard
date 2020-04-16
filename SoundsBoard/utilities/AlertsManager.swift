@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SBKit
 
 class AlertsManager{
     
@@ -27,6 +28,10 @@ class AlertsManager{
     
     public static func showPlayingAlert(_ viewController: UIViewController){
         AlertsManager.showAlert(viewController, "Opps", "Unable to play the sound!")
+    }
+    
+    public static func showMaxFavoriteAlert(_ viewController: UIViewController){
+        AlertsManager.showAlert(viewController, "Opps", "Maxiumum favorite sounds is \(CoreDataManager.shared.MAXIMUM_FAVORITE_SOUNDS).")
     }
     
     

@@ -166,13 +166,11 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
         self.tableView?.deselectRow(at: indexPath, animated: true)
     }
     
-    // Override to support conditional rearranging of the table view.
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    
     func toggleIsFavorite(_ soundObject: SoundObject){
+        if !soundObject.isFavorite && CoreDataManager.shared.maxFavoriteReached(){
+            AlertsManager.showMaxFavoriteAlert(self)
+            return
+        }
         soundObject.isFavorite = !soundObject.isFavorite
         SoundsFilesManger.copySoundToAppContainer(soundObject: soundObject)
         do {
