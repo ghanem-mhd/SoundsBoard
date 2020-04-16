@@ -23,7 +23,8 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
     var moc: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController<SoundObject>?
     
-    private let spacing:CGFloat = 16.0
+    let sectionInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+    let itemsPerRow: CGFloat = 3
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +34,7 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
         self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
-        layout.minimumLineSpacing = spacing
-        layout.minimumInteritemSpacing = spacing
+        layout.sectionInset = sectionInsets
         
         
         
@@ -73,12 +72,10 @@ class FavoriteController: UIViewController, UICollectionViewDataSource, UICollec
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let numberOfItemsPerRow:CGFloat = 2
-        let spacingBetweenCells:CGFloat = 16
-        
-        let totalSpacing = (2 * self.spacing) + ((numberOfItemsPerRow - 1) * spacingBetweenCells) //Amount of total spacing in a row
-        let width = (collectionView.frame.size.width - totalSpacing)/numberOfItemsPerRow
-        return CGSize(width: width, height: width)
+        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
+        let widthPerItem = availableWidth / itemsPerRow
+        return CGSize(width: widthPerItem, height: widthPerItem)
     }
     
     
