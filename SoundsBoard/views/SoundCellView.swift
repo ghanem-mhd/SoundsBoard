@@ -95,6 +95,11 @@ class SoundCellView: UITableViewCell{
         label.text = soundObject.name
         if let soundImageData = soundObject.image{
             soundImage.image = UIImage(data: soundImageData)
+        }else{
+            if let placeholder = UIImage(named: "baseline_image_black_48pt"){
+                soundImage.image = placeholder
+                soundImage.contentMode = .scaleToFill
+            }
         }
         if soundObject.isFavorite{
             favoriteImage.setImage(UIImage(named: "round_favorite_black_48pt"), for: .normal)
