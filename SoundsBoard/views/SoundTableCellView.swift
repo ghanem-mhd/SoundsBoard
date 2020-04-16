@@ -12,7 +12,7 @@ import SBKit
 import SnapKit
 
 
-class SoundCellView: UITableViewCell{
+class SoundTableCellView: UITableViewCell{
     
     static let cornerRadius:CGFloat = 10.0
     

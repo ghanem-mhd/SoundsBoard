@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-public class FavoriteCellView: UICollectionViewCell {
+public class SoundCollectionCellView: UICollectionViewCell {
 
     static let cornerRadius:CGFloat = 10.0
     static let color:UIColor = .lightGray
@@ -57,9 +57,9 @@ public class FavoriteCellView: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.layer.cornerRadius = FavoriteCellView.cornerRadius
+        self.layer.cornerRadius = SoundCollectionCellView.cornerRadius
         self.layer.borderWidth = 1.5
-        self.layer.borderColor = FavoriteCellView.color.cgColor
+        self.layer.borderColor = SoundCollectionCellView.color.cgColor
 
         self.layer.backgroundColor = UIColor.white.cgColor
         self.layer.shadowColor = UIColor.gray.cgColor

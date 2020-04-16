@@ -28,7 +28,7 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
             tb.rowHeight = 44
             tb.dataSource = self
             tb.delegate = self
-            tb.register(SoundCellView.self, forCellReuseIdentifier: "SoundCellView")
+            tb.register(SoundTableCellView.self, forCellReuseIdentifier: "SoundCellView")
             self.view.addSubview(tb)
         }
         initializeFetchedResultsController()
@@ -73,7 +73,7 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SoundCellView", for: indexPath) as! SoundCellView
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SoundCellView", for: indexPath) as! SoundTableCellView
         // instead of using static source, the fetchedResultsController is used
         guard let soundObject = self.fetchedResultsController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")

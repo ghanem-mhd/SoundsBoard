@@ -10,13 +10,13 @@
 		29272D39242EC06F0023C703 /* AlertsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29272D38242EC06F0023C703 /* AlertsManager.swift */; };
 		294A805F24281D51007BE86A /* FavoriteControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A805E24281D51007BE86A /* FavoriteControllers.swift */; };
 		2975A379242AAE1E00F5FE4F /* MoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A378242AAE1E00F5FE4F /* MoreController.swift */; };
-		2975A37B242AAF2A00F5FE4F /* SoundCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A37A242AAF2A00F5FE4F /* SoundCellView.swift */; };
+		2975A37B242AAF2A00F5FE4F /* SoundTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A37A242AAF2A00F5FE4F /* SoundTableCellView.swift */; };
 		29FCBE89244267040062253F /* SBKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 29FCBE87244267040062253F /* SBKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		29FCBE8C244267040062253F /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; };
 		29FCBE8D244267040062253F /* SBKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		29FCBE93244267E40062253F /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FCBE92244267E40062253F /* AudioPlayer.swift */; };
 		29FCBE97244268670062253F /* SoundsFilesManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FCBE96244268670062253F /* SoundsFilesManger.swift */; };
-		29FCBE9A24426ABD0062253F /* FavoriteCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FCBE9924426ABD0062253F /* FavoriteCellView.swift */; };
+		29FCBE9A24426ABD0062253F /* SoundCollectionCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FCBE9924426ABD0062253F /* SoundCollectionCellView.swift */; };
 		29FCBE9C24426B740062253F /* SoundsBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC736A4B241189EB00D6966B /* SoundsBoard.xcdatamodeld */; };
 		29FCBE9E24426C390062253F /* CoreDateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FCBE9D24426C390062253F /* CoreDateManager.swift */; };
 		29FCBEA5244275130062253F /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBEA4244275130062253F /* NotificationCenter.framework */; };
@@ -24,7 +24,7 @@
 		29FCBEAB244275130062253F /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29FCBEA9244275130062253F /* MainInterface.storyboard */; };
 		29FCBEAF244275130062253F /* SBWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 29FCBEA3244275130062253F /* SBWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		29FCBEB52442754F0062253F /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; };
-		29FCBEB6244278920062253F /* SoundCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A37A242AAF2A00F5FE4F /* SoundCellView.swift */; };
+		29FCBEB6244278920062253F /* SoundTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A37A242AAF2A00F5FE4F /* SoundTableCellView.swift */; };
 		47E67CBE910BC05E6FF3B28E /* Pods_SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE300823239CAAA720D25730 /* Pods_SBKit.framework */; };
 		7C1CC2F019AAA108AA951643 /* Pods_SBWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751A441148BADCA55FEE0059 /* Pods_SBWidget.framework */; };
 		FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */; };
@@ -97,13 +97,13 @@
 		29272D38242EC06F0023C703 /* AlertsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsManager.swift; sourceTree = "<group>"; };
 		294A805E24281D51007BE86A /* FavoriteControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteControllers.swift; sourceTree = "<group>"; };
 		2975A378242AAE1E00F5FE4F /* MoreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreController.swift; sourceTree = "<group>"; };
-		2975A37A242AAF2A00F5FE4F /* SoundCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundCellView.swift; sourceTree = "<group>"; };
+		2975A37A242AAF2A00F5FE4F /* SoundTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundTableCellView.swift; sourceTree = "<group>"; };
 		29FCBE85244267040062253F /* SBKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SBKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		29FCBE87244267040062253F /* SBKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBKit.h; sourceTree = "<group>"; };
 		29FCBE88244267040062253F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29FCBE92244267E40062253F /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		29FCBE96244268670062253F /* SoundsFilesManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsFilesManger.swift; sourceTree = "<group>"; };
-		29FCBE9924426ABD0062253F /* FavoriteCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCellView.swift; sourceTree = "<group>"; };
+		29FCBE9924426ABD0062253F /* SoundCollectionCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundCollectionCellView.swift; sourceTree = "<group>"; };
 		29FCBE9D24426C390062253F /* CoreDateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDateManager.swift; sourceTree = "<group>"; };
 		29FCBEA3244275130062253F /* SBWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SBWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		29FCBEA4244275130062253F /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -171,7 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */,
-				2975A37A242AAF2A00F5FE4F /* SoundCellView.swift */,
+				2975A37A242AAF2A00F5FE4F /* SoundTableCellView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -200,7 +200,7 @@
 		29FCBE9824426AAC0062253F /* views */ = {
 			isa = PBXGroup;
 			children = (
-				29FCBE9924426ABD0062253F /* FavoriteCellView.swift */,
+				29FCBE9924426ABD0062253F /* SoundCollectionCellView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -573,7 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				29FCBE9C24426B740062253F /* SoundsBoard.xcdatamodeld in Sources */,
-				29FCBE9A24426ABD0062253F /* FavoriteCellView.swift in Sources */,
+				29FCBE9A24426ABD0062253F /* SoundCollectionCellView.swift in Sources */,
 				29FCBE9E24426C390062253F /* CoreDateManager.swift in Sources */,
 				29FCBE93244267E40062253F /* AudioPlayer.swift in Sources */,
 				29FCBE97244268670062253F /* SoundsFilesManger.swift in Sources */,
@@ -584,7 +584,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29FCBEB6244278920062253F /* SoundCellView.swift in Sources */,
+				29FCBEB6244278920062253F /* SoundTableCellView.swift in Sources */,
 				29FCBEA8244275130062253F /* TodayViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,7 +595,7 @@
 			files = (
 				FC362FA524193D8D007E43E4 /* SoundsFilesManager.swift in Sources */,
 				2975A379242AAE1E00F5FE4F /* MoreController.swift in Sources */,
-				2975A37B242AAF2A00F5FE4F /* SoundCellView.swift in Sources */,
+				2975A37B242AAF2A00F5FE4F /* SoundTableCellView.swift in Sources */,
 				FC736A47241189EB00D6966B /* HomeController.swift in Sources */,
 				FC736A43241189EB00D6966B /* AppDelegate.swift in Sources */,
 				FC736A45241189EB00D6966B /* SceneDelegate.swift in Sources */,

@@ -41,7 +41,7 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
         collectionview = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionview.dataSource = self
         collectionview.delegate = self
-        collectionview.register(FavoriteCellView.self, forCellWithReuseIdentifier: cellId)
+        collectionview.register(SoundCollectionCellView.self, forCellWithReuseIdentifier: cellId)
         collectionview.showsVerticalScrollIndicator = false
         collectionview.backgroundColor = .white
         collectionview.dragInteractionEnabled = true
@@ -93,7 +93,7 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionview.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FavoriteCellView
+        let cell = collectionview.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SoundCollectionCellView
         guard let controller = fetchedResultsController else {
             fatalError("Attempt to configure cell without a managed object")
         }
