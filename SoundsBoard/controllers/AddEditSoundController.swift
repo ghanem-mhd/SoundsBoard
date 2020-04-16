@@ -410,22 +410,20 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     // MARK: - Image Pickers
     
     @objc func addImageButtonClicked(_ sender: UIButton){
-        let alert = UIAlertController(title:nil, message:nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Take Photo", style: .default , handler:{ (UIAlertAction)in
+        let alert = UIAlertController(title:nil, message:nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Take Photo", style: .default , handler:{ (UIAlertAction) in
             self.openCamera()
         }))
         
-        alert.addAction(UIAlertAction(title: "Choose Photo", style: .default , handler:{ (UIAlertAction)in
+        alert.addAction(UIAlertAction(title: "Choose Photo", style: .default , handler:{ (UIAlertAction) in
             self.openGallary()
         }))
         
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler:{ (UIAlertAction)in
-            print("User click Dismiss button")
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler:{ (UIAlertAction) in
+            
         }))
         
-        self.present(alert, animated: true, completion: {
-            print("completion block")
-        })
+        self.present(alert, animated: true, completion: nil)
     }
     
     func openCamera(){
