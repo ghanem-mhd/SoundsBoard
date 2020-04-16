@@ -8,17 +8,17 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Favorite Controller-->
+        <!--Sounds-->
         <scene sceneID="QQI-ud-Dam">
             <objects>
-                <viewController id="YGe-Aq-jnl" customClass="FavoriteController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="YGe-Aq-jnl" customClass="SoundsController" customModule="SoundsBoard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4QQ-tO-f5s">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="vbr-7i-wpl"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="htn-bS-xIJ"/>
+                    <tabBarItem key="tabBarItem" title="Sounds" image="round_playlist_play_black_36pt" id="htn-bS-xIJ"/>
                     <navigationItem key="navigationItem" id="gtd-0K-RhI"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hvD-7F-omf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -118,4 +118,7 @@
             <point key="canvasLocation" x="3596" y="1626"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="round_playlist_play_black_36pt" width="36" height="36"/>
+    </resources>
 </document>

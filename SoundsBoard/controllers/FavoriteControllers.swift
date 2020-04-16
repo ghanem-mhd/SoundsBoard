@@ -16,7 +16,7 @@ import SwiftySound
 import SBKit
 
 
-class FavoriteController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
+class SoundsController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
     var collectionview: UICollectionView!
     var cellId = "Cell"

@@ -62,7 +62,7 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
             editButtonToggle(isEnabled: true)
         }
         
-        if viewController is FavoriteController{
+        if viewController is SoundsController{
             editButtonToggle(isEnabled: false)
         }
     }
