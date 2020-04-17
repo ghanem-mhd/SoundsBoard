@@ -17,11 +17,11 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
     var fetchRequest: NSFetchRequest<SoundObject>?
     var moc: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController<SoundObject>!
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        
         self.moc = CoreDataManager.shared.persistentContainer.viewContext
         tableView = UITableView(frame: self.view.frame)
         if let tb = tableView{
@@ -58,7 +58,7 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
         }
     }
     
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultsController.sections!.count
     }
@@ -119,6 +119,10 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
             tableView?.reloadRows(at: [indexPath!], with: .fade)
         case .move:
             tableView?.moveRow(at: indexPath!, to: newIndexPath!)
+            if let cell = tableView?.cellForRow(at: indexPath!) as? SoundTableCellView {
+                let updatedSoundObject = fetchedResultsController.object(at: newIndexPath!)
+                cell.update(updatedSoundObject)
+            }
         default:
             break
         }
@@ -134,35 +138,35 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-             guard let soundObject = self.fetchedResultsController?.object(at: indexPath) else {
-                 fatalError("Attempt to fetch non existed item")
-             }
-             do {
-                 moc.delete(soundObject)
-                 try moc.save()
-                 
-                 moc.refreshAllObjects()
-             } catch let error as NSError {
-                 print("Error while deleting entry: \(error.userInfo)")
-             }
-         }
+            guard let soundObject = self.fetchedResultsController?.object(at: indexPath) else {
+                fatalError("Attempt to fetch non existed item")
+            }
+            do {
+                moc.delete(soundObject)
+                try moc.save()
+                
+                moc.refreshAllObjects()
+            } catch let error as NSError {
+                print("Error while deleting entry: \(error.userInfo)")
+            }
+        }
     }
-
+    
     public func onEditButtonClicked(_ editButton: UIBarButtonItem){
         if let tb = tableView{
             tb.setEditing(!tb.isEditing, animated: true)
             editButton.title = tb.isEditing ? "Done" : "Edit"
         }
     }
-
-
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let object = fetchedResultsController.object(at: indexPath)
         let addEditSoundController = AddEditSoundController()
         addEditSoundController.state = .Edit
         addEditSoundController.editableSound = object
         self.navigationController!.pushViewController(addEditSoundController, animated: true)
-
+        
         self.tableView?.deselectRow(at: indexPath, animated: true)
     }
     
