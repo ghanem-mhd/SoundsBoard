@@ -15,7 +15,7 @@ class PersistentContainer: NSPersistentContainer {
         var url = super.defaultDirectoryURL()
         if let newURL =
             FileManager.default.containerURL(
-                forSecurityApplicationGroupIdentifier: "group.SoundsBoard") {
+                forSecurityApplicationGroupIdentifier: Constants.appGroupID) {
             url = newURL
         }
         return url
@@ -25,27 +25,22 @@ class PersistentContainer: NSPersistentContainer {
 
 public class CoreDataManager {
     
-    public let MAXIMUM_FAVORITE_SOUNDS = 9
-    
-    let modelName: String       = "SoundsBoard"
-    let appGroupID: String      = "group.SoundsBoard"
-    
     public static let shared = CoreDataManager()
     public var errorHandler: (Error) -> Void = {_ in }
     
     public lazy var persistentContainer: NSPersistentContainer = {
         
-        let container = PersistentContainer(name: modelName)
+        let container = PersistentContainer(name: Constants.modelName)
         var persistentStoreDescriptions: NSPersistentStoreDescription
         
-        let storeUrl =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID)!.appendingPathComponent("\(modelName).sqlite")
+        let storeUrl =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupID)!.appendingPathComponent("\(Constants.modelName).sqlite")
         
         let description = NSPersistentStoreDescription()
         description.shouldInferMappingModelAutomatically = true
         description.shouldMigrateStoreAutomatically = true
         description.url = storeUrl
         
-        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url:  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID)!.appendingPathComponent("\(modelName).sqlite"))]
+        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url:  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupID)!.appendingPathComponent("\(Constants.modelName).sqlite"))]
         
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -124,7 +119,7 @@ public class CoreDataManager {
         if count == -1{
             return true
         }
-        if count >= MAXIMUM_FAVORITE_SOUNDS{
+        if count >= Constants.maximumFavoriteSounds{
             return true
         }
         return false

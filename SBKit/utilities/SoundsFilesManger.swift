@@ -56,7 +56,7 @@ public class SoundsFilesManger{
     
     
     public static func getAppGroupDirectory() -> URL? {
-        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.SoundsBoard")
+        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupID)
 
     }
     

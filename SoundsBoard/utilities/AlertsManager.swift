@@ -31,7 +31,7 @@ class AlertsManager{
     }
     
     public static func showMaxFavoriteAlert(_ viewController: UIViewController){
-        AlertsManager.showAlert(viewController, "Opps", "Maxiumum favorite sounds is \(CoreDataManager.shared.MAXIMUM_FAVORITE_SOUNDS).")
+        AlertsManager.showAlert(viewController, "Opps", "Maxiumum favorite sounds is \(Constants.maximumFavoriteSounds).")
     }
     
     
