@@ -11,6 +11,7 @@
 		294A805F24281D51007BE86A /* SoundsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A805E24281D51007BE86A /* SoundsController.swift */; };
 		2975A379242AAE1E00F5FE4F /* MoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A378242AAE1E00F5FE4F /* MoreController.swift */; };
 		2975A37B242AAF2A00F5FE4F /* SoundTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A37A242AAF2A00F5FE4F /* SoundTableCellView.swift */; };
+		29ACB77E244BC5CF00A0E352 /* VolumeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29ACB77D244BC5CF00A0E352 /* VolumeManager.swift */; };
 		29CC7F31244A571B0032EC52 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CC7F30244A571B0032EC52 /* Constants.swift */; };
 		29FCBE89244267040062253F /* SBKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 29FCBE87244267040062253F /* SBKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		29FCBE8C244267040062253F /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; };
@@ -99,6 +100,7 @@
 		294A805E24281D51007BE86A /* SoundsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsController.swift; sourceTree = "<group>"; };
 		2975A378242AAE1E00F5FE4F /* MoreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreController.swift; sourceTree = "<group>"; };
 		2975A37A242AAF2A00F5FE4F /* SoundTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundTableCellView.swift; sourceTree = "<group>"; };
+		29ACB77D244BC5CF00A0E352 /* VolumeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeManager.swift; sourceTree = "<group>"; };
 		29CC7F30244A571B0032EC52 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		29FCBE85244267040062253F /* SBKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SBKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		29FCBE87244267040062253F /* SBKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBKit.h; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				29FCBE92244267E40062253F /* AudioPlayer.swift */,
 				29FCBE96244268670062253F /* SoundsFilesManger.swift */,
 				29CC7F30244A571B0032EC52 /* Constants.swift */,
+				29ACB77D244BC5CF00A0E352 /* VolumeManager.swift */,
 			);
 			path = utilities;
 			sourceTree = "<group>";
@@ -575,6 +578,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29ACB77E244BC5CF00A0E352 /* VolumeManager.swift in Sources */,
 				29FCBE9C24426B740062253F /* SoundsBoard.xcdatamodeld in Sources */,
 				29FCBE9A24426ABD0062253F /* SoundCollectionCellView.swift in Sources */,
 				29FCBE9E24426C390062253F /* CoreDateManager.swift in Sources */,

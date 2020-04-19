@@ -141,7 +141,7 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
           }
         
         if let soundGeneratedName = clickedSound.fileName{
-            AudioPlayer.sharedInstance.play(soundFileName: soundGeneratedName)
+            AudioPlayer.sharedInstance.play(soundFileName: soundGeneratedName, volume: clickedSound.volume)
         }
     }
     

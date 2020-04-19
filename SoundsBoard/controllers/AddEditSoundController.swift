@@ -51,13 +51,12 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         setUpAddImageButtonView()
         setUpNameInputView()
         if state == .Edit{
-            
             guard let soundFileName = editableSound!.fileName else {
                 return
             }
-            fillSoundNameAndImage(editableSound!)
             setUpPlayerView(nameTextInput)
             newSoundReady(soundFileName)
+            fillSoundData(editableSound!)
         }
         
         if state == .Add{
@@ -160,7 +159,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         
         self.view.addSubview(startTimeLabel)
         startTimeLabel.text = "00:00"
-        startTimeLabel.font =  UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
+        startTimeLabel.font =  getFont()
         startTimeLabel.snp.makeConstraints{ (make) -> Void in
             make.left.equalTo(self.view.snp.left).offset(16)
             make.centerY.equalTo(self.trimSlider.snp.centerY)
@@ -168,7 +167,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         
         self.view.addSubview(endTimeLabel)
         endTimeLabel.text = "00:00"
-        endTimeLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
+        endTimeLabel.font = getFont()
         endTimeLabel.snp.makeConstraints{ (make) -> Void in
             make.right.equalTo(self.view.snp.right).offset(-16)
             make.centerY.equalTo(self.trimSlider.snp.centerY)
@@ -183,23 +182,23 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         trimSlider.addTarget(self, action: #selector(sliderChanged(_:)), for: .valueChanged) // continuous changes
         trimSlider.addTarget(self, action: #selector(sliderDragEnded(_:)), for: . touchUpInside) // sent when drag ends
         
-        self.view.addSubview(hintLabel)
-        hintLabel.text = "Move the slider thumbs to trim the sound."
-        hintLabel.textColor = .lightGray
-        hintLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
-        hintLabel.textAlignment = .center
-        hintLabel.snp.makeConstraints{ (make) -> Void in
-            make.top.equalTo(self.trimSlider.snp.bottom).offset(16)
+        self.view.addSubview(trimHintLabel)
+        trimHintLabel.text = "Move the slider thumbs to trim the sound."
+        trimHintLabel.textColor = .lightGray
+        trimHintLabel.font = getFont()
+        trimHintLabel.textAlignment = .center
+        trimHintLabel.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(self.trimSlider.snp.bottom)
             make.width.equalTo(self.view.snp.width)
         }
         
         self.view.addSubview(playBackDurationView)
         playBackDurationView.text = "Current duration: 04:58"
-        playBackDurationView.font = UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
+        playBackDurationView.font = getFont()
         playBackDurationView.textColor = .lightGray
         playBackDurationView.textAlignment = .center
         playBackDurationView.snp.makeConstraints{ (make) -> Void in
-            make.top.equalTo(hintLabel.snp.bottom).offset(16)
+            make.top.equalTo(trimHintLabel.snp.bottom).offset(8)
             make.width.equalTo(self.view.snp.width)
         }
         
@@ -247,6 +246,27 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         playerVisiblity(isHidden: true)
     }
     
+    func setUpVolumeSettingsControl(){
+        volumeSegmentControl.selectedSegmentIndex = VolumeManager.defultVolume
+        self.view.addSubview(volumeSegmentControl)
+        volumeSegmentControl.addTarget(self, action: #selector(onVolumeChanged), for: .valueChanged)
+        volumeSegmentControl.snp.makeConstraints{ (make) -> Void in
+            make.width.equalTo(self.view.snp.width).inset(UIEdgeInsets(top: 0,left: 16,bottom: 0,right: 16))
+            make.top.equalTo(playBackDurationView.snp.bottom).offset(20)
+            make.centerX.equalTo(self.view.snp.centerX)
+        }
+        
+        self.view.addSubview(volumeHintLabel)
+        volumeHintLabel.text = "Volume relative to system sound."
+        volumeHintLabel.textColor = .lightGray
+        volumeHintLabel.font = getFont()
+        volumeHintLabel.textAlignment = .center
+        volumeHintLabel.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(self.volumeSegmentControl.snp.bottom).offset(10)
+            make.width.equalTo(self.view.snp.width)
+        }
+    }
+    
     func setUpSiriShortcutButton(){
         self.view.addSubview(addSiriShortcut)
         addSiriShortcut.setTitle("Add Siri shortcut", for: .normal)
@@ -258,11 +278,13 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         
         addSiriShortcut.snp.makeConstraints{ (make) -> Void in
             make.width.equalTo(self.view.frame.width/2)
-            make.top.equalTo(playBackDurationView.snp.bottom).offset(16)
+            make.top.equalTo(volumeHintLabel.snp.bottom).offset(20)
             make.centerX.equalTo(self.view.snp.centerX)
         }
         addSiriShortcut.addTarget(self, action: #selector(presentSiriViewController), for: .touchUpInside)
     }
+    
+
     
     // MARK: - Player Controllers
     
@@ -271,7 +293,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         startTimeLabel.isHidden = isHidden
         endTimeLabel.isHidden = isHidden
         trimSlider.isHidden = isHidden
-        hintLabel.isHidden = isHidden
+        trimHintLabel.isHidden = isHidden
         playBackDurationView.isHidden = isHidden
     }
     
@@ -279,7 +301,8 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         if let soundFileName = currentSoundFileName{
             let startTime = TimeInterval(exactly: trimSlider.value[0])
             let endTime = TimeInterval(exactly: trimSlider.value[1])
-            AudioPlayer.sharedInstance.play(soundFileName: soundFileName, startTime: startTime, endTime: endTime, checkPlayed: true)
+            let volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
+            AudioPlayer.sharedInstance.play(soundFileName: soundFileName, startTime: startTime, endTime: endTime, checkPlayed: true, volume:volume)
         }
     }
     
@@ -337,20 +360,24 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             SoundsFilesManger.deleteSoundFile(newSoundFileName)
             AlertsManager.showPlayingAlert(self)
         }else{
+            setUpVolumeSettingsControl()
             setUpSiriShortcutButton()
+            
             playerVisiblity(isHidden: false)
             self.currentSoundFileName = newSoundFileName
             setUpTrimmer(Int(soundOriginalDuration))
         }
     }
     
-    func fillSoundNameAndImage(_ sound:SoundObject){
+    func fillSoundData(_ sound:SoundObject){
         nameTextInput.text = sound.name
         if let soundImageData = sound.image{
             currentSoundImage = UIImage(data: soundImageData)
             addImageButton.setImage(UIImage(data: soundImageData), for: .normal)
         }
+        volumeSegmentControl.selectedSegmentIndex = VolumeManager.getVolumeIndex(sound.volume)
     }
+    
     
     // MARK: - Audio Picker
     
@@ -442,6 +469,11 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         present(vc, animated: true)
     }
     
+    // MARK: - Volume Controller
+    @objc func onVolumeChanged(sender: UISegmentedControl) {
+        AudioPlayer.sharedInstance.setVolume(VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex))
+    }
+    
     lazy var saveButton         = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonClicked))
     lazy var addImageButton     = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     lazy var nameTextInput      = UITextField()
@@ -459,9 +491,12 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     lazy var endTimeLabel           = UILabel()
     lazy var playBackDurationView   = UILabel()
     lazy var trimmedDuration        = UILabel()
-    lazy var hintLabel              = UILabel()
+    lazy var trimHintLabel          = UILabel()
     
     lazy var addSiriShortcut        = UIButton(type: .system)
+    
+    lazy var volumeHintLabel        = UILabel()
+    lazy var volumeSegmentControl   = UISegmentedControl(items: VolumeManager.volumesTitles)
 }
 
 extension AddEditSoundController: AudioRecorderViewControllerDelegate{
@@ -559,6 +594,7 @@ extension AddEditSoundController{
             return
         }
         exsitSound.name = newSoundName
+        exsitSound.volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
         if let image = newSoundImage{
             exsitSound.image = image.pngData()
         }
@@ -576,7 +612,9 @@ extension AddEditSoundController{
     func saveNewSound(_ soundName:String, _ soundImage:UIImage?, _ soundFileName:String){
         if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
             let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
+            let volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
             soundObject.setValue(soundName, forKeyPath: "name")
+            soundObject.setValue(volume, forKeyPath: "volume")
             if let image = soundImage{
                 soundObject.setValue(image.pngData(), forKeyPath: "image")
             }
@@ -623,5 +661,11 @@ extension AddEditSoundController: INUIAddVoiceShortcutViewControllerDelegate {
 
     func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
         controller.dismiss(animated: true)
+    }
+}
+
+extension AddEditSoundController {
+    func getFont() -> UIFont{
+        return UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
     }
 }

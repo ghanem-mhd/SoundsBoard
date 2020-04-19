@@ -16,22 +16,23 @@ public class AudioPlayer {
     private var stopTimer = Timer()
     
 
-    public func playInAppContainer(soundFileName: String){
+    public func playInAppContainer(soundFileName: String, volume:Float = 1){
         let url = SoundsFilesManger.getAppGroupDirectorySoundURL(soundFileName)
-        play(url: url, startTime: nil, endTime:nil,checkPlayed: true, delegate: nil)
+        play(url: url, startTime: nil, endTime:nil,checkPlayed: true, delegate: nil, volume: volume)
     }
     
-    public func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil){
+    public func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil, volume:Float = 1){
         let url = SoundsFilesManger.getSoundURL(soundFileName)
-        play(url: url, startTime: startTime, endTime:endTime,checkPlayed: checkPlayed, delegate: delegate)
+        play(url: url, startTime: startTime, endTime:endTime,checkPlayed: checkPlayed, delegate: delegate, volume: volume)
     }
     
-    public func play(url: URL, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil) {
+    public func play(url: URL, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil, volume:Float = 1) {
         if checkPlayed, let player = player, let playedURL = playedURL{
             if playedURL == url{
                 if player.isPlaying{
                     player.pause()
                 }else{
+                    player.volume = volume
                     player.resume()
                 }
                 return
@@ -51,6 +52,7 @@ public class AudioPlayer {
                 stopTimer.invalidate()
                 stopTimer = Timer.scheduledTimer(timeInterval: et, target: self, selector: #selector(AudioPlayer.stop), userInfo: nil, repeats: false)
             }
+            player.volume = volume
             player.play()
             playedURL = url
             player.delegate = delegate
@@ -104,5 +106,11 @@ public class AudioPlayer {
     
     public func getFormatedTime(timeInSeconds: Float)->String{
         return getFormatedTime(timeInSeconds: (Int)(timeInSeconds))
+    }
+    
+    public func setVolume(_ volume:Float){
+        if let p = player{
+            return p.volume = volume
+        }
     }
 }
