@@ -640,7 +640,10 @@ extension AddEditSoundController {
         guard soundName.isNotEmpty else{
             return
         }
-        let activity = NSUserActivity(activityType: "com.example.SoundsBoard.play.sound")
+        guard let playSoundActivityName = SiriExtension.getPlaySoundAcivityName() else{
+            return
+        }
+        let activity = NSUserActivity(activityType: playSoundActivityName)
         activity.title = soundName
         activity.keywords = Set([soundFileName])
         activity.isEligibleForHandoff = true

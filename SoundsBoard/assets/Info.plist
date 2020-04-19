@@ -4,7 +4,7 @@
 <dict>
 	<key>NSUserActivityTypes</key>
 	<array>
-		<string>com.example.SoundsBoard.play.sound</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER).play.sound</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

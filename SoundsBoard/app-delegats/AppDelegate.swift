@@ -26,11 +26,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        if userActivity.activityType == "com.example.SoundsBoard.play.sound"{
-            let soundFileName = Array(userActivity.keywords)[0]
-            AudioPlayer.sharedInstance.play(soundFileName: soundFileName)
+        if let playSoundActivityName = SiriExtension.getPlaySoundAcivityName(){
+            if userActivity.activityType == playSoundActivityName{
+                let soundFileName = Array(userActivity.keywords)[0]
+                AudioPlayer.sharedInstance.play(soundFileName: soundFileName)
+                return true
+            }
         }
-        return true
+        return false
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
