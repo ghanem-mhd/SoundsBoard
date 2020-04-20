@@ -17,3 +17,7 @@ $ pod install
 ```
 
 Then if Pod installation completed successfully, Open 'SoundsBoard.xcworkspace' via Xcode.
+
+### App Group
+
+In case you changed the app group name. Head to this [file](https://github.com/ghanem-mhd/SoundsBoardApp/blob/master/SBKit/utilities/Constants.swift) and change the appGroupID constant.
