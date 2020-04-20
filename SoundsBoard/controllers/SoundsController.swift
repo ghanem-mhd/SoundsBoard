@@ -29,14 +29,10 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        // save ManagedObjectContext in class attribute
         self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = sectionInsets
-        
-        
         
         collectionview = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionview.dataSource = self
@@ -150,18 +146,19 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
     }
     
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
-        switch(gesture.state) {
-        case .began:
-            guard let selectedIndexPath = collectionview.indexPathForItem(at: gesture.location(in: collectionview)) else {
-                break
+        if gesture.state != .ended {
+            return
+        }
+        let indexPath = self.collectionview.indexPathForItem(at: gesture.location(in: collectionview))
+        if let indexPath = indexPath {
+            let touchedSound = fetchedResultsController?.object(at: indexPath)
+            if let soundName = touchedSound?.fileName{
+                let activityVC = UIActivityViewController(activityItems: [SoundsFilesManger.getSoundURL(soundName)],applicationActivities: nil)
+                activityVC.popoverPresentationController?.sourceView = self.view
+                self.present(activityVC, animated: true, completion: nil)
             }
-            collectionview.beginInteractiveMovementForItem(at: selectedIndexPath)
-        case .changed:
-            collectionview.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
-        case .ended:
-            collectionview.endInteractiveMovement()
-        default:
-            collectionview.cancelInteractiveMovement()
+        } else {
+            print("Could not find index path")
         }
     }
     
