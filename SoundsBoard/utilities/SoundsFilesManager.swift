@@ -140,7 +140,7 @@ public extension SoundsFilesManger{
     }
     
     static func trimSound(soundFileName:String, startTime: Int, endTime:Int, delegate: SoundsFilesMangerTrimDelegate){
-        AKSettings.enableLogging = true
+        AKSettings.enableLogging = false
         let temporal = getTemporalURL()
         let originalSoundFile = getSoundURL(soundFileName)
         do {
