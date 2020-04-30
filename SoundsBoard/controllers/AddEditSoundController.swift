@@ -209,25 +209,17 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         playerControllersView.alignment        = UIStackView.Alignment.center
         
         playerControllersView.addArrangedSubview(stopButton)
-        playerControllersView.addArrangedSubview(playButton)
-        playerControllersView.addArrangedSubview(pauseButton)
+        playerControllersView.addArrangedSubview(playPauseButton)
         
         playerControllersView.snp.makeConstraints{ (make) -> Void in
             make.top.equalTo(upperView.snp.bottom).offset(32)
             make.width.equalTo(self.view.frame.width / 2)
             make.centerX.equalTo(self.view.snp.centerX)
         }
-        
-        if let playIcon = UIImage(named:"round_play_arrow_black_48pt"){
-            playButton.setImage(playIcon, for: .normal)
-            playButton.snp.makeConstraints{ (make) -> Void in
-                make.width.height.equalTo(50)
-            }
-        }
-        
-        if let pauseIcon = UIImage(named: "round_pause_black_48pt"){
-            pauseButton.setImage(pauseIcon , for: .normal)
-            pauseButton.snp.makeConstraints{ (make) -> Void in
+                
+        if let pauseIcon = UIImage(named: "round_play_arrow_black_48pt"){
+            playPauseButton.setImage(pauseIcon , for: .normal)
+            playPauseButton.snp.makeConstraints{ (make) -> Void in
                 make.width.height.equalTo(50)
             }
         }
@@ -239,8 +231,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             }
         }
         
-        playButton.addTarget(self, action: #selector(onPlayButtonClicked), for: .touchUpInside)
-        pauseButton.addTarget(self, action: #selector(onPauseButtonClicked), for: .touchUpInside)
+        playPauseButton.addTarget(self, action: #selector(playPauseToggle), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(onStopButtonClicked), for: .touchUpInside)
         
         playerVisibility(isHidden: true)
@@ -297,7 +288,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         playBackDurationView.isHidden = isHidden
     }
     
-    @objc func onPlayButtonClicked(_ sender: UIButton){
+    func onPlayButtonClicked(){
         if let soundFileName = currentSoundFileName{
             let startTime = TimeInterval(exactly: trimSlider.value[0])
             let endTime = TimeInterval(exactly: trimSlider.value[1])
@@ -306,7 +297,25 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         }
     }
     
-    @objc func onPauseButtonClicked(_ sender: UIButton){
+    var isPlaying = false
+    
+    @objc func playPauseToggle(_ sender: UIButton){
+        if (isPlaying){
+            if let playIcon = UIImage(named: "round_play_arrow_black_48pt"){
+                playPauseButton.setImage(playIcon , for: .normal)
+            }
+            isPlaying = false
+            onPauseButtonClicked()
+        }else{
+            if let pauseIcon = UIImage(named: "round_pause_black_48pt"){
+                playPauseButton.setImage(pauseIcon , for: .normal)
+            }
+            isPlaying = true
+            onPlayButtonClicked()
+        }
+    }
+    
+    func onPauseButtonClicked(){
         AudioPlayer.sharedInstance.pause()
     }
     
@@ -481,9 +490,9 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     
     lazy var playButton         = UIButton()
     lazy var stopButton         = UIButton()
-    lazy var pauseButton        = UIButton()
-    lazy var openRecorderButton = UIButton(type: .system)
-    lazy var openFileButton     = UIButton(type: .system)
+    lazy var playPauseButton    = UIButton()
+    lazy var openRecorderButton = UIButton(type: .custom)
+    lazy var openFileButton     = UIButton(type: .custom)
     
     lazy var playerControllersView  = UIStackView()
     lazy var trimSlider             = MultiSlider()
