@@ -562,7 +562,7 @@ extension AddEditSoundController: UIImagePickerControllerDelegate{
 extension AddEditSoundController: SoundsFilesMangerTrimDelegate{
     func trimDidFinshed() {
         stopAnimating()
-        saveSound(nameTextInput.text!, currentSoundImage!, currentSoundFileName!)
+        saveSound(nameTextInput.text!, currentSoundImage, currentSoundFileName!)
     }
     
     func trimDidFaild(_ erorr: Error) {
