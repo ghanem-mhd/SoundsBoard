@@ -17,19 +17,19 @@ public enum SupportedFileTypes {
     case m4a
     case mp3
     case video
-    case unknowen
+    case unknown
 }
 
 public protocol SoundsFilesMangerCopyDelegate: class {
     func copyDidStart()
     func convertDidStart()
     func copyAndConvertDidFinish(_ soundFileName: String)
-    func copyDidFaild(_ erorr: Error, fileName: String)
+    func copyDidFailed(_ error: Error, fileName: String)
 }
 
 public protocol SoundsFilesMangerTrimDelegate: class {
-    func trimDidFinshed()
-    func trimDidFaild(_ erorr: Error)
+    func trimDidFinished()
+    func trimDidFailed(_ error: Error)
 }
 
 public extension SoundsFilesManger{
@@ -37,7 +37,7 @@ public extension SoundsFilesManger{
     static func checkFileType(_ url:URL) -> SupportedFileTypes{
         let urlExtension = NSURL(fileURLWithPath: url.path).pathExtension
         guard let uti = UTTypeCreatePreferredIdentifierForTag( kUTTagClassFilenameExtension,urlExtension! as CFString,nil) else {
-            return SupportedFileTypes.unknowen
+            return SupportedFileTypes.unknown
         }
         let fileUTI = uti.takeRetainedValue()
         if UTTypeConformsTo(fileUTI, kUTTypeMP3){
@@ -52,7 +52,7 @@ public extension SoundsFilesManger{
             UTTypeConformsTo(fileUTI, kUTTypeMPEG4)) {
             return SupportedFileTypes.video
         }
-        return SupportedFileTypes.unknowen
+        return SupportedFileTypes.unknown
     }
     
     static func copyFile(_ fileURL: URL, _ deleget: SoundsFilesMangerCopyDelegate){
@@ -81,7 +81,7 @@ public extension SoundsFilesManger{
                     try FileManager.default.copyItem(at: url, to: dstURL)
                 }  catch let error {
                     print(error)
-                    deleget.copyDidFaild(error, fileName: fileURL.lastPathComponent + fileURL.pathExtension)
+                    deleget.copyDidFailed(error, fileName: fileURL.lastPathComponent + fileURL.pathExtension)
                 }
             }
             if (isSecuredURL) {
@@ -117,7 +117,7 @@ public extension SoundsFilesManger{
                         deleteFile(temporal)
                         if let error = error {
                             DispatchQueue.main.async {
-                                deleget.copyDidFaild(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
+                                deleget.copyDidFailed(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
                             }
                         } else {
                             DispatchQueue.main.async {
@@ -127,7 +127,7 @@ public extension SoundsFilesManger{
                     })
                 }  catch let error {
                     print(error)
-                    deleget.copyDidFaild(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
+                    deleget.copyDidFailed(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
                 }
                 
                 
@@ -154,12 +154,12 @@ public extension SoundsFilesManger{
             {_, exportError in
                 if let error = exportError {
                     DispatchQueue.main.async {
-                        delegate.trimDidFaild(error)
+                        delegate.trimDidFailed(error)
                     }
                     
                 } else {
                     DispatchQueue.main.async {
-                        delegate.trimDidFinshed()
+                        delegate.trimDidFinished()
                     }
                 }
             }

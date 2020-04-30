@@ -243,7 +243,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         pauseButton.addTarget(self, action: #selector(onPauseButtonClicked), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(onStopButtonClicked), for: .touchUpInside)
         
-        playerVisiblity(isHidden: true)
+        playerVisibility(isHidden: true)
     }
     
     func setUpVolumeSettingsControl(){
@@ -288,7 +288,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     
     // MARK: - Player Controllers
     
-    func playerVisiblity(isHidden:Bool){
+    func playerVisibility(isHidden:Bool){
         playerControllersView.isHidden = isHidden
         startTimeLabel.isHidden = isHidden
         endTimeLabel.isHidden = isHidden
@@ -363,7 +363,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             setUpVolumeSettingsControl()
             setUpSiriShortcutButton()
             
-            playerVisiblity(isHidden: false)
+            playerVisibility(isHidden: false)
             self.currentSoundFileName = newSoundFileName
             setUpTrimmer(Int(soundOriginalDuration))
         }
@@ -396,8 +396,8 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             return false
         }
         let soundOriginalDuration:Int = Int(AudioPlayer.sharedInstance.getDuration(soundFileName: soundFileName))
-        let newDuraiton = Int(trimSlider.value[1] - trimSlider.value[0])
-        return soundOriginalDuration != newDuraiton
+        let newDuration = Int(trimSlider.value[1] - trimSlider.value[0])
+        return soundOriginalDuration != newDuration
     }
     
     @objc func saveButtonClicked(_ sender: Any){
@@ -443,7 +443,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         }))
         
         alert.addAction(UIAlertAction(title: "Choose Photo", style: .default , handler:{ (UIAlertAction) in
-            self.openGallary()
+            self.openGallery()
         }))
         
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler:{ (UIAlertAction) in
@@ -461,7 +461,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         present(vc, animated: true)
     }
     
-    func openGallary(){
+    func openGallery(){
         let vc = UIImagePickerController()
         vc.sourceType = .photoLibrary
         vc.allowsEditing = true
@@ -516,7 +516,7 @@ extension AddEditSoundController: UIDocumentPickerDelegate{
     
     func handleURL(_ url:URL){
         let fileType = SoundsFilesManger.checkFileType(url)
-        if fileType == SupportedFileTypes.unknowen{
+        if fileType == SupportedFileTypes.unknown{
             AlertsManager.showFileNotSuportedAlert(self)
             return
         }
@@ -539,7 +539,7 @@ extension AddEditSoundController: SoundsFilesMangerCopyDelegate{
         newSoundReady(soundFileName)
     }
     
-    func copyDidFaild(_ erorr: Error, fileName: String) {
+    func copyDidFailed(_ error: Error, fileName: String) {
         stopAnimating()
         AlertsManager.showImportFailedAlert(self, fileName: fileName)
     }
@@ -560,14 +560,14 @@ extension AddEditSoundController: UIImagePickerControllerDelegate{
 }
 
 extension AddEditSoundController: SoundsFilesMangerTrimDelegate{
-    func trimDidFinshed() {
+    func trimDidFinished() {
         stopAnimating()
         saveSound(nameTextInput.text!, currentSoundImage, currentSoundFileName!)
     }
     
-    func trimDidFaild(_ erorr: Error) {
+    func trimDidFailed(_ error: Error) {
         stopAnimating()
-        print(erorr)
+        print(error)
     }
 }
 
@@ -585,20 +585,20 @@ extension AddEditSoundController{
         if state == .Add || state == .AddExternal{
              saveNewSound(soundName, soundImage, soundFileName)
         }else{
-            saveExsitSound(soundName, soundImage, soundFileName)
+            saveExistSound(soundName, soundImage, soundFileName)
         }
     }
     
-    func saveExsitSound(_ newSoundName:String, _ newSoundImage:UIImage?, _ newSoundFileName:String){
-        guard let exsitSound = editableSound else{
+    func saveExistSound(_ newSoundName:String, _ newSoundImage:UIImage?, _ newSoundFileName:String){
+        guard let existSound = editableSound else{
             return
         }
-        exsitSound.name = newSoundName
-        exsitSound.volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
+        existSound.name = newSoundName
+        existSound.volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
         if let image = newSoundImage{
-            exsitSound.image = image.pngData()
+            existSound.image = image.pngData()
         }
-        exsitSound.fileName = newSoundFileName
+        existSound.fileName = newSoundFileName
         do {
             try moc.save()
             soundSaved = true
