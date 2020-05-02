@@ -36,13 +36,24 @@ public class SoundsFilesManger{
         return try? fileMngr.contentsOfDirectory(atPath:docs)
     }
     
+    
+    public static func getFilesFromDocumentsFolder2() -> [String]?
+    {
+        let fileMngr = FileManager.default;
+        return try? fileMngr.contentsOfDirectory(atPath:getAppGroupDirectory()!.path)
+    }
+    
     public static func getSoundURL(_ soundFileName:String) -> URL {
-        return getDocumentsDirectory().appendingPathComponent(soundFileName)
+        if let appGroupDir = getAppGroupDirectory(){
+            return appGroupDir.appendingPathComponent(soundFileName)
+        }else{
+            return getDocumentsDirectory().appendingPathComponent(soundFileName)
+        }
     }
     
     public static func getTemporalURL(_ extention:String = ".m4a") -> URL {
         let fileName = "\(NSUUID().uuidString).\(extention)"
-        return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
+        return getSoundURL(fileName)
     }
         
     public static func generateSoundFileName() -> String {
@@ -56,11 +67,55 @@ public class SoundsFilesManger{
     
     
     public static func getAppGroupDirectory() -> URL? {
-        return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupID)
-
+        let appGroup = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupID)
+        return appGroup?.appendingPathComponent("Library", isDirectory:  true)
     }
     
     public static func getAppGroupDirectorySoundURL(_ soundFileName:String) -> URL {
         return getAppGroupDirectory()!.appendingPathComponent(soundFileName) //TODO
     }
+    
+    public static func generateNameWithSameExtension(_ url: URL) -> String{
+        return "\(NSUUID().uuidString).\(url.pathExtension)"
+    }
+    
+    public static func copyURLFromShareExtension2(_ data: NSData, _ delegate: SoundsFilesMangerShareDelegate){
+        guard let appGroupURL = SoundsFilesManger.getAppGroupDirectory()  else {
+            return
+        }
+        let mediaName = "\(NSUUID().uuidString).mov"
+        let mediaURL = appGroupURL.appendingPathComponent(mediaName)
+        DispatchQueue.global(qos: .background).async {
+            do {
+                try data.write(to: mediaURL)
+                delegate.copyDidFinish(mediaName)
+            } catch let error {
+                delegate.copyDidFailed(error)
+            }
+        }
+    }
+    
+    public static func copyURLFromShareExtension(_ url: URL, _ delegate: SoundsFilesMangerShareDelegate){
+        guard let appGroupURL = SoundsFilesManger.getAppGroupDirectory()  else {
+            return
+        }
+        let mediaName = generateNameWithSameExtension(url)
+        let mediaURL = appGroupURL.appendingPathComponent(mediaName)
+        DispatchQueue.global(qos: .background).async {
+            do {
+                try FileManager.default.copyItem(at: url, to: mediaURL)
+                //test(source: url, target: mediaURL)
+                delegate.copyDidFinish(mediaName)
+            } catch let error {
+                delegate.copyDidFailed(error)
+            }
+        }
+    }
+}
+    
+
+
+public protocol SoundsFilesMangerShareDelegate: class {
+    func copyDidFinish(_ fileName: String)
+    func copyDidFailed(_ error: Error)
 }

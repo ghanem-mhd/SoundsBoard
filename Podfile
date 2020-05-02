@@ -23,3 +23,8 @@ target 'SBWidget' do
     shared_pods
 end
 
+target 'SBShare' do
+    shared_pods
+end
+
+

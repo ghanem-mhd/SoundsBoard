@@ -176,7 +176,6 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
             return
         }
         soundObject.isFavorite = !soundObject.isFavorite
-        SoundsFilesManger.copySoundToAppContainer(soundObject: soundObject)
         do {
             try moc.save()
         } catch let error as NSError {

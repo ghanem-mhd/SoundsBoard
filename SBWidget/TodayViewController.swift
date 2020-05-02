@@ -135,7 +135,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         }
         
         if let soundGeneratedName = clickedSound.fileName{
-            AudioPlayer.sharedInstance.playInAppContainer(soundFileName: soundGeneratedName, volume: clickedSound.volume)
+            AudioPlayer.sharedInstance.play(soundFileName: soundGeneratedName, volume: clickedSound.volume)
         }
     }
     

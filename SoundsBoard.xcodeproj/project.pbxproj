@@ -29,7 +29,12 @@
 		29FCBEB52442754F0062253F /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; };
 		29FCBEB6244278920062253F /* SoundTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A37A242AAF2A00F5FE4F /* SoundTableCellView.swift */; };
 		47E67CBE910BC05E6FF3B28E /* Pods_SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE300823239CAAA720D25730 /* Pods_SBKit.framework */; };
+		4E6A69590039961671258B8D /* Pods_SBShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A97DAFC7C81338CE69EE009C /* Pods_SBShare.framework */; };
 		7C1CC2F019AAA108AA951643 /* Pods_SBWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751A441148BADCA55FEE0059 /* Pods_SBWidget.framework */; };
+		FC1C8D51245C286100B73597 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1C8D50245C286100B73597 /* ShareViewController.swift */; };
+		FC1C8D54245C286100B73597 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C8D52245C286100B73597 /* MainInterface.storyboard */; };
+		FC1C8D58245C286100B73597 /* SBShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FC1C8D4E245C286100B73597 /* SBShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FC1C8D5D245C73E100B73597 /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; };
 		FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */; };
 		FC362FA22418F103007E43E4 /* cat.wav in Resources */ = {isa = PBXBuildFile; fileRef = FC362FA12418F102007E43E4 /* cat.wav */; };
 		FC362FA524193D8D007E43E4 /* SoundsFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362FA424193D8D007E43E4 /* SoundsFilesManager.swift */; };
@@ -67,6 +72,20 @@
 			remoteGlobalIDString = 29FCBE84244267040062253F;
 			remoteInfo = SBKit;
 		};
+		FC1C8D56245C286100B73597 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC736A37241189EB00D6966B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FC1C8D4D245C286100B73597;
+			remoteInfo = SBShare;
+		};
+		FC1C8D5F245C73E100B73597 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC736A37241189EB00D6966B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29FCBE84244267040062253F;
+			remoteInfo = SBKit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -77,6 +96,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				29FCBEAF244275130062253F /* SBWidget.appex in Embed App Extensions */,
+				FC1C8D58245C286100B73597 /* SBShare.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +116,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C71274C204D32AF8F79B508 /* Pods-SBShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShare.debug.xcconfig"; path = "Target Support Files/Pods-SBShare/Pods-SBShare.debug.xcconfig"; sourceTree = "<group>"; };
 		1073CEF685BAA46FD5A0F904 /* Pods-SBKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBKit.release.xcconfig"; path = "Target Support Files/Pods-SBKit/Pods-SBKit.release.xcconfig"; sourceTree = "<group>"; };
 		29272D38242EC06F0023C703 /* AlertsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsManager.swift; sourceTree = "<group>"; };
 		29311009244CE093007746DE /* SiriExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriExtension.swift; sourceTree = "<group>"; };
@@ -117,14 +138,21 @@
 		29FCBEAA244275130062253F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		29FCBEAC244275130062253F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29FCBED0244282F60062253F /* SBWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SBWidget.entitlements; sourceTree = "<group>"; };
+		2D0B71D0E3F4C2723A64C9C6 /* Pods-SBShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShare.release.xcconfig"; path = "Target Support Files/Pods-SBShare/Pods-SBShare.release.xcconfig"; sourceTree = "<group>"; };
 		68C38BD092EAB442AE937226 /* Pods-SBWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBWidget.debug.xcconfig"; path = "Target Support Files/Pods-SBWidget/Pods-SBWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		751A441148BADCA55FEE0059 /* Pods_SBWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SBWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F1429072493C79148CC0787 /* Pods-SBWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBWidget.release.xcconfig"; path = "Target Support Files/Pods-SBWidget/Pods-SBWidget.release.xcconfig"; sourceTree = "<group>"; };
 		A8987BD69F325177FE0A53C8 /* Pods-SoundsBoard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundsBoard.release.xcconfig"; path = "Target Support Files/Pods-SoundsBoard/Pods-SoundsBoard.release.xcconfig"; sourceTree = "<group>"; };
+		A97DAFC7C81338CE69EE009C /* Pods_SBShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SBShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE55983EC9EC90D40EECB8ED /* Pods-SBKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBKit.debug.xcconfig"; path = "Target Support Files/Pods-SBKit/Pods-SBKit.debug.xcconfig"; sourceTree = "<group>"; };
 		B586485B1E100EF6651BB447 /* Pods-SoundsBoard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundsBoard.debug.xcconfig"; path = "Target Support Files/Pods-SoundsBoard/Pods-SoundsBoard.debug.xcconfig"; sourceTree = "<group>"; };
 		DE300823239CAAA720D25730 /* Pods_SBKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SBKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SoundsBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC1C8D4E245C286100B73597 /* SBShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SBShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC1C8D50245C286100B73597 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		FC1C8D53245C286100B73597 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		FC1C8D55245C286100B73597 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FC1C8D5C245C288B00B73597 /* SBShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SBShare.entitlements; sourceTree = "<group>"; };
 		FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressRecordButton.swift; sourceTree = "<group>"; };
 		FC362FA12418F102007E43E4 /* cat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cat.wav; sourceTree = "<group>"; };
 		FC362FA424193D8D007E43E4 /* SoundsFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsFilesManager.swift; sourceTree = "<group>"; };
@@ -158,6 +186,15 @@
 				29FCBEB52442754F0062253F /* SBKit.framework in Frameworks */,
 				29FCBEA5244275130062253F /* NotificationCenter.framework in Frameworks */,
 				7C1CC2F019AAA108AA951643 /* Pods_SBWidget.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC1C8D4B245C286100B73597 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC1C8D5D245C73E100B73597 /* SBKit.framework in Frameworks */,
+				4E6A69590039961671258B8D /* Pods_SBShare.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +277,7 @@
 				DE300823239CAAA720D25730 /* Pods_SBKit.framework */,
 				29FCBEA4244275130062253F /* NotificationCenter.framework */,
 				751A441148BADCA55FEE0059 /* Pods_SBWidget.framework */,
+				A97DAFC7C81338CE69EE009C /* Pods_SBShare.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -253,8 +291,21 @@
 				1073CEF685BAA46FD5A0F904 /* Pods-SBKit.release.xcconfig */,
 				68C38BD092EAB442AE937226 /* Pods-SBWidget.debug.xcconfig */,
 				7F1429072493C79148CC0787 /* Pods-SBWidget.release.xcconfig */,
+				0C71274C204D32AF8F79B508 /* Pods-SBShare.debug.xcconfig */,
+				2D0B71D0E3F4C2723A64C9C6 /* Pods-SBShare.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		FC1C8D4F245C286100B73597 /* SBShare */ = {
+			isa = PBXGroup;
+			children = (
+				FC1C8D5C245C288B00B73597 /* SBShare.entitlements */,
+				FC1C8D50245C286100B73597 /* ShareViewController.swift */,
+				FC1C8D52245C286100B73597 /* MainInterface.storyboard */,
+				FC1C8D55245C286100B73597 /* Info.plist */,
+			);
+			path = SBShare;
 			sourceTree = "<group>";
 		};
 		FC362FA324193D5C007E43E4 /* utilities */ = {
@@ -273,6 +324,7 @@
 				FC736A41241189EB00D6966B /* SoundsBoard */,
 				29FCBE86244267040062253F /* SBKit */,
 				29FCBEA6244275130062253F /* SBWidget */,
+				FC1C8D4F245C286100B73597 /* SBShare */,
 				FC736A40241189EB00D6966B /* Products */,
 				DACDE840125A51533FD1CBEA /* Pods */,
 				4A0CE9DC72527AAEABEBA588 /* Frameworks */,
@@ -285,6 +337,7 @@
 				FC736A3F241189EB00D6966B /* SoundsBoard.app */,
 				29FCBE85244267040062253F /* SBKit.framework */,
 				29FCBEA3244275130062253F /* SBWidget.appex */,
+				FC1C8D4E245C286100B73597 /* SBShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -395,6 +448,25 @@
 			productReference = 29FCBEA3244275130062253F /* SBWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		FC1C8D4D245C286100B73597 /* SBShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC1C8D5B245C286100B73597 /* Build configuration list for PBXNativeTarget "SBShare" */;
+			buildPhases = (
+				69FD95CE03099B27A1884423 /* [CP] Check Pods Manifest.lock */,
+				FC1C8D4A245C286100B73597 /* Sources */,
+				FC1C8D4B245C286100B73597 /* Frameworks */,
+				FC1C8D4C245C286100B73597 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FC1C8D60245C73E100B73597 /* PBXTargetDependency */,
+			);
+			name = SBShare;
+			productName = SBShare;
+			productReference = FC1C8D4E245C286100B73597 /* SBShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		FC736A3E241189EB00D6966B /* SoundsBoard */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC736A56241189ED00D6966B /* Build configuration list for PBXNativeTarget "SoundsBoard" */;
@@ -412,6 +484,7 @@
 			dependencies = (
 				29FCBE8B244267040062253F /* PBXTargetDependency */,
 				29FCBEAE244275130062253F /* PBXTargetDependency */,
+				FC1C8D57245C286100B73597 /* PBXTargetDependency */,
 			);
 			name = SoundsBoard;
 			productName = SoundsBoard;
@@ -424,7 +497,7 @@
 		FC736A37241189EB00D6966B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1120;
 				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Mohammed Ghannm";
 				TargetAttributes = {
@@ -434,6 +507,9 @@
 					};
 					29FCBEA2244275130062253F = {
 						CreatedOnToolsVersion = 11.3.1;
+					};
+					FC1C8D4D245C286100B73597 = {
+						CreatedOnToolsVersion = 11.2.1;
 					};
 					FC736A3E241189EB00D6966B = {
 						CreatedOnToolsVersion = 11.2.1;
@@ -457,6 +533,7 @@
 				FC736A3E241189EB00D6966B /* SoundsBoard */,
 				29FCBE84244267040062253F /* SBKit */,
 				29FCBEA2244275130062253F /* SBWidget */,
+				FC1C8D4D245C286100B73597 /* SBShare */,
 			);
 		};
 /* End PBXProject section */
@@ -474,6 +551,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				29FCBEAB244275130062253F /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC1C8D4C245C286100B73597 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC1C8D54245C286100B73597 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +592,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-SoundsBoard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		69FD95CE03099B27A1884423 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SBShare-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -600,6 +707,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FC1C8D4A245C286100B73597 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC1C8D51245C286100B73597 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FC736A3B241189EB00D6966B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -637,6 +752,16 @@
 			target = 29FCBE84244267040062253F /* SBKit */;
 			targetProxy = 29FCBEB32442752A0062253F /* PBXContainerItemProxy */;
 		};
+		FC1C8D57245C286100B73597 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FC1C8D4D245C286100B73597 /* SBShare */;
+			targetProxy = FC1C8D56245C286100B73597 /* PBXContainerItemProxy */;
+		};
+		FC1C8D60245C73E100B73597 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29FCBE84244267040062253F /* SBKit */;
+			targetProxy = FC1C8D5F245C73E100B73597 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -644,6 +769,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				29FCBEAA244275130062253F /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		FC1C8D52245C286100B73597 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FC1C8D53245C286100B73597 /* Base */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -781,6 +914,53 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		FC1C8D59245C286100B73597 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C71274C204D32AF8F79B508 /* Pods-SBShare.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SBShare/SBShare.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7D6V6TM4RZ;
+				INFOPLIST_FILE = SBShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundsBoard.SBShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FC1C8D5A245C286100B73597 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D0B71D0E3F4C2723A64C9C6 /* Pods-SBShare.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SBShare/SBShare.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7D6V6TM4RZ;
+				INFOPLIST_FILE = SBShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundsBoard.SBShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -966,6 +1146,15 @@
 			buildConfigurations = (
 				29FCBEB1244275130062253F /* Debug */,
 				29FCBEB2244275130062253F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC1C8D5B245C286100B73597 /* Build configuration list for PBXNativeTarget "SBShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC1C8D59245C286100B73597 /* Debug */,
+				FC1C8D5A245C286100B73597 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

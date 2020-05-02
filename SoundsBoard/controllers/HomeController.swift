@@ -23,7 +23,7 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
         super.viewDidLoad()
         
         
-        print(SoundsFilesManger.getFilesFromDocumentsFolder() ?? "")
+        print(SoundsFilesManger.getFilesFromDocumentsFolder2() ?? "")
         
         self.delegate = self
         
