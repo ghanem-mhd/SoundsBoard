@@ -491,8 +491,8 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     lazy var playButton         = UIButton()
     lazy var stopButton         = UIButton()
     lazy var playPauseButton    = UIButton()
-    lazy var openRecorderButton = UIButton(type: .custom)
-    lazy var openFileButton     = UIButton(type: .custom)
+    lazy var openRecorderButton = UIButton(type: .system)
+    lazy var openFileButton     = UIButton(type: .system)
     
     lazy var playerControllersView  = UIStackView()
     lazy var trimSlider             = MultiSlider()
