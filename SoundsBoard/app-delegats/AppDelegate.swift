@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        if let playSoundActivityName = SiriExtension.getPlaySoundAcivityName(){
+        if let playSoundActivityName = SiriExtension.getPlaySoundActivityName(){
             if userActivity.activityType == playSoundActivityName{
                 let soundFileName = Array(userActivity.keywords)[0]
                 AudioPlayer.sharedInstance.play(soundFileName: soundFileName)

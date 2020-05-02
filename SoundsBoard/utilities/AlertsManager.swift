@@ -18,8 +18,8 @@ class AlertsManager{
         viewController.present(alert, animated: true)
     }
     
-    public static func showFileNotSuportedAlert(_ viewController: UIViewController){
-        AlertsManager.showAlert(viewController, "Opps", "The file type is not suported!")
+    public static func showFileNotSupportedAlert(_ viewController: UIViewController){
+        AlertsManager.showAlert(viewController, "Opps", "The file type is not supported!")
     }
     
     public static func showImportFailedAlert(_ viewController: UIViewController, fileName: String){
@@ -31,7 +31,7 @@ class AlertsManager{
     }
     
     public static func showMaxFavoriteAlert(_ viewController: UIViewController){
-        AlertsManager.showAlert(viewController, "Opps", "Maxiumum favorite sounds is \(Constants.maximumFavoriteSounds).")
+        AlertsManager.showAlert(viewController, "Opps", "Maximum favourite sounds is \(Constants.maximumFavoriteSounds).")
     }
     
     

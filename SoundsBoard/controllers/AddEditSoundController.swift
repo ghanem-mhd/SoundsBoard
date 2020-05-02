@@ -238,7 +238,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     }
     
     func setUpVolumeSettingsControl(){
-        volumeSegmentControl.selectedSegmentIndex = VolumeManager.defultVolume
+        volumeSegmentControl.selectedSegmentIndex = VolumeManager.defaultVolume
         self.view.addSubview(volumeSegmentControl)
         volumeSegmentControl.addTarget(self, action: #selector(onVolumeChanged), for: .valueChanged)
         volumeSegmentControl.snp.makeConstraints{ (make) -> Void in
@@ -526,7 +526,7 @@ extension AddEditSoundController: UIDocumentPickerDelegate{
     func handleURL(_ url:URL){
         let fileType = SoundsFilesManger.checkFileType(url)
         if fileType == SupportedFileTypes.unknown{
-            AlertsManager.showFileNotSuportedAlert(self)
+            AlertsManager.showFileNotSupportedAlert(self)
             return
         }
         SoundsFilesManger.copyFile(url, self)
@@ -649,7 +649,7 @@ extension AddEditSoundController {
         guard soundName.isNotEmpty else{
             return
         }
-        guard let playSoundActivityName = SiriExtension.getPlaySoundAcivityName() else{
+        guard let playSoundActivityName = SiriExtension.getPlaySoundActivityName() else{
             return
         }
         let activity = NSUserActivity(activityType: playSoundActivityName)

@@ -18,7 +18,7 @@ import SBKit
 
 class SoundsController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
-    var collectionview: UICollectionView!
+    var collectionView: UICollectionView!
     var cellId = "Cell"
     var moc: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController<SoundObject>?
@@ -34,19 +34,19 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = sectionInsets
         
-        collectionview = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-        collectionview.dataSource = self
-        collectionview.delegate = self
-        collectionview.register(SoundCollectionCellView.self, forCellWithReuseIdentifier: cellId)
-        collectionview.showsVerticalScrollIndicator = false
-        collectionview.backgroundColor = .white
-        collectionview.dragInteractionEnabled = true
-        self.view.addSubview(collectionview)
+        collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(SoundCollectionCellView.self, forCellWithReuseIdentifier: cellId)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.backgroundColor = .white
+        collectionView.dragInteractionEnabled = true
+        self.view.addSubview(collectionView)
         
         initializeFetchedResultsController()
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
-        collectionview.addGestureRecognizer(longPressGesture)
+        collectionView.addGestureRecognizer(longPressGesture)
     }
     
     func initializeFetchedResultsController() {
@@ -89,7 +89,7 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionview.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SoundCollectionCellView
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SoundCollectionCellView
         guard let controller = fetchedResultsController else {
             fatalError("Attempt to configure cell without a managed object")
         }
@@ -103,20 +103,20 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
         
         switch type {
         case .insert:
-            collectionview.insertItems(at: [newIndexPath!])
+            collectionView.insertItems(at: [newIndexPath!])
         case .delete:
-            collectionview.deleteItems(at: [indexPath!])
+            collectionView.deleteItems(at: [indexPath!])
         case .update:
-            collectionview.reloadItems(at: [indexPath!])
+            collectionView.reloadItems(at: [indexPath!])
         case .move:
-            collectionview.moveItem(at: indexPath!, to: newIndexPath!)
+            collectionView.moveItem(at: indexPath!, to: newIndexPath!)
         default:
             break
         }
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        collectionview.endEditing(true)
+        collectionView.endEditing(true)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -149,7 +149,7 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
         if gesture.state != .ended {
             return
         }
-        let indexPath = self.collectionview.indexPathForItem(at: gesture.location(in: collectionview))
+        let indexPath = self.collectionView.indexPathForItem(at: gesture.location(in: collectionView))
         if let indexPath = indexPath {
             let touchedSound = fetchedResultsController?.object(at: indexPath)
             if let soundName = touchedSound?.fileName{

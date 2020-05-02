@@ -193,8 +193,8 @@ public extension SoundsFilesManger{
         let originalSoundFile = getSoundURL(soundFileName)
         do {
             try FileManager.default.copyItem(at: originalSoundFile, to: temporal)
-            let audiofile = try AKAudioFile(forReading: temporal)
-            audiofile.exportAsynchronously(name: soundFileName,
+            let audioFile = try AKAudioFile(forReading: temporal)
+            audioFile.exportAsynchronously(name: soundFileName,
                                            baseDir: .custom,
                                            exportFormat: .m4a,
                                            fromSample: Int64(startTime * 44_100),

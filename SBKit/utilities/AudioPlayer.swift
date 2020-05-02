@@ -23,7 +23,7 @@ public class AudioPlayer {
     
     public func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil, volume:Float = 1){
         let url = SoundsFilesManger.getSoundURL(soundFileName)
-        play(url: url, startTime: startTime, endTime:endTime,checkPlayed: checkPlayed, delegate: delegate, volume: volume)
+        play(url: url, startTime: startTime, endTime:endTime, checkPlayed: checkPlayed, delegate: delegate, volume: volume)
     }
     
     public func play(url: URL, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil, volume:Float = 1) {

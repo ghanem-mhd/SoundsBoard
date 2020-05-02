@@ -11,7 +11,7 @@ import Foundation
 
 public class VolumeManager{
     
-    public static let defultVolume          = 1 // The Mid
+    public static let defaultVolume          = 1 // The Mid
     public static let volumesTitles         = ["Low","Mid","High"]
     public static let volumesValues         = [volumesTitles[0]: Float(0.25), volumesTitles[1]: Float(0.50), volumesTitles[2]: Float(1.0)]
     
@@ -30,6 +30,6 @@ public class VolumeManager{
                 return volumesTitles.firstIndex(of: key)!
             }
         }
-        return defultVolume
+        return defaultVolume
     }
 }

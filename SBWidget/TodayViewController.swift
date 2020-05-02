@@ -13,7 +13,7 @@ import CoreData
 
 class TodayViewController: UIViewController, NCWidgetProviding, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
-    var collectionview: UICollectionView!
+    var collectionView: UICollectionView!
     var cellId = "Cell"
     var moc: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController<SoundObject>?
@@ -32,17 +32,17 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         layout.sectionInset = sectionInsets
     
         
-        collectionview = UICollectionView(frame: view.frame, collectionViewLayout: layout)
-        collectionview.dataSource = self
-        collectionview.delegate = self
-        collectionview.register(SoundCollectionCellView.self, forCellWithReuseIdentifier: cellId)
-        self.view.addSubview(collectionview)
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(SoundCollectionCellView.self, forCellWithReuseIdentifier: cellId)
+        self.view.addSubview(collectionView)
         
-        collectionview.snp.makeConstraints{ (make) -> Void in
+        collectionView.snp.makeConstraints{ (make) -> Void in
             make.edges.equalTo(self.view.snp.edges)
         }
         
-        collectionview.backgroundColor = nil
+        collectionView.backgroundColor = nil
         initializeFetchedResultsController()
     }
     
@@ -87,7 +87,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionview.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SoundCollectionCellView
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SoundCollectionCellView
         guard let controller = fetchedResultsController else {
             fatalError("Attempt to configure cell without a managed object")
         }
@@ -101,20 +101,20 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         
         switch type {
         case .insert:
-            collectionview.insertItems(at: [newIndexPath!])
+            collectionView.insertItems(at: [newIndexPath!])
         case .delete:
-            collectionview.deleteItems(at: [indexPath!])
+            collectionView.deleteItems(at: [indexPath!])
         case .update:
-            collectionview.reloadItems(at: [indexPath!])
+            collectionView.reloadItems(at: [indexPath!])
         case .move:
-            collectionview.moveItem(at: indexPath!, to: newIndexPath!)
+            collectionView.moveItem(at: indexPath!, to: newIndexPath!)
         default:
             break
         }
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        collectionview.endEditing(true)
+        collectionView.endEditing(true)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -146,16 +146,16 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
         switch(gesture.state) {
         case .began:
-            guard let selectedIndexPath = collectionview.indexPathForItem(at: gesture.location(in: collectionview)) else {
+            guard let selectedIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView)) else {
                 break
             }
-            collectionview.beginInteractiveMovementForItem(at: selectedIndexPath)
+            collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
         case .changed:
-            collectionview.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
+            collectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
-            collectionview.endInteractiveMovement()
+            collectionView.endInteractiveMovement()
         default:
-            collectionview.cancelInteractiveMovement()
+            collectionView.cancelInteractiveMovement()
         }
     }
     

@@ -10,7 +10,7 @@ import Foundation
 
 public class SiriExtension{
     
-    public static func getPlaySoundAcivityName() -> String? {
+    public static func getPlaySoundActivityName() -> String? {
         if let bundleId = Bundle.main.bundleIdentifier{
             return bundleId + ".play.sound"
         }

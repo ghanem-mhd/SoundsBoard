@@ -29,18 +29,15 @@ public class SoundsFilesManger{
         }
     }
     
-    public static func getFilesFromDocumentsFolder() -> [String]?
-    {
-        let fileMngr = FileManager.default;
-        let docs = fileMngr.urls(for: .documentDirectory, in: .userDomainMask)[0].path
-        return try? fileMngr.contentsOfDirectory(atPath:docs)
+    public static func getFilesFromDocumentsFolder() -> [String]?{
+        let fileManager = FileManager.default;
+        let docs = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0].path
+        return try? fileManager.contentsOfDirectory(atPath:docs)
     }
     
     
-    public static func getFilesFromDocumentsFolder2() -> [String]?
-    {
-        let fileMngr = FileManager.default;
-        return try? fileMngr.contentsOfDirectory(atPath:getAppGroupDirectory()!.path)
+    public static func getFilesFromDocumentsFolder2() -> [String]?{
+        return try? FileManager.default.contentsOfDirectory(atPath:getAppGroupDirectory()!.path)
     }
     
     public static func getSoundURL(_ soundFileName:String) -> URL {
@@ -51,8 +48,8 @@ public class SoundsFilesManger{
         }
     }
     
-    public static func getTemporalURL(_ extention:String = ".m4a") -> URL {
-        let fileName = "\(NSUUID().uuidString).\(extention)"
+    public static func getTemporalURL(_ extensionName :String = ".m4a") -> URL {
+        let fileName = "\(NSUUID().uuidString).\(extensionName)"
         return getSoundURL(fileName)
     }
         
