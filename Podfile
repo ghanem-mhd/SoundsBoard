@@ -10,13 +10,13 @@ end
 
 target 'SoundsBoard' do
   # Pods for SoundsBoard
-  pod 'AudioKit', '~> 4.0'
   pod 'NVActivityIndicatorView'
   shared_pods
 end
 
 target 'SBKit' do
     shared_pods
+    pod 'AudioKit', '~> 4.0'
 end
 
 target 'SBWidget' do
@@ -25,7 +25,6 @@ end
 
 target 'SBShare' do
     shared_pods
-    pod 'AudioKit', '~> 4.0'
 end
 
 

@@ -37,7 +37,6 @@
 		FC1C8D5D245C73E100B73597 /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; };
 		FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */; };
 		FC362FA22418F103007E43E4 /* cat.wav in Resources */ = {isa = PBXBuildFile; fileRef = FC362FA12418F102007E43E4 /* cat.wav */; };
-		FC362FA524193D8D007E43E4 /* SoundsFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC362FA424193D8D007E43E4 /* SoundsFilesManager.swift */; };
 		FC362FC3241D64BA007E43E4 /* Pods_SoundsBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */; };
 		FC362FC4241D64BA007E43E4 /* Pods_SoundsBoard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FC736A43241189EB00D6966B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A42241189EB00D6966B /* AppDelegate.swift */; };
@@ -155,7 +154,6 @@
 		FC1C8D5C245C288B00B73597 /* SBShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SBShare.entitlements; sourceTree = "<group>"; };
 		FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressRecordButton.swift; sourceTree = "<group>"; };
 		FC362FA12418F102007E43E4 /* cat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cat.wav; sourceTree = "<group>"; };
-		FC362FA424193D8D007E43E4 /* SoundsFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsFilesManager.swift; sourceTree = "<group>"; };
 		FC362FC8241D6CFC007E43E4 /* SoundsBoard.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SoundsBoard.entitlements; sourceTree = "<group>"; };
 		FC736A3F241189EB00D6966B /* SoundsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC736A42241189EB00D6966B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -312,7 +310,6 @@
 		FC362FA324193D5C007E43E4 /* utilities */ = {
 			isa = PBXGroup;
 			children = (
-				FC362FA424193D8D007E43E4 /* SoundsFilesManager.swift */,
 				29311009244CE093007746DE /* SiriExtension.swift */,
 			);
 			path = utilities;
@@ -720,7 +717,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC362FA524193D8D007E43E4 /* SoundsFilesManager.swift in Sources */,
 				2975A379242AAE1E00F5FE4F /* MoreController.swift in Sources */,
 				2975A37B242AAF2A00F5FE4F /* SoundTableCellView.swift in Sources */,
 				FC736A47241189EB00D6966B /* HomeController.swift in Sources */,
