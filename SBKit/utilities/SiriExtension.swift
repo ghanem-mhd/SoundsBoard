@@ -1,8 +1,8 @@
 //
 //  SiriExtension.swift
-//  SoundsBoard
+//  SBKit
 //
-//  Created by Mohammad Ghanem on 19.04.20.
+//  Created by Mohammed Ghannm on 03.05.20.
 //  Copyright © 2020 Mohammed Ghannm. All rights reserved.
 //
 

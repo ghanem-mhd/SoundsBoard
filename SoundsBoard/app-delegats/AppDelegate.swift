@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         let navigationController = app.windows[0].rootViewController as! UINavigationController
         let addEditSoundController = AddEditSoundController()
-        addEditSoundController.state = .AddExternal
+        addEditSoundController.state = .ShareExtension
         addEditSoundController.externalAudioURL = url
         navigationController.pushViewController(addEditSoundController, animated: true)
         return true
