@@ -11,14 +11,10 @@ import MobileCoreServices
 import AudioKit
 import AVFoundation
 
-public protocol SoundsFilesMangerShareDelegate: class {
-    func copyDidFinish(_ fileName: String)
-    func copyDidFailed(_ error: Error)
-}
-
 public enum SupportedFileTypes {
     case m4a
     case mp3
+    case mov
     case video
     case unknown
 }
@@ -99,39 +95,6 @@ public class SoundsFilesManger{
         return "\(NSUUID().uuidString).\(url.pathExtension)"
     }
     
-    public static func copyURLFromShareExtension2(_ data: NSData, _ delegate: SoundsFilesMangerShareDelegate){
-        guard let appGroupURL = SoundsFilesManger.getAppGroupDirectory()  else {
-            return
-        }
-        let mediaName = "\(NSUUID().uuidString).mov"
-        let mediaURL = appGroupURL.appendingPathComponent(mediaName)
-        DispatchQueue.global(qos: .background).async {
-            do {
-                try data.write(to: mediaURL)
-                delegate.copyDidFinish(mediaName)
-            } catch let error {
-                delegate.copyDidFailed(error)
-            }
-        }
-    }
-    
-    public static func copyURLFromShareExtension(_ url: URL, _ delegate: SoundsFilesMangerShareDelegate){
-        guard let appGroupURL = SoundsFilesManger.getAppGroupDirectory()  else {
-            return
-        }
-        let mediaName = generateNameWithSameExtension(url)
-        let mediaURL = appGroupURL.appendingPathComponent(mediaName)
-        DispatchQueue.global(qos: .background).async {
-            do {
-                try FileManager.default.copyItem(at: url, to: mediaURL)
-                //test(source: url, target: mediaURL)
-                delegate.copyDidFinish(mediaName)
-            } catch let error {
-                delegate.copyDidFailed(error)
-            }
-        }
-    }
-    
     public static func checkFileType(_ url:URL) -> SupportedFileTypes{
         let urlExtension = NSURL(fileURLWithPath: url.path).pathExtension
         guard let uti = UTTypeCreatePreferredIdentifierForTag( kUTTagClassFilenameExtension,urlExtension! as CFString,nil) else {
@@ -145,15 +108,17 @@ public class SoundsFilesManger{
             return SupportedFileTypes.m4a
         }
         if  (UTTypeConformsTo(fileUTI, kUTTypeMovie) ||
-            UTTypeConformsTo(fileUTI, kUTTypeQuickTimeMovie) ||
             UTTypeConformsTo(fileUTI, kUTTypeMPEG) ||
             UTTypeConformsTo(fileUTI, kUTTypeMPEG4)) {
             return SupportedFileTypes.video
         }
+        if UTTypeConformsTo(fileUTI, kUTTypeQuickTimeMovie){
+            return SupportedFileTypes.mov
+        }
         return SupportedFileTypes.unknown
     }
     
-    public    static func copyFile(_ fileURL: URL, _ delegate: SoundsFilesMangerCopyDelegate){
+    public static func copyFile(_ fileURL: URL, _ delegate: SoundsFilesMangerCopyDelegate){
         let fileType = checkFileType(fileURL)
         if fileType == .m4a{
             copyAudioFile(fileURL, delegate)
@@ -162,6 +127,9 @@ public class SoundsFilesManger{
             convertAndCopy(fileURL, delegate)
         }
         if fileType == .video{
+            convertAndCopy(fileURL, delegate)
+        }
+        if fileType == .mov{
             extractAudioAndExport(fileURL, delegate)
         }
     }
@@ -194,7 +162,7 @@ public class SoundsFilesManger{
     public static func convertAndCopy(_ fileURL: URL, _ delegate: SoundsFilesMangerCopyDelegate){
         let temporal = getTemporalURL(fileURL.pathExtension)
         let soundFileName = SoundsFilesManger.generateSoundFileName()
-        let dstURL2 = SoundsFilesManger.getSoundURL(soundFileName)
+        let soundFileURL = SoundsFilesManger.getSoundURL(soundFileName)
         delegate.copyDidStart()
         DispatchQueue.global(qos: .background).async {
             let isSecuredURL = fileURL.startAccessingSecurityScopedResource() == true
@@ -208,7 +176,7 @@ public class SoundsFilesManger{
                     options.format = "m4a"
                     options.sampleRate = 48000
                     options.bitDepth = 24
-                    let converter = AKConverter(inputURL: temporal, outputURL: dstURL2, options: options)
+                    let converter = AKConverter(inputURL: temporal, outputURL: soundFileURL, options: options)
                     DispatchQueue.main.async {
                         delegate.convertDidStart()
                     }
@@ -228,13 +196,10 @@ public class SoundsFilesManger{
                     print(error)
                     delegate.copyDidFailed(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
                 }
-                
-                
             }
             if (isSecuredURL) {
                 fileURL.stopAccessingSecurityScopedResource()
             }
-            
         }
     }
     
@@ -244,43 +209,31 @@ public class SoundsFilesManger{
         delegate.convertDidStart()
         let temporal = getTemporalURL(sourceUrl.pathExtension)
         let soundFileName = SoundsFilesManger.generateSoundFileName()
-        let dstURL2 = SoundsFilesManger.getSoundURL(soundFileName)
-        let isSecuredURL = sourceUrl.startAccessingSecurityScopedResource() == true
-        let coordinator = NSFileCoordinator()
-        var error: NSError?
-        coordinator.coordinate(readingItemAt: sourceUrl, options: [], error: &error) { (url) -> Void in
-            // Create a composition
-            let composition = AVMutableComposition()
-            do {
-                try FileManager.default.copyItem(at: url, to: temporal)
-                let asset = AVURLAsset(url: temporal)
-                guard let audioAssetTrack = asset.tracks(withMediaType: AVMediaType.audio).first else { return }
-                guard let audioCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: kCMPersistentTrackID_Invalid) else { return }
-                let timeRange = CMTimeRangeMake(start: CMTime.zero, duration: CMTime(seconds: 20, preferredTimescale: 1))
-                try audioCompositionTrack.insertTimeRange(timeRange, of: audioAssetTrack, at: CMTime.zero)
-            } catch {
-                print(error)
-                delegate.copyDidFailed(error,fileName: sourceUrl.lastPathComponent)
-            }
-            // Create an export session
-            let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetPassthrough)!
-            exportSession.outputFileType = AVFileType.m4a
-            exportSession.outputURL = dstURL2
-            
-            // Export file
-            exportSession.exportAsynchronously {
-                if let e = exportSession.error{
-                    print(e)
-                    delegate.copyDidFailed(e,fileName: sourceUrl.lastPathComponent)
-                }
-                guard case exportSession.status = AVAssetExportSession.Status.completed else { return }
-                DispatchQueue.main.async {
-                    delegate.copyAndConvertDidFinish(soundFileName)
-                }
-            }
+        let soundFileURL = SoundsFilesManger.getSoundURL(soundFileName)
+        let composition = AVMutableComposition()
+        do {
+            try FileManager.default.copyItem(at: sourceUrl, to: temporal)
+            let asset = AVURLAsset(url: temporal)
+            guard let audioAssetTrack = asset.tracks(withMediaType: AVMediaType.audio).first else { return }
+            guard let audioCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: kCMPersistentTrackID_Invalid) else { return }
+            try audioCompositionTrack.insertTimeRange(audioAssetTrack.timeRange, of: audioAssetTrack, at: CMTime.zero)
+        } catch {
+            print(error)
+            delegate.copyDidFailed(error,fileName: sourceUrl.lastPathComponent)
         }
-        if (isSecuredURL) {
-            sourceUrl.stopAccessingSecurityScopedResource()
+        let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetPassthrough)!
+        exportSession.outputFileType = AVFileType.m4a
+        exportSession.outputURL = soundFileURL
+        exportSession.exportAsynchronously {
+            deleteFile(temporal)
+            if let e = exportSession.error{
+                print(e)
+                delegate.copyDidFailed(e,fileName: sourceUrl.lastPathComponent)
+            }
+            guard case exportSession.status = AVAssetExportSession.Status.completed else { return }
+            DispatchQueue.main.async {
+                delegate.copyAndConvertDidFinish(soundFileName)
+            }
         }
     }
     

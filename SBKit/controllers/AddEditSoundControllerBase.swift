@@ -23,13 +23,14 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     }
     
     public var externalAudioURL:URL?
-    public var state:ControllerState = .Add
+    public var state:ControllerState = .ShareExtension
     public var moc : NSManagedObjectContext!
     public var soundSaved = false
     
     var currentSoundFileName: String?
     var currentSoundImage: UIImage?
     
+    var isLoading = false
     var isPlaying = false
     var newDurationString = ""
     var loadingAlert = AlertsManager.getActivityIndicatorAlert()
@@ -49,10 +50,11 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     open func setUpUI(){
         setUpAddImageButtonView()
         setUpNameInputView()
+        setUpPlayerView(nameTextInput)
         
         if state == .ShareExtension{
-            setUpPlayerView(nameTextInput)
-            handleURL(externalAudioURL!)
+            self.navigationItem.leftBarButtonItem = cancelButton
+            getSharedURL()
         }
     }
     
@@ -339,17 +341,24 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
             saveSound(name, self.currentSoundImage, soundFileName)
         }
     }
-        
+    
+    @objc func cancelButtonClicked(_ sender: Any){
+        if let context = extensionContext{
+            context.cancelRequest(withError: NSError(domain: "com.domain.name", code: 0, userInfo: nil))
+        }
+    }
+    
     override public func viewDidDisappear(_ animated: Bool) {
         guard !soundSaved else{
             return
         }
-        if isMovingFromParent {
-            if let soundGenratedName = currentSoundFileName{
-                AudioPlayer.sharedInstance.stop()
-                if state == .Add{
-                    SoundsFilesManger.deleteSoundFile(soundGenratedName)
-                }
+        if let soundGeneratedName = currentSoundFileName{
+            AudioPlayer.sharedInstance.stop()
+            if state == .Add && isMovingFromParent{
+                SoundsFilesManger.deleteSoundFile(soundGeneratedName)
+            }
+            if state == .ShareExtension{
+                SoundsFilesManger.deleteSoundFile(soundGeneratedName)
             }
         }
     }
@@ -394,10 +403,10 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     open func saveSound(_ soundName:String, _ soundImage:UIImage?, _ soundFileName:String){
         if state == .ShareExtension{
             saveNewSound(soundName, soundImage, soundFileName)
+            if let context = extensionContext{
+                context.completeRequest(returningItems: nil, completionHandler: nil)
+            }
         }
-        stopAnimating(completion: {
-            self.navigationController?.popViewController(animated: true)
-        })
     }
     
     public func saveNewSound(_ soundName:String, _ soundImage:UIImage?, _ soundFileName:String){
@@ -422,6 +431,7 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     
     
     lazy var saveButton         = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonClicked))
+    lazy var cancelButton         = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(cancelButtonClicked))
     public lazy var addImageButton         = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     public lazy var nameTextInput          = UITextField()
     public lazy var volumeSegmentControl   = UISegmentedControl(items: VolumeManager.volumesTitles)
@@ -440,18 +450,6 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     lazy var trimHintLabel          = UILabel()
     lazy var addSiriShortcut        = UIButton(type: .system)
     lazy var volumeHintLabel        = UILabel()
-}
-
-extension AddEditSoundControllerBase{
-    
-    public func handleURL(_ url:URL){
-        let fileType = SoundsFilesManger.checkFileType(url)
-        if fileType == SupportedFileTypes.unknown{
-            AlertsManager.showFileNotSupportedAlert(self)
-            return
-        }
-        SoundsFilesManger.copyFile(url, self)
-    }
 }
 
 extension AddEditSoundControllerBase: SoundsFilesMangerCopyDelegate{
@@ -549,11 +547,62 @@ extension AddEditSoundControllerBase {
 extension AddEditSoundControllerBase{
     public func stopAnimating(completion: (() -> Void)? = nil){
         loadingAlert.dismiss(animated: true, completion: completion)
+        isLoading = false
     }
     
     public func startAnimating(message:String){
         loadingAlert.message = message
-        present(loadingAlert, animated: true, completion: nil)
+        if !isLoading{
+            present(loadingAlert, animated: true, completion: nil)
+            isLoading = true
+        }
+    }
+}
+
+extension AddEditSoundControllerBase{
+    
+    func getSharedURL(){
+        startAnimating(message: "Loading...")
+        guard let context = extensionContext else{
+            return
+        }
+        guard let sharedItem = context.inputItems as? [NSExtensionItem] else{
+            AlertsManager.showFileNotSupportedAlert(self)
+            return
+        }
+        guard let itemProviders = sharedItem[0].attachments else{
+            AlertsManager.showFileNotSupportedAlert(self)
+            return
+        }
+        guard itemProviders.count >= 1 else{
+            AlertsManager.showFileNotSupportedAlert(self)
+            return
+        }
+        itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypeAudiovisualContent), options: nil, completionHandler: handleData)
+    }
+    
+    public func handleURL(_ url:URL){
+        let fileType = SoundsFilesManger.checkFileType(url)
+        if fileType == SupportedFileTypes.unknown{
+           AlertsManager.showFileNotSupportedAlert(self)
+           return
+        }
+        SoundsFilesManger.copyFile(url, self)
+    }
+    
+    public func handleData(sharedData:NSSecureCoding?, error:Error?) -> Void{
+        DispatchQueue.main.async {
+            if let e = error{
+                print(e)
+                AlertsManager.showFileNotSupportedAlert(self)
+                return
+            }
+            if let url = sharedData as? URL{
+                self.handleURL(url)
+            }else{
+                AlertsManager.showFileNotSupportedAlert(self)
+            }
+        }
     }
 }
 

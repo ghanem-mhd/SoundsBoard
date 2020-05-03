@@ -33,7 +33,7 @@
 		FC00950F245ECE7200D41E59 /* AddEditSoundControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC00950E245ECE7200D41E59 /* AddEditSoundControllerBase.swift */; };
 		FC009511245ED35300D41E59 /* AddEditSoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC009510245ED35300D41E59 /* AddEditSoundController.swift */; };
 		FC009513245ED4F400D41E59 /* SiriExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC009512245ED4F400D41E59 /* SiriExtension.swift */; };
-		FC1C8D51245C286100B73597 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1C8D50245C286100B73597 /* ShareViewController.swift */; };
+		FC0F1CE5245F06DD006967E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC736A4E241189ED00D6966B /* Assets.xcassets */; };
 		FC1C8D54245C286100B73597 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C8D52245C286100B73597 /* MainInterface.storyboard */; };
 		FC1C8D58245C286100B73597 /* SBShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FC1C8D4E245C286100B73597 /* SBShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FC1C8D5D245C73E100B73597 /* SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FCBE85244267040062253F /* SBKit.framework */; };
@@ -41,6 +41,7 @@
 		FC362FA22418F103007E43E4 /* cat.wav in Resources */ = {isa = PBXBuildFile; fileRef = FC362FA12418F102007E43E4 /* cat.wav */; };
 		FC362FC3241D64BA007E43E4 /* Pods_SoundsBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */; };
 		FC362FC4241D64BA007E43E4 /* Pods_SoundsBoard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FC499A99245F17A2002F7CED /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC499A98245F17A2002F7CED /* ShareViewController.swift */; };
 		FC736A43241189EB00D6966B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A42241189EB00D6966B /* AppDelegate.swift */; };
 		FC736A45241189EB00D6966B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A44241189EB00D6966B /* SceneDelegate.swift */; };
 		FC736A47241189EB00D6966B /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A46241189EB00D6966B /* HomeController.swift */; };
@@ -151,13 +152,13 @@
 		FC009510245ED35300D41E59 /* AddEditSoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditSoundController.swift; sourceTree = "<group>"; };
 		FC009512245ED4F400D41E59 /* SiriExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriExtension.swift; sourceTree = "<group>"; };
 		FC1C8D4E245C286100B73597 /* SBShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SBShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		FC1C8D50245C286100B73597 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		FC1C8D53245C286100B73597 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		FC1C8D55245C286100B73597 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FC1C8D5C245C288B00B73597 /* SBShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SBShare.entitlements; sourceTree = "<group>"; };
 		FC362F9F24183F6D007E43E4 /* LongPressRecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressRecordButton.swift; sourceTree = "<group>"; };
 		FC362FA12418F102007E43E4 /* cat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cat.wav; sourceTree = "<group>"; };
 		FC362FC8241D6CFC007E43E4 /* SoundsBoard.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SoundsBoard.entitlements; sourceTree = "<group>"; };
+		FC499A98245F17A2002F7CED /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		FC736A3F241189EB00D6966B /* SoundsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC736A42241189EB00D6966B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FC736A44241189EB00D6966B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -311,8 +312,8 @@
 		FC1C8D4F245C286100B73597 /* SBShare */ = {
 			isa = PBXGroup;
 			children = (
+				FC499A98245F17A2002F7CED /* ShareViewController.swift */,
 				FC1C8D5C245C288B00B73597 /* SBShare.entitlements */,
-				FC1C8D50245C286100B73597 /* ShareViewController.swift */,
 				FC1C8D52245C286100B73597 /* MainInterface.storyboard */,
 				FC1C8D55245C286100B73597 /* Info.plist */,
 			);
@@ -510,6 +511,7 @@
 					};
 					FC1C8D4D245C286100B73597 = {
 						CreatedOnToolsVersion = 11.2.1;
+						LastSwiftMigration = 1120;
 					};
 					FC736A3E241189EB00D6966B = {
 						CreatedOnToolsVersion = 11.2.1;
@@ -558,6 +560,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC0F1CE5245F06DD006967E3 /* Assets.xcassets in Resources */,
 				FC1C8D54245C286100B73597 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,7 +717,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC1C8D51245C286100B73597 /* ShareViewController.swift in Sources */,
+				FC499A99245F17A2002F7CED /* ShareViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -921,6 +924,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0C71274C204D32AF8F79B508 /* Pods-SBShare.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SBShare/SBShare.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -936,6 +940,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundsBoard.SBShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -945,6 +950,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2D0B71D0E3F4C2723A64C9C6 /* Pods-SBShare.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SBShare/SBShare.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
