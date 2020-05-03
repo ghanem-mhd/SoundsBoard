@@ -10,9 +10,8 @@ end
 
 target 'SoundsBoard' do
   # Pods for SoundsBoard
-  pod 'NVActivityIndicatorView'
-  pod 'MultiSlider'
   pod 'AudioKit', '~> 4.0'
+  pod 'NVActivityIndicatorView'
   shared_pods
 end
 

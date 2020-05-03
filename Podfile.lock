@@ -5,21 +5,15 @@ PODS:
   - AudioKit/Core (4.9.4)
   - AudioKit/UI (4.9.4):
     - AudioKit/Core
-  - AvailableHapticFeedback (1.0.2)
-  - MultiSlider (1.10.8):
-    - AvailableHapticFeedback
-    - SweeterSwift
   - NVActivityIndicatorView (4.8.0):
     - NVActivityIndicatorView/Presenter (= 4.8.0)
   - NVActivityIndicatorView/Presenter (4.8.0)
   - SnapKit (5.0.1)
-  - SweeterSwift (1.1.3)
   - SwiftySound (1.2.0)
   - WARangeSlider (1.1.1)
 
 DEPENDENCIES:
   - AudioKit (~> 4.0)
-  - MultiSlider
   - NVActivityIndicatorView
   - SnapKit (~> 5.0.0)
   - SwiftySound
@@ -28,24 +22,18 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AudioKit
-    - AvailableHapticFeedback
-    - MultiSlider
     - NVActivityIndicatorView
     - SnapKit
-    - SweeterSwift
     - SwiftySound
     - WARangeSlider
 
 SPEC CHECKSUMS:
   AudioKit: 2ad2c0c546f53134967e4a381dfd8691b7674093
-  AvailableHapticFeedback: 9b21b9f6d3e4566015988b5de35b40abefe6c09a
-  MultiSlider: a4fdcb3fb058a0af95720570b44d8683da5312c8
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SweeterSwift: d909211f6833405628c8c7c6bf9f8f2e8a0e9df9
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
   WARangeSlider: 54b3e0853b8d16c444fd539005901aecee86837d
 
-PODFILE CHECKSUM: 3479351525fef6f83df8e247e25f15b15ef8d109
+PODFILE CHECKSUM: 9e1fef7b5ada98de2a43d3641afe3478d97db168
 
 COCOAPODS: 1.9.1

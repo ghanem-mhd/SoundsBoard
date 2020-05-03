@@ -1,16 +1,15 @@
 //
-//  AlertsManager  .swift
-//  SoundsBoard
+//  AlertsManager.swift
+//  SBKit
 //
-//  Created by Mohammad Ghanem on 28.03.20.
+//  Created by Mohammed Ghannm on 03.05.20.
 //  Copyright © 2020 Mohammed Ghannm. All rights reserved.
 //
 
 import Foundation
 import UIKit
-import SBKit
 
-class AlertsManager{
+public class AlertsManager{
     
     public static func showAlert(_ viewController: UIViewController, _ title: String, _ message: String){
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -34,5 +33,13 @@ class AlertsManager{
         AlertsManager.showAlert(viewController, "Opps", "Maximum favourite sounds is \(Constants.maximumFavoriteSounds).")
     }
     
-    
+    public static func getActivityIndicatorAlert() -> UIAlertController{
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.style = UIActivityIndicatorView.Style.gray
+        loadingIndicator.startAnimating();
+        alert.view.addSubview(loadingIndicator)
+        return alert
+    }
 }

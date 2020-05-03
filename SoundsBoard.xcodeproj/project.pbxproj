@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		29272D39242EC06F0023C703 /* AlertsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29272D38242EC06F0023C703 /* AlertsManager.swift */; };
 		2931100A244CE093007746DE /* SiriExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29311009244CE093007746DE /* SiriExtension.swift */; };
 		294A805F24281D51007BE86A /* SoundsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294A805E24281D51007BE86A /* SoundsController.swift */; };
 		2975A379242AAE1E00F5FE4F /* MoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2975A378242AAE1E00F5FE4F /* MoreController.swift */; };
@@ -31,6 +30,7 @@
 		47E67CBE910BC05E6FF3B28E /* Pods_SBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE300823239CAAA720D25730 /* Pods_SBKit.framework */; };
 		4E6A69590039961671258B8D /* Pods_SBShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A97DAFC7C81338CE69EE009C /* Pods_SBShare.framework */; };
 		7C1CC2F019AAA108AA951643 /* Pods_SBWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751A441148BADCA55FEE0059 /* Pods_SBWidget.framework */; };
+		FC00950C245EBA1D00D41E59 /* AlertsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC00950B245EBA1D00D41E59 /* AlertsManager.swift */; };
 		FC1C8D51245C286100B73597 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1C8D50245C286100B73597 /* ShareViewController.swift */; };
 		FC1C8D54245C286100B73597 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C8D52245C286100B73597 /* MainInterface.storyboard */; };
 		FC1C8D58245C286100B73597 /* SBShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FC1C8D4E245C286100B73597 /* SBShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -118,7 +118,6 @@
 /* Begin PBXFileReference section */
 		0C71274C204D32AF8F79B508 /* Pods-SBShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBShare.debug.xcconfig"; path = "Target Support Files/Pods-SBShare/Pods-SBShare.debug.xcconfig"; sourceTree = "<group>"; };
 		1073CEF685BAA46FD5A0F904 /* Pods-SBKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SBKit.release.xcconfig"; path = "Target Support Files/Pods-SBKit/Pods-SBKit.release.xcconfig"; sourceTree = "<group>"; };
-		29272D38242EC06F0023C703 /* AlertsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsManager.swift; sourceTree = "<group>"; };
 		29311009244CE093007746DE /* SiriExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriExtension.swift; sourceTree = "<group>"; };
 		294A805E24281D51007BE86A /* SoundsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundsController.swift; sourceTree = "<group>"; };
 		2975A378242AAE1E00F5FE4F /* MoreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreController.swift; sourceTree = "<group>"; };
@@ -148,6 +147,7 @@
 		B586485B1E100EF6651BB447 /* Pods-SoundsBoard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundsBoard.debug.xcconfig"; path = "Target Support Files/Pods-SoundsBoard/Pods-SoundsBoard.debug.xcconfig"; sourceTree = "<group>"; };
 		DE300823239CAAA720D25730 /* Pods_SBKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SBKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SoundsBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC00950B245EBA1D00D41E59 /* AlertsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsManager.swift; sourceTree = "<group>"; };
 		FC1C8D4E245C286100B73597 /* SBShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SBShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC1C8D50245C286100B73597 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		FC1C8D53245C286100B73597 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -238,6 +238,7 @@
 				29FCBE96244268670062253F /* SoundsFilesManger.swift */,
 				29CC7F30244A571B0032EC52 /* Constants.swift */,
 				29ACB77D244BC5CF00A0E352 /* VolumeManager.swift */,
+				FC00950B245EBA1D00D41E59 /* AlertsManager.swift */,
 			);
 			path = utilities;
 			sourceTree = "<group>";
@@ -312,7 +313,6 @@
 			isa = PBXGroup;
 			children = (
 				FC362FA424193D8D007E43E4 /* SoundsFilesManager.swift */,
-				29272D38242EC06F0023C703 /* AlertsManager.swift */,
 				29311009244CE093007746DE /* SiriExtension.swift */,
 			);
 			path = utilities;
@@ -692,6 +692,7 @@
 				29FCBE9C24426B740062253F /* SoundsBoard.xcdatamodeld in Sources */,
 				29FCBE9A24426ABD0062253F /* SoundCollectionCellView.swift in Sources */,
 				29FCBE9E24426C390062253F /* CoreDateManager.swift in Sources */,
+				FC00950C245EBA1D00D41E59 /* AlertsManager.swift in Sources */,
 				29FCBE93244267E40062253F /* AudioPlayer.swift in Sources */,
 				29FCBE97244268670062253F /* SoundsFilesManger.swift in Sources */,
 				29CC7F31244A571B0032EC52 /* Constants.swift in Sources */,
@@ -730,7 +731,6 @@
 				294A805F24281D51007BE86A /* SoundsController.swift in Sources */,
 				FC362FA024183F6D007E43E4 /* LongPressRecordButton.swift in Sources */,
 				FCC59E1624216F9800B38213 /* AudioRecorderController.swift in Sources */,
-				29272D39242EC06F0023C703 /* AlertsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

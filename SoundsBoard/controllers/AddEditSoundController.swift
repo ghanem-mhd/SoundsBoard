@@ -10,13 +10,12 @@ import UIKit
 import SwiftySound
 import CoreData
 import MobileCoreServices
-import NVActivityIndicatorView
 import WARangeSlider
 import Intents
 import IntentsUI
 import SBKit
 
-class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UINavigationControllerDelegate{
+class AddEditSoundController: UIViewController, UINavigationControllerDelegate{
     
     public enum ControllerState{
         case Add
@@ -32,11 +31,10 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     var moc : NSManagedObjectContext!
     var state:ControllerState = .Add
     var soundSaved = false
-    
+    var loadingAlert = AlertsManager.getActivityIndicatorAlert()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
@@ -413,7 +411,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             return
         }
         if trimmed(){
-            startAnimating()
+            startAnimating(message: "Saving...")
             let startTime = Int(trimSlider.lowerValue)
             let endTime = Int(trimSlider.upperValue)
             SoundsFilesManger.trimSound(soundFileName: soundFileName, startTime: startTime, endTime: endTime, delegate: self)
@@ -528,12 +526,11 @@ extension AddEditSoundController: UIDocumentPickerDelegate{
 
 extension AddEditSoundController: SoundsFilesMangerCopyDelegate{
     func copyDidStart() {
-        startAnimating(message: "Copying")
+        startAnimating(message: "Copying...")
     }
     
     func convertDidStart() {
-        stopAnimating()
-        startAnimating(message: "Converting")
+        loadingAlert.message = "Converting..."
     }
     
     func copyAndConvertDidFinish(_ soundFileName: String) {
@@ -672,5 +669,16 @@ extension AddEditSoundController: INUIAddVoiceShortcutViewControllerDelegate {
 extension AddEditSoundController {
     func getFont() -> UIFont{
         return UIFont.monospacedDigitSystemFont(ofSize: 16, weight: UIFont.Weight.light)
+    }
+}
+
+extension AddEditSoundController{
+    func stopAnimating(){
+        loadingAlert.dismiss(animated: true, completion: nil)
+    }
+    
+    func startAnimating(message:String){
+        loadingAlert.message = message
+        present(loadingAlert, animated: true, completion: nil)
     }
 }
