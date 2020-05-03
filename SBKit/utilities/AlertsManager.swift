@@ -22,7 +22,7 @@ public class AlertsManager{
     }
     
     public static func showImportFailedAlert(_ viewController: UIViewController, fileName: String){
-        AlertsManager.showAlert(viewController, "Opps", "Can't import \(fileName)!")
+        AlertsManager.showAlert(viewController, "Opps", "Can't open \(fileName)!")
     }
     
     public static func showPlayingAlert(_ viewController: UIViewController){

@@ -462,13 +462,15 @@ extension AddEditSoundControllerBase: SoundsFilesMangerCopyDelegate{
     }
     
     public func copyAndConvertDidFinish(_ soundFileName: String) {
-        stopAnimating()
-        newSoundReady(soundFileName)
+        stopAnimating(completion: {
+            self.newSoundReady(soundFileName)
+        })
     }
     
     public func copyDidFailed(_ error: Error, fileName: String) {
-        stopAnimating()
-        AlertsManager.showImportFailedAlert(self, fileName: fileName)
+        stopAnimating(completion: {
+            AlertsManager.showImportFailedAlert(self, fileName: fileName)
+        })
     }
 }
 
@@ -492,6 +494,7 @@ extension AddEditSoundControllerBase: SoundsFilesMangerTrimDelegate{
     
     public func trimDidFailed(_ error: Error) {
         stopAnimating()
+        // TODO
         print(error)
     }
 }

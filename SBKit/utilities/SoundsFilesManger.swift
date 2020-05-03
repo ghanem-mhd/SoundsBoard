@@ -107,13 +107,12 @@ public class SoundsFilesManger{
         if UTTypeConformsTo(fileUTI, kUTTypeMPEG4Audio){
             return SupportedFileTypes.m4a
         }
-        if  (UTTypeConformsTo(fileUTI, kUTTypeMovie) ||
-            UTTypeConformsTo(fileUTI, kUTTypeMPEG) ||
-            UTTypeConformsTo(fileUTI, kUTTypeMPEG4)) {
-            return SupportedFileTypes.video
-        }
         if UTTypeConformsTo(fileUTI, kUTTypeQuickTimeMovie){
             return SupportedFileTypes.mov
+        }
+        if (UTTypeConformsTo(fileUTI, kUTTypeMPEG) ||
+            UTTypeConformsTo(fileUTI, kUTTypeMPEG4)) {
+            return SupportedFileTypes.video
         }
         return SupportedFileTypes.unknown
     }
@@ -184,7 +183,7 @@ public class SoundsFilesManger{
                         deleteFile(temporal)
                         if let error = error {
                             DispatchQueue.main.async {
-                                delegate.copyDidFailed(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
+                                delegate.copyDidFailed(error,fileName: fileURL.lastPathComponent)
                             }
                         } else {
                             DispatchQueue.main.async {
