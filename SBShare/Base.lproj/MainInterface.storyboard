@@ -8,51 +8,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--SoundsBoard Share-->
-        <scene sceneID="mYK-cj-6MX">
-            <objects>
-                <viewController storyboardIdentifier="ShareViewController" modalPresentationStyle="currentContext" id="ugK-fR-Y5O" customClass="ShareViewController" customModule="SBShare" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="s0B-GQ-xan">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="8WW-m3-ui7"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="SoundsBoard Share" id="BVN-GA-ZA5">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Q3c-jA-2T6">
-                            <connections>
-                                <action selector="onCancelButtonClicked:" destination="ugK-fR-Y5O" id="AuV-QE-4bO"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="Dfd-PP-aXR">
-                            <connections>
-                                <action selector="onSaveButtonClicked:" destination="ugK-fR-Y5O" id="ieh-MR-Wlc"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="USj-p5-ft8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="889.85507246376824" y="109.82142857142857"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="DpX-qd-vvv">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VTu-eS-Xr5" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Tuu-5G-u4y">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ugK-fR-Y5O" kind="relationship" relationship="rootViewController" id="Sg2-s0-sqw"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SHK-Yv-ZKv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-20.289855072463769" y="109.82142857142857"/>
-        </scene>
         <!--Add Edit Sound Controller Base-->
         <scene sceneID="5gL-DH-3pq">
             <objects>
