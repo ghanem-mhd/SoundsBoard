@@ -5,13 +5,14 @@ use_frameworks!
 def shared_pods
     pod 'SnapKit', '~> 5.0.0'
     pod 'SwiftySound'
+    pod "WARangeSlider"
 end
 
 target 'SoundsBoard' do
   # Pods for SoundsBoard
-  pod 'AudioKit', '~> 4.0'
   pod 'NVActivityIndicatorView'
   pod 'MultiSlider'
+  pod 'AudioKit', '~> 4.0'
   shared_pods
 end
 
@@ -25,6 +26,7 @@ end
 
 target 'SBShare' do
     shared_pods
+    pod 'AudioKit', '~> 4.0'
 end
 
 

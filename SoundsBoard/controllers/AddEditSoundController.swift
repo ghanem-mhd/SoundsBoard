@@ -11,7 +11,7 @@ import SwiftySound
 import CoreData
 import MobileCoreServices
 import NVActivityIndicatorView
-import MultiSlider
+import WARangeSlider
 import Intents
 import IntentsUI
 import SBKit
@@ -32,12 +32,12 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     var moc : NSManagedObjectContext!
     var state:ControllerState = .Add
     var soundSaved = false
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        
         self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
         self.title = "Create new Sound"
@@ -142,20 +142,44 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     
     
     func setUpPlayerView(_ upperView: UIView){
-        trimSlider = MultiSlider()
+        
+        self.view.addSubview(playerControllersView)
+        
+        playerControllersView.axis             = NSLayoutConstraint.Axis.horizontal
+        playerControllersView.distribution     = UIStackView.Distribution.equalCentering
+        playerControllersView.alignment        = UIStackView.Alignment.center
+        
+        playerControllersView.addArrangedSubview(stopButton)
+        playerControllersView.addArrangedSubview(playPauseButton)
+        
+        playerControllersView.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(upperView.snp.bottom).offset(16)
+            make.width.equalTo(self.view.frame.width / 3)
+            make.centerX.equalTo(self.view.snp.centerX)
+        }
+        
+        if let pauseIcon = UIImage(named: "round_play_arrow_black_48pt"){
+            playPauseButton.setImage(pauseIcon , for: .normal)
+            playPauseButton.snp.makeConstraints{ (make) -> Void in
+                make.width.height.equalTo(50)
+            }
+        }
+        
+        if let stopIcon = UIImage(named: "round_stop_black_48pt"){
+            stopButton.setImage(stopIcon , for: .normal)
+            stopButton.snp.makeConstraints{ (make) -> Void in
+                make.width.height.equalTo(50)
+            }
+        }
+        
+        playPauseButton.addTarget(self, action: #selector(playPauseToggle), for: .touchUpInside)
+        stopButton.addTarget(self, action: #selector(onStopButtonClicked), for: .touchUpInside)
+        
+        
+        trimSlider = RangeSlider()
         self.view.addSubview(trimSlider)
-        trimSlider.inputView?.isUserInteractionEnabled = false
-        trimSlider.orientation = .horizontal
-        trimSlider.outerTrackColor = .red
         trimSlider.minimumValue = 0
         trimSlider.maximumValue = 100
-        trimSlider.snapStepSize = 1
-        trimSlider.isHapticSnap = true
-        trimSlider.valueLabelPosition = .notAnAttribute
-        trimSlider.tintColor = .systemBlue
-        trimSlider.trackWidth = 8
-        trimSlider.hasRoundTrackEnds = true
-        trimSlider.thumbCount = 2
         
         self.view.addSubview(startTimeLabel)
         startTimeLabel.text = "00:00"
@@ -174,13 +198,13 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         }
         
         trimSlider.snp.makeConstraints{ (make) -> Void in
-            make.top.equalTo(upperView.snp.bottom).offset(82)
+            make.height.equalTo(30)
+            make.top.equalTo(playerControllersView.snp.bottom).offset(16)
             make.left.equalTo(startTimeLabel.snp.right).offset(8)
             make.right.equalTo(endTimeLabel.snp.left).offset(-8)
             make.centerX.equalTo(self.view.snp.centerX)
         }
-        trimSlider.addTarget(self, action: #selector(sliderChanged(_:)), for: .valueChanged) // continuous changes
-        trimSlider.addTarget(self, action: #selector(sliderDragEnded(_:)), for: . touchUpInside) // sent when drag ends
+        trimSlider.addTarget(self, action: #selector(rangeSliderValueChanged(_:)), for: .valueChanged)
         
         self.view.addSubview(trimHintLabel)
         trimHintLabel.text = "Move the slider thumbs to trim the sound."
@@ -188,7 +212,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         trimHintLabel.font = getFont()
         trimHintLabel.textAlignment = .center
         trimHintLabel.snp.makeConstraints{ (make) -> Void in
-            make.top.equalTo(self.trimSlider.snp.bottom)
+            make.top.equalTo(self.trimSlider.snp.bottom).offset(12)
             make.width.equalTo(self.view.snp.width)
         }
         
@@ -202,37 +226,6 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             make.width.equalTo(self.view.snp.width)
         }
         
-        self.view.addSubview(playerControllersView)
-        
-        playerControllersView.axis             = NSLayoutConstraint.Axis.horizontal
-        playerControllersView.distribution     = UIStackView.Distribution.equalCentering
-        playerControllersView.alignment        = UIStackView.Alignment.center
-        
-        playerControllersView.addArrangedSubview(stopButton)
-        playerControllersView.addArrangedSubview(playPauseButton)
-        
-        playerControllersView.snp.makeConstraints{ (make) -> Void in
-            make.top.equalTo(upperView.snp.bottom).offset(32)
-            make.width.equalTo(self.view.frame.width / 2)
-            make.centerX.equalTo(self.view.snp.centerX)
-        }
-                
-        if let pauseIcon = UIImage(named: "round_play_arrow_black_48pt"){
-            playPauseButton.setImage(pauseIcon , for: .normal)
-            playPauseButton.snp.makeConstraints{ (make) -> Void in
-                make.width.height.equalTo(50)
-            }
-        }
-        
-        if let stopIcon = UIImage(named: "round_stop_black_48pt"){
-            stopButton.setImage(stopIcon , for: .normal)
-            stopButton.snp.makeConstraints{ (make) -> Void in
-                make.width.height.equalTo(50)
-            }
-        }
-        
-        playPauseButton.addTarget(self, action: #selector(playPauseToggle), for: .touchUpInside)
-        stopButton.addTarget(self, action: #selector(onStopButtonClicked), for: .touchUpInside)
         
         playerVisibility(isHidden: true)
     }
@@ -275,7 +268,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         addSiriShortcut.addTarget(self, action: #selector(presentSiriViewController), for: .touchUpInside)
     }
     
-
+    
     
     // MARK: - Player Controllers
     
@@ -290,8 +283,8 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     
     func onPlayButtonClicked(){
         if let soundFileName = currentSoundFileName{
-            let startTime = TimeInterval(exactly: trimSlider.value[0])
-            let endTime = TimeInterval(exactly: trimSlider.value[1])
+            let startTime = TimeInterval(exactly: trimSlider.lowerValue)
+            let endTime = TimeInterval(exactly: trimSlider.upperValue)
             let volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
             AudioPlayer.sharedInstance.play(soundFileName: soundFileName, startTime: startTime, endTime: endTime, checkPlayed: true, volume:volume)
         }
@@ -323,12 +316,10 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         AudioPlayer.sharedInstance.stop()
     }
     
-    @objc func sliderChanged(_ slider: MultiSlider){
-        updateStartEndTrimmingViews(start: Float(slider.value[0]), end: Float(slider.value[1]))
-    }
-    
-    @objc func sliderDragEnded(_ slider: MultiSlider){
-        
+    @objc func rangeSliderValueChanged(_ rangeSlider: RangeSlider) {
+        let lowerValue = rangeSlider.lowerValue
+        let upperValue = rangeSlider.upperValue
+        updateStartEndTrimmingViews(start: Float(lowerValue), end: Float(upperValue))
     }
     
     func updateStartEndTrimmingViews(start:Float, end:Float){
@@ -344,8 +335,10 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     
     func setUpTrimmer(_ soundOriginalDuration: Int){
         self.endTimeLabel.text = AudioPlayer.sharedInstance.getFormatedTime(timeInSeconds: soundOriginalDuration)
-        self.trimSlider.maximumValue = CGFloat(soundOriginalDuration)
-        self.trimSlider.value = [0,CGFloat(soundOriginalDuration)]
+        self.trimSlider.maximumValue = Double(soundOriginalDuration)
+        self.trimSlider.minimumValue = 0
+        self.trimSlider.upperValue = Double(soundOriginalDuration)
+        self.trimSlider.lowerValue = 0
         self.newDurationString = AudioPlayer.sharedInstance.getFormatedTime(timeInSeconds: soundOriginalDuration)
         self.playBackDurationView.text = "Current duration: \(newDurationString)"
     }
@@ -405,7 +398,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
             return false
         }
         let soundOriginalDuration:Int = Int(AudioPlayer.sharedInstance.getDuration(soundFileName: soundFileName))
-        let newDuration = Int(trimSlider.value[1] - trimSlider.value[0])
+        let newDuration = Int(trimSlider.upperValue - trimSlider.lowerValue)
         return soundOriginalDuration != newDuration
     }
     
@@ -421,8 +414,8 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
         }
         if trimmed(){
             startAnimating()
-            let startTime = Int(trimSlider.value[0])
-            let endTime = Int(trimSlider.value[1])
+            let startTime = Int(trimSlider.lowerValue)
+            let endTime = Int(trimSlider.upperValue)
             SoundsFilesManger.trimSound(soundFileName: soundFileName, startTime: startTime, endTime: endTime, delegate: self)
         }else{
             saveSound(name, self.currentSoundImage, soundFileName)
@@ -495,7 +488,7 @@ class AddEditSoundController: UIViewController, NVActivityIndicatorViewable, UIN
     lazy var openFileButton     = UIButton(type: .system)
     
     lazy var playerControllersView  = UIStackView()
-    lazy var trimSlider             = MultiSlider()
+    lazy var trimSlider             = RangeSlider()
     lazy var startTimeLabel         = UILabel()
     lazy var endTimeLabel           = UILabel()
     lazy var playBackDurationView   = UILabel()
@@ -592,7 +585,7 @@ extension AddEditSoundController{
     
     func saveSound(_ soundName:String, _ soundImage:UIImage?, _ soundFileName:String){
         if state == .Add || state == .AddExternal{
-             saveNewSound(soundName, soundImage, soundFileName)
+            saveNewSound(soundName, soundImage, soundFileName)
         }else{
             saveExistSound(soundName, soundImage, soundFileName)
         }
@@ -670,7 +663,7 @@ extension AddEditSoundController: INUIAddVoiceShortcutViewControllerDelegate {
     func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
         controller.dismiss(animated: true)
     }
-
+    
     func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
         controller.dismiss(animated: true)
     }

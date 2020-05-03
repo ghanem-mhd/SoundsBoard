@@ -15,6 +15,7 @@ PODS:
   - SnapKit (5.0.1)
   - SweeterSwift (1.1.3)
   - SwiftySound (1.2.0)
+  - WARangeSlider (1.1.1)
 
 DEPENDENCIES:
   - AudioKit (~> 4.0)
@@ -22,6 +23,7 @@ DEPENDENCIES:
   - NVActivityIndicatorView
   - SnapKit (~> 5.0.0)
   - SwiftySound
+  - WARangeSlider
 
 SPEC REPOS:
   trunk:
@@ -32,6 +34,7 @@ SPEC REPOS:
     - SnapKit
     - SweeterSwift
     - SwiftySound
+    - WARangeSlider
 
 SPEC CHECKSUMS:
   AudioKit: 2ad2c0c546f53134967e4a381dfd8691b7674093
@@ -41,7 +44,8 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SweeterSwift: d909211f6833405628c8c7c6bf9f8f2e8a0e9df9
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
+  WARangeSlider: 54b3e0853b8d16c444fd539005901aecee86837d
 
-PODFILE CHECKSUM: 88b5817458c12fe667469907176083a4e985d580
+PODFILE CHECKSUM: 3479351525fef6f83df8e247e25f15b15ef8d109
 
 COCOAPODS: 1.9.1
