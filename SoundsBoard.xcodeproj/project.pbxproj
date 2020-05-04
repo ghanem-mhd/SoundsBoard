@@ -49,6 +49,7 @@
 		FC736A4A241189EB00D6966B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC736A48241189EB00D6966B /* Main.storyboard */; };
 		FC736A4F241189ED00D6966B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC736A4E241189ED00D6966B /* Assets.xcassets */; };
 		FC736A52241189ED00D6966B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC736A50241189ED00D6966B /* LaunchScreen.storyboard */; };
+		FCC39C2F246024160069DE6F /* ShareExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC39C2E246024160069DE6F /* ShareExtensionHandler.swift */; };
 		FCC59E1624216F9800B38213 /* AudioRecorderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC59E1524216F9800B38213 /* AudioRecorderController.swift */; };
 /* End PBXBuildFile section */
 
@@ -170,6 +171,7 @@
 		FC736A4E241189ED00D6966B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FC736A51241189ED00D6966B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC736A53241189ED00D6966B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FCC39C2E246024160069DE6F /* ShareExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionHandler.swift; sourceTree = "<group>"; };
 		FCC59E1524216F9800B38213 /* AudioRecorderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -245,6 +247,7 @@
 				FC00950B245EBA1D00D41E59 /* AlertsManager.swift */,
 				FC009512245ED4F400D41E59 /* SiriExtension.swift */,
 				FC499A9A245F6515002F7CED /* YoutubeManager.swift */,
+				FCC39C2E246024160069DE6F /* ShareExtensionHandler.swift */,
 			);
 			path = utilities;
 			sourceTree = "<group>";
@@ -694,6 +697,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCC39C2F246024160069DE6F /* ShareExtensionHandler.swift in Sources */,
 				29ACB77E244BC5CF00A0E352 /* VolumeManager.swift in Sources */,
 				29FCBE9C24426B740062253F /* SoundsBoard.xcdatamodeld in Sources */,
 				FC499A9B245F6515002F7CED /* YoutubeManager.swift in Sources */,

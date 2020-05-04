@@ -9,7 +9,6 @@
 import UIKit
 import SwiftySound
 import CoreData
-import MobileCoreServices
 import WARangeSlider
 import Intents
 import IntentsUI
@@ -338,7 +337,7 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
             return
         }
         if trimmed(){
-            startAnimating(message: "Saving...")
+            startLoadingAnimation(message: "Saving...")
             let startTime = Int(trimSlider.lowerValue)
             let endTime = Int(trimSlider.upperValue)
             SoundsFilesManger.trimSound(soundFileName: soundFileName, startTime: startTime, endTime: endTime, delegate: self)
@@ -462,7 +461,7 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
 
 extension AddEditSoundControllerBase: SoundsFilesMangerCopyDelegate{
     public func copyDidStart() {
-        startAnimating(message: "Copying...")
+        startLoadingAnimation(message: "Copying...")
     }
     
     public func convertDidStart() {
@@ -472,13 +471,13 @@ extension AddEditSoundControllerBase: SoundsFilesMangerCopyDelegate{
     public func copyAndConvertDidFinish(_ soundFileName: String, _ temporal: URL?) {
         temporalFileURL = temporal
         updateThumbnail(thumbnailTime: 1)
-        stopAnimating(completion: {
+        stopLoadingAnimation(completion: {
             self.newSoundReady(soundFileName)
         })
     }
     
     public func copyDidFailed(_ error: Error, fileName: String) {
-        stopAnimating(completion: {
+        stopLoadingAnimation(completion: {
             AlertsManager.showImportFailedAlert(self, fileName: fileName)
         })
     }
@@ -502,7 +501,7 @@ extension AddEditSoundControllerBase: SoundsFilesMangerTrimDelegate{
     }
     
     public func trimDidFailed(_ error: Error) {
-        stopAnimating()
+        stopLoadingAnimation()
         // TODO
         print(error)
     }
@@ -557,12 +556,12 @@ extension AddEditSoundControllerBase {
 }
 
 extension AddEditSoundControllerBase{
-    public func stopAnimating(completion: (() -> Void)? = nil){
+    public func stopLoadingAnimation(completion: (() -> Void)? = nil){
         loadingAlert.dismiss(animated: true, completion: completion)
         isLoading = false
     }
     
-    public func startAnimating(message:String){
+    public func startLoadingAnimation(message:String){
         loadingAlert.message = message
         if !isLoading{
             present(loadingAlert, animated: true, completion: nil)
@@ -572,33 +571,7 @@ extension AddEditSoundControllerBase{
 }
 
 extension AddEditSoundControllerBase{
-    
-    func getSharedURL(){
-        startAnimating(message: "Loading...")
-        guard let context = extensionContext else{
-            return
-        }
-        guard let sharedItem = context.inputItems as? [NSExtensionItem] else{
-            AlertsManager.showFileNotSupportedAlert(self)
-            return
-        }
-        guard let itemProviders = sharedItem[0].attachments else{
-            AlertsManager.showFileNotSupportedAlert(self)
-            return
-        }
-        guard itemProviders.count >= 1 else{
-            AlertsManager.showFileNotSupportedAlert(self)
-            return
-        }
-        if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypeAudiovisualContent))) {
-            itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypeAudiovisualContent), options: nil, completionHandler: handleAudioVideoData)
-        }
-        if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypePlainText))) {
-            itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypePlainText), options: nil, completionHandler: handleVideoLink)
-        }
-    }
-    
-    public func handleURL(_ url:URL){
+    public func importURL(_ url:URL){
         let fileType = SoundsFilesManger.checkFileType(url)
         if fileType == SupportedFileTypes.unknown{
             AlertsManager.showFileNotSupportedAlert(self)
@@ -606,62 +579,57 @@ extension AddEditSoundControllerBase{
         }
         SoundsFilesManger.copyFile(url, self)
     }
+}
+
+
+extension AddEditSoundControllerBase: ShareExtensionHandlerDelegate{
     
-    public func handleAudioVideoData(sharedData:NSSecureCoding?, error:Error?) -> Void{
-        DispatchQueue.main.async {
-            if let url = sharedData as? URL{
-                self.handleURL(url)
-            }else{
-                self.stopAnimating(completion: {
-                    AlertsManager.showFileNotSupportedAlert(self)
-                })
-                
-            }
-        }
+    func getSharedURL(){
+        ShareExtensionHandler.handle(extensionContext: extensionContext, delegate: self)
     }
     
-    public func handleVideoLink(sharedData:NSSecureCoding?, error:Error?) -> Void{
-        DispatchQueue.main.async {
-            if let e = error{
-                print(e)
-                self.stopAnimating(completion: {
-                    AlertsManager.showFileNotSupportedAlert(self)
-                })
-            }
-            if let urlString = sharedData as? String{
-                YoutubeManager.downloadVideo(youtubeURL: urlString, delegate: self)
-            }else{
-                self.stopAnimating(completion: {
-                    AlertsManager.showFileNotSupportedAlert(self)
-                })
-            }
-        }
+    public func handleDidStart() {
+        startLoadingAnimation(message: "Loading")
+    }
+    
+    public func handleDidFailed() {
+        self.stopLoadingAnimation(completion: {
+            AlertsManager.showFileNotSupportedAlert(self)
+        })
+    }
+    
+    public func handleDidFinished(audioVideoURL: URL) {
+        importURL(audioVideoURL)
+    }
+    
+    public func handleDidFinished(youtubeURL: String) {
+        YoutubeManager.downloadVideo(youtubeURL: youtubeURL, delegate: self)
     }
 }
 
 extension AddEditSoundControllerBase: YoutubeManagerDelegate{
     public func downloadDidStart() {
-        self.startAnimating(message: "Downloading video...")
+        self.startLoadingAnimation(message: "Downloading")
     }
     
     public func downloadDidFailed() {
-        self.stopAnimating(completion: {
+        self.stopLoadingAnimation(completion: {
             AlertsManager.showFileNotSupportedAlert(self)
         })
     }
     
     public func downloadOnProgress(_ progress: CGFloat) {
-        self.startAnimating(message: "Downloading video \(Int(progress * 100))%")
+        self.startLoadingAnimation(message: "Downloading \(Int(progress * 100))%")
     }
     
     public func downloadDidFinished(_ error: Error?, _ fileUrl: URL?) {
         if let videoURL = fileUrl{
-            handleURL(videoURL)
+            importURL(videoURL)
         }else{
             if let e = error{
                 print(e)
             }
-            self.stopAnimating(completion: {
+            self.stopLoadingAnimation(completion: {
                 AlertsManager.showFileNotSupportedAlert(self)
             })
         }

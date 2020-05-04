@@ -113,13 +113,13 @@ public class AddEditSoundController: AddEditSoundControllerBase, UIDocumentPicke
         }else{
             saveExistSound(soundName, soundImage, soundFileName)
         }
-        stopAnimating(completion: {
+        stopLoadingAnimation(completion: {
             self.navigationController?.popViewController(animated: true)
         })
     }
     
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        handleURL(url)
+        importURL(url)
     }
     
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
