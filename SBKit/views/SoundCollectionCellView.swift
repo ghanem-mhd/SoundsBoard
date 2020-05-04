@@ -102,6 +102,8 @@ public class SoundCollectionCellView: UICollectionViewCell {
         label.text = soundObject.name
         if let soundImageData = soundObject.image{
             image.image = UIImage(data: soundImageData)
+        }else{
+            image.image = nil
         }
     }
     

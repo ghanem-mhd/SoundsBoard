@@ -52,10 +52,14 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
         setUpAddImageButtonView()
         setUpNameInputView()
         setUpPlayerView(nameTextInput)
+        setUpVolumeSettingsControl()
+      
         
         if state == .ShareExtension{
             self.navigationItem.leftBarButtonItem = cancelButton
             getSharedURL()
+        }else{
+            setUpSiriShortcutButton()
         }
     }
     
@@ -199,6 +203,8 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
             make.top.equalTo(self.volumeSegmentControl.snp.bottom).offset(10)
             make.width.equalTo(self.view.snp.width)
         }
+        volumeHintLabel.isHidden = true
+        volumeSegmentControl.isHidden = true
     }
     
     public func setUpSiriShortcutButton(){
@@ -216,6 +222,8 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
             make.centerX.equalTo(self.view.snp.centerX)
         }
         addSiriShortcut.addTarget(self, action: #selector(presentSiriViewController), for: .touchUpInside)
+        
+        addSiriShortcut.isHidden = true
     }
     
     func playerVisibility(isHidden:Bool){
@@ -225,6 +233,9 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
         trimSlider.isHidden = isHidden
         trimHintLabel.isHidden = isHidden
         playBackDurationView.isHidden = isHidden
+        addSiriShortcut.isHidden = isHidden
+        volumeHintLabel.isHidden = isHidden
+        volumeSegmentControl.isHidden = isHidden
     }
     
     func onPlayButtonClicked(){
@@ -324,8 +335,6 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
             SoundsFilesManger.deleteSoundFile(newSoundFileName)
             AlertsManager.showPlayingAlert(self)
         }else{
-            setUpVolumeSettingsControl()
-            setUpSiriShortcutButton()
             
             playerVisibility(isHidden: false)
             self.currentSoundFileName = newSoundFileName
@@ -354,7 +363,7 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
             return
         }
         if trimmed(){
-            startLoadingAnimation(message: "Saving...")
+            startLoadingAnimation(message: "Saving")
             let startTime = Int(trimSlider.lowerValue)
             let endTime = Int(trimSlider.upperValue)
             SoundsFilesManger.trimSound(soundFileName: soundFileName, startTime: startTime, endTime: endTime, delegate: self)
@@ -489,11 +498,11 @@ extension AddEditSoundControllerBase: AudioPlayerDelegate{
 
 extension AddEditSoundControllerBase: SoundsFilesMangerCopyDelegate{
     public func copyDidStart() {
-        startLoadingAnimation(message: "Copying...")
+        startLoadingAnimation(message: "Copying")
     }
     
     public func convertDidStart() {
-        loadingAlert.message = "Converting..."
+        loadingAlert.message = "Converting"
     }
     
     public func copyAndConvertDidFinish(_ soundFileName: String, _ temporal: URL?) {
@@ -585,8 +594,14 @@ extension AddEditSoundControllerBase {
 
 extension AddEditSoundControllerBase{
     public func stopLoadingAnimation(completion: (() -> Void)? = nil){
-        loadingAlert.dismiss(animated: true, completion: completion)
-        isLoading = false
+        if isLoading{
+            loadingAlert.dismiss(animated: true, completion: completion)
+            isLoading = false
+        }else{
+            if let c = completion{
+                c()
+            }
+        }
     }
     
     public func startLoadingAnimation(message:String){

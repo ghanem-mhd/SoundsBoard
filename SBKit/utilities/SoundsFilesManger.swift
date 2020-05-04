@@ -159,6 +159,7 @@ public class SoundsFilesManger{
     }
     
     public static func convertAndCopy(_ fileURL: URL, _ delegate: SoundsFilesMangerCopyDelegate){
+        AKSettings.enableLogging = false
         let temporal = getTemporalURL(fileURL.pathExtension)
         let soundFileName = SoundsFilesManger.generateSoundFileName()
         let soundFileURL = SoundsFilesManger.getSoundURL(soundFileName)
@@ -236,7 +237,7 @@ public class SoundsFilesManger{
     
     
     public static func trimSound(soundFileName:String, startTime: Int, endTime:Int, delegate: SoundsFilesMangerTrimDelegate){
-        AKSettings.enableLogging = true
+        AKSettings.enableLogging = false
         let temporal = getTemporalURL()
         let originalSoundFile = getSoundURL(soundFileName)
         do {

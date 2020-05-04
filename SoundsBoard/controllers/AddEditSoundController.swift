@@ -26,6 +26,8 @@ public class AddEditSoundController: AddEditSoundControllerBase, UIDocumentPicke
                 return
             }
             setUpPlayerView(nameTextInput)
+            setUpVolumeSettingsControl()
+            setUpSiriShortcutButton()
             newSoundReady(soundFileName)
             fillSoundData(editableSound!)
         }
@@ -33,6 +35,8 @@ public class AddEditSoundController: AddEditSoundControllerBase, UIDocumentPicke
         if state == .Add{
             setUpInputTypesView()
             setUpPlayerView(inputTypesView)
+            setUpVolumeSettingsControl()
+            setUpSiriShortcutButton()
         }
     }
     

@@ -38,7 +38,10 @@ class ShareExtensionHandler{
             delegate.handleDidFailed()
             return
         }
+        var videoOrAudioContent = false
+        var videoURL = false
         if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypeAudiovisualContent))) {
+            videoOrAudioContent = true
             itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypeAudiovisualContent), options: nil, completionHandler: { (sharedData, error) in
                 DispatchQueue.main.async {
                     if let url = sharedData as? URL{
@@ -50,6 +53,7 @@ class ShareExtensionHandler{
             })
         }
         if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypePlainText))) {
+            videoURL = true
             itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypePlainText), options: nil, completionHandler: { (sharedData, error) in
                 DispatchQueue.main.async {
                     if let e = error{
@@ -63,6 +67,9 @@ class ShareExtensionHandler{
                     }
                 }
             })
+        }
+        if !videoURL && !videoOrAudioContent{
+            delegate.handleDidFailed()
         }
     }
 }

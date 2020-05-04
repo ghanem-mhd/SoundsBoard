@@ -12,6 +12,6 @@ public struct Constants{
     
     public static let modelName             = "SoundsBoard"
     public static let appGroupID            = "group.SoundsBoard"
-    public static let maximumFavoriteSounds = 3
+    public static let maximumFavoriteSounds = 9
 
 }
