@@ -6,6 +6,7 @@ def shared_pods
     pod 'SnapKit', '~> 5.0.0'
     pod 'SwiftySound'
     pod "WARangeSlider"
+    pod 'SDDownloadManager'
 end
 
 target 'SoundsBoard' do

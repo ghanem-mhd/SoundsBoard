@@ -42,6 +42,7 @@
 		FC362FC3241D64BA007E43E4 /* Pods_SoundsBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */; };
 		FC362FC4241D64BA007E43E4 /* Pods_SoundsBoard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F93A84CC7636966B24F20C14 /* Pods_SoundsBoard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FC499A99245F17A2002F7CED /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC499A98245F17A2002F7CED /* ShareViewController.swift */; };
+		FC499A9B245F6515002F7CED /* YoutubeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC499A9A245F6515002F7CED /* YoutubeManager.swift */; };
 		FC736A43241189EB00D6966B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A42241189EB00D6966B /* AppDelegate.swift */; };
 		FC736A45241189EB00D6966B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A44241189EB00D6966B /* SceneDelegate.swift */; };
 		FC736A47241189EB00D6966B /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC736A46241189EB00D6966B /* HomeController.swift */; };
@@ -159,6 +160,7 @@
 		FC362FA12418F102007E43E4 /* cat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cat.wav; sourceTree = "<group>"; };
 		FC362FC8241D6CFC007E43E4 /* SoundsBoard.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SoundsBoard.entitlements; sourceTree = "<group>"; };
 		FC499A98245F17A2002F7CED /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		FC499A9A245F6515002F7CED /* YoutubeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeManager.swift; sourceTree = "<group>"; };
 		FC736A3F241189EB00D6966B /* SoundsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC736A42241189EB00D6966B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FC736A44241189EB00D6966B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				29ACB77D244BC5CF00A0E352 /* VolumeManager.swift */,
 				FC00950B245EBA1D00D41E59 /* AlertsManager.swift */,
 				FC009512245ED4F400D41E59 /* SiriExtension.swift */,
+				FC499A9A245F6515002F7CED /* YoutubeManager.swift */,
 			);
 			path = utilities;
 			sourceTree = "<group>";
@@ -693,6 +696,7 @@
 			files = (
 				29ACB77E244BC5CF00A0E352 /* VolumeManager.swift in Sources */,
 				29FCBE9C24426B740062253F /* SoundsBoard.xcdatamodeld in Sources */,
+				FC499A9B245F6515002F7CED /* YoutubeManager.swift in Sources */,
 				29FCBE9A24426ABD0062253F /* SoundCollectionCellView.swift in Sources */,
 				29FCBE9E24426C390062253F /* CoreDateManager.swift in Sources */,
 				FC009513245ED4F400D41E59 /* SiriExtension.swift in Sources */,

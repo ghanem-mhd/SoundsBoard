@@ -34,6 +34,7 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     var isPlaying = false
     var newDurationString = ""
     var loadingAlert = AlertsManager.getActivityIndicatorAlert()
+    var temporalFileURL: URL?
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +63,7 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
         self.view.addSubview(addImageButton)
         let imageIcon = UIImage(named: "round_add_photo_alternate_black_48pt")
         addImageButton.setImage(imageIcon, for: .normal)
-        addImageButton.contentMode = .center
+        addImageButton.contentMode = .scaleAspectFit
         addImageButton.snp.makeConstraints{ (make) -> Void in
             make.width.height.equalTo(100)
             make.centerX.equalTo(self.view.snp.centerX)
@@ -70,7 +71,7 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
         }
         addImageButton.clipsToBounds = true
         addImageButton.layer.borderWidth    = 0.5
-        addImageButton.layer.cornerRadius   = (addImageButton.frame.size.width) / 2
+        addImageButton.layer.cornerRadius   = 10
         addImageButton.layer.borderColor    = UIColor.lightGray.cgColor
         addImageButton.addTarget(self, action: #selector(addImageButtonClicked(_:)), for: .touchUpInside)
     }
@@ -284,6 +285,19 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
         self.playBackDurationView.text = "Current duration: \(newDurationString)"
     }
     
+    func updateThumbnail(thumbnailTime:Int64){
+        SoundsFilesManger.getThumbnailImageFromVideoUrl(url: temporalFileURL, thumbnailTime: thumbnailTime) { (thumbnailImage) in
+            self.updateImage(image: thumbnailImage)
+        }
+    }
+    
+    public func updateImage(image: UIImage?){
+        if let i = image{
+            self.currentSoundImage = i
+            self.addImageButton.setImage(i, for: .normal)
+        }
+    }
+    
     public func newSoundReady(_ newSoundFileName: String){
         if let old = self.currentSoundFileName{
             AudioPlayer.sharedInstance.stop()
@@ -301,15 +315,6 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
             self.currentSoundFileName = newSoundFileName
             setUpTrimmer(Int(soundOriginalDuration))
         }
-    }
-    
-    public func fillSoundData(_ sound:SoundObject){
-        nameTextInput.text = sound.name
-        if let soundImageData = sound.image{
-            currentSoundImage = UIImage(data: soundImageData)
-            addImageButton.setImage(UIImage(data: soundImageData), for: .normal)
-        }
-        volumeSegmentControl.selectedSegmentIndex = VolumeManager.getVolumeIndex(sound.volume)
     }
     
     func trimmed() -> Bool{
@@ -349,6 +354,9 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     }
     
     override public func viewDidDisappear(_ animated: Bool) {
+        if let temporalFile = temporalFileURL{
+            SoundsFilesManger.deleteFile(temporalFile)
+        }
         guard !soundSaved else{
             return
         }
@@ -461,7 +469,9 @@ extension AddEditSoundControllerBase: SoundsFilesMangerCopyDelegate{
         loadingAlert.message = "Converting..."
     }
     
-    public func copyAndConvertDidFinish(_ soundFileName: String) {
+    public func copyAndConvertDidFinish(_ soundFileName: String, _ temporal: URL?) {
+        temporalFileURL = temporal
+        updateThumbnail(thumbnailTime: 1)
         stopAnimating(completion: {
             self.newSoundReady(soundFileName)
         })
@@ -482,8 +492,7 @@ extension AddEditSoundControllerBase: UIImagePickerControllerDelegate{
             print("No image found")
             return
         }
-        self.currentSoundImage = image
-        self.addImageButton.setImage(image, for: .normal)
+        updateImage(image: image)
     }
 }
 
@@ -581,30 +590,80 @@ extension AddEditSoundControllerBase{
             AlertsManager.showFileNotSupportedAlert(self)
             return
         }
-        itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypeAudiovisualContent), options: nil, completionHandler: handleData)
+        if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypeAudiovisualContent))) {
+            itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypeAudiovisualContent), options: nil, completionHandler: handleAudioVideoData)
+        }
+        if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypePlainText))) {
+            itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypePlainText), options: nil, completionHandler: handleVideoLink)
+        }
     }
     
     public func handleURL(_ url:URL){
         let fileType = SoundsFilesManger.checkFileType(url)
         if fileType == SupportedFileTypes.unknown{
-           AlertsManager.showFileNotSupportedAlert(self)
-           return
+            AlertsManager.showFileNotSupportedAlert(self)
+            return
         }
         SoundsFilesManger.copyFile(url, self)
     }
     
-    public func handleData(sharedData:NSSecureCoding?, error:Error?) -> Void{
+    public func handleAudioVideoData(sharedData:NSSecureCoding?, error:Error?) -> Void{
         DispatchQueue.main.async {
-            if let e = error{
-                print(e)
-                AlertsManager.showFileNotSupportedAlert(self)
-                return
-            }
             if let url = sharedData as? URL{
                 self.handleURL(url)
             }else{
-                AlertsManager.showFileNotSupportedAlert(self)
+                self.stopAnimating(completion: {
+                    AlertsManager.showFileNotSupportedAlert(self)
+                })
+                
             }
+        }
+    }
+    
+    public func handleVideoLink(sharedData:NSSecureCoding?, error:Error?) -> Void{
+        DispatchQueue.main.async {
+            if let e = error{
+                print(e)
+                self.stopAnimating(completion: {
+                    AlertsManager.showFileNotSupportedAlert(self)
+                })
+            }
+            if let urlString = sharedData as? String{
+                YoutubeManager.downloadVideo(youtubeURL: urlString, delegate: self)
+            }else{
+                self.stopAnimating(completion: {
+                    AlertsManager.showFileNotSupportedAlert(self)
+                })
+            }
+        }
+    }
+}
+
+extension AddEditSoundControllerBase: YoutubeManagerDelegate{
+    public func downloadDidStart() {
+        self.startAnimating(message: "Downloading video...")
+    }
+    
+    public func downloadDidFailed() {
+        self.stopAnimating(completion: {
+            AlertsManager.showFileNotSupportedAlert(self)
+        })
+    }
+    
+    public func downloadOnProgress(_ progress: CGFloat) {
+        self.startAnimating(message: "Downloading video \(Int(progress * 100))%")
+    }
+    
+    public func downloadDidFinished(_ error: Error?, _ fileUrl: URL?) {
+        if let videoURL = fileUrl{
+            handleURL(videoURL)
+        }else{
+            if let e = error{
+                print(e)
+            }
+            self.stopAnimating(completion: {
+                AlertsManager.showFileNotSupportedAlert(self)
+            })
         }
     }
 }

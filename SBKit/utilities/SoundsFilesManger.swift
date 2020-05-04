@@ -22,7 +22,7 @@ public enum SupportedFileTypes {
 public protocol SoundsFilesMangerCopyDelegate: class {
     func copyDidStart()
     func convertDidStart()
-    func copyAndConvertDidFinish(_ soundFileName: String)
+    func copyAndConvertDidFinish(_ soundFileName: String, _ temporal: URL?)
     func copyDidFailed(_ error: Error, fileName: String)
 }
 
@@ -129,7 +129,7 @@ public class SoundsFilesManger{
             convertAndCopy(fileURL, delegate)
         }
         if fileType == .mov{
-            extractAudioAndExport(fileURL, delegate)
+            convertAndCopyMov(fileURL, delegate)
         }
     }
     
@@ -153,7 +153,7 @@ public class SoundsFilesManger{
                 fileURL.stopAccessingSecurityScopedResource()
             }
             DispatchQueue.main.async {
-                delegate.copyAndConvertDidFinish(soundFileName)
+                delegate.copyAndConvertDidFinish(soundFileName, nil)
             }
         }
     }
@@ -180,20 +180,19 @@ public class SoundsFilesManger{
                         delegate.convertDidStart()
                     }
                     converter.start(completionHandler: { error in
-                        deleteFile(temporal)
                         if let error = error {
                             DispatchQueue.main.async {
                                 delegate.copyDidFailed(error,fileName: fileURL.lastPathComponent)
                             }
                         } else {
                             DispatchQueue.main.async {
-                                delegate.copyAndConvertDidFinish(soundFileName)
+                                delegate.copyAndConvertDidFinish(soundFileName, temporal)
                             }
                         }
                     })
                 }  catch let error {
                     print(error)
-                    delegate.copyDidFailed(error,fileName: fileURL.lastPathComponent + fileURL.pathExtension)
+                    delegate.copyDidFailed(error,fileName: fileURL.lastPathComponent)
                 }
             }
             if (isSecuredURL) {
@@ -203,7 +202,7 @@ public class SoundsFilesManger{
     }
     
     
-    public static func extractAudioAndExport(_ sourceUrl: URL, _ delegate: SoundsFilesMangerCopyDelegate) {
+    public static func convertAndCopyMov(_ sourceUrl: URL, _ delegate: SoundsFilesMangerCopyDelegate) {
         delegate.copyDidStart()
         delegate.convertDidStart()
         let temporal = getTemporalURL(sourceUrl.pathExtension)
@@ -224,14 +223,13 @@ public class SoundsFilesManger{
         exportSession.outputFileType = AVFileType.m4a
         exportSession.outputURL = soundFileURL
         exportSession.exportAsynchronously {
-            deleteFile(temporal)
             if let e = exportSession.error{
                 print(e)
                 delegate.copyDidFailed(e,fileName: sourceUrl.lastPathComponent)
             }
             guard case exportSession.status = AVAssetExportSession.Status.completed else { return }
             DispatchQueue.main.async {
-                delegate.copyAndConvertDidFinish(soundFileName)
+                delegate.copyAndConvertDidFinish(soundFileName, temporal)
             }
         }
     }
@@ -283,6 +281,30 @@ public class SoundsFilesManger{
             }
         }else{
             deleteFile(appContainerURL)
+        }
+    }
+    
+    public static func getThumbnailImageFromVideoUrl(url: URL?, thumbnailTime:Int64, completion: @escaping ((_ image: UIImage?)->Void)) {
+        guard let videoURL = url else {
+            completion(nil)
+            return
+        }
+        DispatchQueue.global().async {
+            let avAssetImageGenerator = AVAssetImageGenerator(asset: AVAsset(url: videoURL))
+            avAssetImageGenerator.appliesPreferredTrackTransform = true
+            let thumbnailTime = CMTimeMake(value: thumbnailTime, timescale: 1)
+            do {
+                let cgThumbImage = try avAssetImageGenerator.copyCGImage(at: thumbnailTime, actualTime: nil)
+                let thumbImage = UIImage(cgImage: cgThumbImage)
+                DispatchQueue.main.async {
+                    completion(thumbImage)
+                }
+            } catch {
+                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
         }
     }
 }

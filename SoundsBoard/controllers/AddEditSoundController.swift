@@ -129,4 +129,12 @@ public class AddEditSoundController: AddEditSoundControllerBase, UIDocumentPicke
     func audioRecorderFinished(_ newSoundFileName: String) {
          newSoundReady(newSoundFileName)
      }
+    
+    public func fillSoundData(_ sound:SoundObject){
+        nameTextInput.text = sound.name
+        if let soundImageData = sound.image{
+            updateImage(image: UIImage(data: soundImageData))
+        }
+        volumeSegmentControl.selectedSegmentIndex = VolumeManager.getVolumeIndex(sound.volume)
+    }
 }

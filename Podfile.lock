@@ -8,6 +8,7 @@ PODS:
   - NVActivityIndicatorView (4.8.0):
     - NVActivityIndicatorView/Presenter (= 4.8.0)
   - NVActivityIndicatorView/Presenter (4.8.0)
+  - SDDownloadManager (1.1.0)
   - SnapKit (5.0.1)
   - SwiftySound (1.2.0)
   - WARangeSlider (1.1.1)
@@ -15,6 +16,7 @@ PODS:
 DEPENDENCIES:
   - AudioKit (~> 4.0)
   - NVActivityIndicatorView
+  - SDDownloadManager
   - SnapKit (~> 5.0.0)
   - SwiftySound
   - WARangeSlider
@@ -23,6 +25,7 @@ SPEC REPOS:
   trunk:
     - AudioKit
     - NVActivityIndicatorView
+    - SDDownloadManager
     - SnapKit
     - SwiftySound
     - WARangeSlider
@@ -30,10 +33,11 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AudioKit: 2ad2c0c546f53134967e4a381dfd8691b7674093
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
+  SDDownloadManager: 62a9339c03ea27606effefd9aa1800e4127e3a52
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
   WARangeSlider: 54b3e0853b8d16c444fd539005901aecee86837d
 
-PODFILE CHECKSUM: 8f1eb4fbefe54f797482343a469d20e8d2342300
+PODFILE CHECKSUM: 46bfe188e016f7c680042e42346ba282e91a1bf2
 
 COCOAPODS: 1.9.1
