@@ -14,10 +14,7 @@ import SBKit
 
 class HomeController: UITabBarController,UITabBarControllerDelegate {
     
-    var moc : NSManagedObjectContext!
-    lazy var editButton     = UIBarButtonItem(title: "Edit", style: .done, target: self, action: #selector(editButtonClicked))
-
-
+    lazy var editButton = UIBarButtonItem(title: "Edit", style: .done, target: self, action: #selector(editButtonClicked))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,22 +24,9 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
         
         self.delegate = self
         
-
-        self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
         self.navigationItem.leftBarButtonItem = editButton
         editButtonToggle(isEnabled: false)
-                 
-        do {
-            let fetchRequest = NSFetchRequest<SoundObject>(entityName: "SoundObject")
-            let allSound = try moc.fetch(fetchRequest)
-            allSound.forEach { (sound) in
-
-            }
-        } catch {
-            fatalError("Failed to fetch employees: \(error)")
-        }
-        
     }
     
     @objc func editButtonClicked(_ sender: Any){
@@ -51,12 +35,10 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
         }
     }
     
-    // UITabBarDelegate
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         
     }
-
-    // UITabBarControllerDelegate
+    
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if viewController is MoreController{
             editButtonToggle(isEnabled: true)
@@ -70,16 +52,18 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
     @IBAction func onAddButtonClicked(_ sender: Any) {
         let addEditSoundController = AddEditSoundController()
         addEditSoundController.state = .Add
-        self.navigationController!.pushViewController(addEditSoundController, animated: true)
+        if let navCont = self.navigationController{
+            navCont.pushViewController(addEditSoundController, animated: true)
+        }
     }
     
     private func editButtonToggle(isEnabled:Bool){
         if isEnabled{
             self.editButton.isEnabled = true
-            self.editButton.tintColor    = nil
+            self.editButton.tintColor = nil
         }else{
             self.editButton.isEnabled = false
-            self.editButton.tintColor    = .clear
+            self.editButton.tintColor = .clear
         }
     }
 }
