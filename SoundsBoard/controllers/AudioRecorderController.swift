@@ -17,7 +17,6 @@ protocol AudioRecorderViewControllerDelegate: class {
     func audioRecorderFinished(_ generatedName: String)
 }
 
-
 class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate{
     
     weak var audioRecorderDelegate: AudioRecorderViewControllerDelegate?
@@ -31,7 +30,7 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     lazy var pauseButton    = UIButton()
     lazy var animation      = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     
-    let recordindAnimationType:NVActivityIndicatorType = .ballClipRotateMultiple
+    let recordingAnimationType:NVActivityIndicatorType = .ballClipRotateMultiple
     let playingAnimationType:NVActivityIndicatorType = .audioEqualizer
     
     var timeTimer:Timer?
@@ -59,18 +58,22 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
     }
     
     func longPressRecordButtonDidStartLongPress(_ button: LongPressRecordButton) {
-        animation.stopAnimating()
-        AudioPlayer.sharedInstance.stop()
-        animation.type = recordindAnimationType
-        animation.startAnimating()
         if let r = recorder{
-            try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.record)
-            milliseconds = 0
-            timeLabel.text = "00:00"
-            timeTimer = Timer.scheduledTimer(timeInterval: 0.0167, target: self, selector: #selector(updateTimeLabel), userInfo: nil, repeats: true)
-            r.prepareToRecord()
-            r.deleteRecording()
-            r.record()
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.record)
+                animation.stopAnimating()
+                AudioPlayer.sharedInstance.stop()
+                animation.type = recordingAnimationType
+                animation.startAnimating()
+                milliseconds = 0
+                timeLabel.text = "00:00"
+                timeTimer = Timer.scheduledTimer(timeInterval: 0.0167, target: self, selector: #selector(updateTimeLabel), userInfo: nil, repeats: true)
+                r.prepareToRecord()
+                r.deleteRecording()
+                r.record()
+            }catch let error{
+                print(error)
+            }
         }
     }
     
