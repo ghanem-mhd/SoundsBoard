@@ -621,9 +621,7 @@ extension AddEditSoundControllerBase: ShareExtensionHandlerDelegate{
     }
     
     public func handleDidFailed() {
-        self.stopLoadingAnimation(completion: {
-            AlertsManager.showFileNotSupportedAlert(self)
-        })
+        showError(errorMessage: "Can't import the shared content!")
     }
     
     public func handleDidFinished(audioVideoURL: URL) {
@@ -636,14 +634,17 @@ extension AddEditSoundControllerBase: ShareExtensionHandlerDelegate{
 }
 
 extension AddEditSoundControllerBase: YoutubeManagerDelegate{
+    
+    public func URLNotSupported() {
+        showError(errorMessage: "Only youtube vidoes are supported!")
+    }
+    
     public func downloadDidStart() {
         self.startLoadingAnimation(message: "Downloading")
     }
     
     public func downloadDidFailed() {
-        self.stopLoadingAnimation(completion: {
-            AlertsManager.showFileNotSupportedAlert(self)
-        })
+        showError(errorMessage: "Can't download the video")
     }
     
     public func downloadOnProgress(_ progress: CGFloat) {
@@ -657,10 +658,20 @@ extension AddEditSoundControllerBase: YoutubeManagerDelegate{
             if let e = error{
                 print(e)
             }
-            self.stopLoadingAnimation(completion: {
-                AlertsManager.showFileNotSupportedAlert(self)
-            })
+            showError(errorMessage: "Can't download the video!")
         }
+    }
+}
+
+
+
+extension AddEditSoundControllerBase{
+    private func showError(errorMessage:String){
+        self.stopLoadingAnimation(completion: {
+            AlertsManager.showErrorAlert(self, message: errorMessage, handler: { action in
+                self.cancelButtonClicked(self.cancelButton)
+            })
+        })
     }
 }
 

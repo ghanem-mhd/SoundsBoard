@@ -11,6 +11,7 @@ import SDDownloadManager
 
 
 public protocol YoutubeManagerDelegate: class {
+    func URLNotSupported()
     func downloadDidStart()
     func downloadDidFailed()
     func downloadOnProgress(_ progress : CGFloat)
@@ -22,11 +23,11 @@ public class YoutubeManager{
     public static func downloadVideo(youtubeURL:String, delegate: YoutubeManagerDelegate){
         let videoIDOptional = URLComponents(string: youtubeURL)?.queryItems?.first(where: { $0.name == "v" })?.value
         guard let videoID = videoIDOptional else{
-            delegate.downloadDidFailed()
+            delegate.URLNotSupported()
             return
         }
         delegate.downloadDidStart()
-        extractVideos(from: videoID) { (url) -> (Void) in
+        extractVideos(delegate: delegate,from: videoID) { (url) -> (Void) in
             guard let mp4VideoURL = url else{
                 print("Could not find the mp4 streaming URL!")
                 delegate.downloadDidFailed()
@@ -51,19 +52,22 @@ public class YoutubeManager{
         }
     }
     
-    private static func extractVideos(from youtubeId : String, completion: @escaping ((String?) -> (Void))){
+    private static func extractVideos(delegate: YoutubeManagerDelegate,from youtubeId : String, completion: @escaping ((String?) -> (Void))){
         let strUrl = "http://www.youtube.com/get_video_info?video_id=\(youtubeId)&el=embedded&ps=default&eurl=&gl=US&hl=en"
         let url = URL(string: strUrl)!
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 print(error.localizedDescription)
+                delegate.downloadDidFailed()
                 return
             }
             guard (response as? HTTPURLResponse) != nil else {
                 print(response as Any)
+                delegate.downloadDidFailed()
                 return
             }
             guard let d = data else{
+                delegate.downloadDidFailed()
                 return
             }
             if let string = String(data: d, encoding: .utf8) {

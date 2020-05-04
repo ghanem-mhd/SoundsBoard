@@ -11,9 +11,9 @@ import UIKit
 
 public class AlertsManager{
     
-    public static func showAlert(_ viewController: UIViewController, _ title: String, _ message: String){
+    public static func showAlert(_ viewController: UIViewController, _ title: String, _ message: String, handler: ((UIAlertAction) -> Void)? = nil){
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: handler))
         viewController.present(alert, animated: true)
     }
     
@@ -31,6 +31,10 @@ public class AlertsManager{
     
     public static func showMaxFavoriteAlert(_ viewController: UIViewController){
         AlertsManager.showAlert(viewController, "Opps", "Maximum favourite sounds is \(Constants.maximumFavoriteSounds).")
+    }
+    
+    public static func showErrorAlert(_ viewController: UIViewController, message:String,  handler: ((UIAlertAction) -> Void)? = nil){
+        AlertsManager.showAlert(viewController, "Opps", message, handler: handler)
     }
     
     public static func getActivityIndicatorAlert() -> UIAlertController{
