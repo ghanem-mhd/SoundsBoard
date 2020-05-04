@@ -17,8 +17,8 @@ protocol AudioRecorderViewControllerDelegate: class {
     func audioRecorderFinished(_ generatedName: String)
 }
 
-class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate{
-    
+class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AVAudioRecorderDelegate, AudioPlayerDelegate{
+
     weak var audioRecorderDelegate: AudioRecorderViewControllerDelegate?
     
     lazy var recordButton   = LongPressRecordButton()
@@ -211,5 +211,9 @@ class AudioRecorderController: UIViewController,LongPressRecordButtonDelegate,AV
         if isMovingFromParent {
         }
         AudioPlayer.sharedInstance.stop()
+    }
+    
+    func playDidStopped() {
+        
     }
 }

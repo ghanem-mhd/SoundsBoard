@@ -9,11 +9,16 @@
 import AVFoundation
 import SwiftySound
 
+public protocol AudioPlayerDelegate: AVAudioPlayerDelegate{
+    func playDidStopped()
+}
+
 public class AudioPlayer {
     public static let sharedInstance = AudioPlayer()
     private var player: AVAudioPlayer?
     private var playedURL:URL?
     private var stopTimer = Timer()
+    private var delegate:AudioPlayerDelegate?
     
 
     public func playInAppContainer(soundFileName: String, volume:Float = 1){
@@ -21,12 +26,13 @@ public class AudioPlayer {
         play(url: url, startTime: nil, endTime:nil,checkPlayed: true, delegate: nil, volume: volume)
     }
     
-    public func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil, volume:Float = 1){
+    public func play(soundFileName: String, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil, checkPlayed: Bool = true, delegate: AudioPlayerDelegate? = nil, volume:Float = 1){
         let url = SoundsFilesManger.getSoundURL(soundFileName)
         play(url: url, startTime: startTime, endTime:endTime, checkPlayed: checkPlayed, delegate: delegate, volume: volume)
     }
     
-    public func play(url: URL, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AVAudioPlayerDelegate? = nil, volume:Float = 1) {
+    public func play(url: URL, startTime:TimeInterval? = nil, endTime:TimeInterval? = nil,checkPlayed: Bool = true, delegate: AudioPlayerDelegate? = nil, volume:Float = 1) {
+        self.delegate = delegate
         if checkPlayed, let player = player, let playedURL = playedURL{
             if playedURL == url{
                 if player.isPlaying{
@@ -66,6 +72,9 @@ public class AudioPlayer {
         if let p = player{
             p.stop()
             p.delegate = nil
+        }
+        if let d = delegate{
+            d.playDidStopped()
         }
         player = nil
     }

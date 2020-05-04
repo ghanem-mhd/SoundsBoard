@@ -12,6 +12,7 @@ import CoreData
 import WARangeSlider
 import Intents
 import IntentsUI
+import AVFoundation
 
 open class AddEditSoundControllerBase: UIViewController, UINavigationControllerDelegate{
     
@@ -231,38 +232,54 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
             let startTime = TimeInterval(exactly: trimSlider.lowerValue)
             let endTime = TimeInterval(exactly: trimSlider.upperValue)
             let volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
-            AudioPlayer.sharedInstance.play(soundFileName: soundFileName, startTime: startTime, endTime: endTime, checkPlayed: true, volume:volume)
+            AudioPlayer.sharedInstance.play(soundFileName: soundFileName,
+                                            startTime: startTime,
+                                            endTime: endTime,
+                                            checkPlayed: true,
+                                            delegate: self,
+                                            volume:volume)
         }
-    }
-    
-    @objc func playPauseToggle(_ sender: UIButton){
-        if (isPlaying){
-            if let playIcon = UIImage(named: "round_play_arrow_black_48pt"){
-                playPauseButton.setImage(playIcon , for: .normal)
-            }
-            isPlaying = false
-            onPauseButtonClicked()
-        }else{
-            if let pauseIcon = UIImage(named: "round_pause_black_48pt"){
-                playPauseButton.setImage(pauseIcon , for: .normal)
-            }
-            isPlaying = true
-            onPlayButtonClicked()
-        }
+        isPlaying = true
+        showPauseIcon()
     }
     
     func onPauseButtonClicked(){
         AudioPlayer.sharedInstance.pause()
+        isPlaying = false
+        showPlayIcon()
     }
     
     @objc func onStopButtonClicked(_ sender: UIButton){
         AudioPlayer.sharedInstance.stop()
+        isPlaying = false
+        showPlayIcon()
+    }
+    
+    private func showPlayIcon(){
+        if let playIcon = UIImage(named: "round_play_arrow_black_48pt"){
+            playPauseButton.setImage(playIcon , for: .normal)
+        }
+    }
+    
+    private func showPauseIcon(){
+        if let pauseIcon = UIImage(named: "round_pause_black_48pt"){
+             playPauseButton.setImage(pauseIcon , for: .normal)
+         }
+    }
+    
+    @objc func playPauseToggle(_ sender: UIButton){
+        if (isPlaying){
+            onPauseButtonClicked()
+        }else{
+            onPlayButtonClicked()
+        }
     }
     
     @objc func rangeSliderValueChanged(_ rangeSlider: RangeSlider) {
         let lowerValue = rangeSlider.lowerValue
         let upperValue = rangeSlider.upperValue
         updateStartEndTrimmingViews(start: Float(lowerValue), end: Float(upperValue))
+        onStopButtonClicked(stopButton)
     }
     
     func updateStartEndTrimmingViews(start:Float, end:Float){
@@ -457,6 +474,17 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     lazy var trimHintLabel          = UILabel()
     lazy var addSiriShortcut        = UIButton(type: .system)
     lazy var volumeHintLabel        = UILabel()
+}
+
+extension AddEditSoundControllerBase: AudioPlayerDelegate{
+    
+    public func playDidStopped() {
+        showPlayIcon()
+    }
+    
+    public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        showPlayIcon()
+    }
 }
 
 extension AddEditSoundControllerBase: SoundsFilesMangerCopyDelegate{
