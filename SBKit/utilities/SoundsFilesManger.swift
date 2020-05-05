@@ -16,6 +16,7 @@ public enum SupportedFileTypes {
     case mp3
     case mov
     case video
+    case wav
     case unknown
 }
 
@@ -104,6 +105,9 @@ public class SoundsFilesManger{
         if UTTypeConformsTo(fileUTI, kUTTypeMP3){
             return SupportedFileTypes.mp3
         }
+        if UTTypeConformsTo(fileUTI, kUTTypeWaveformAudio){
+            return SupportedFileTypes.wav
+        }
         if UTTypeConformsTo(fileUTI, kUTTypeMPEG4Audio){
             return SupportedFileTypes.m4a
         }
@@ -122,7 +126,7 @@ public class SoundsFilesManger{
         if fileType == .m4a{
             copyAudioFile(fileURL, delegate)
         }
-        if fileType == .mp3{
+        if fileType == .mp3 || fileType == .wav{
             convertAndCopy(fileURL, delegate)
         }
         if fileType == .video{

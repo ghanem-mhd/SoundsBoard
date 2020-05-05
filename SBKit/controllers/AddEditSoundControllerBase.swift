@@ -617,7 +617,7 @@ extension AddEditSoundControllerBase{
     public func importURL(_ url:URL){
         let fileType = SoundsFilesManger.checkFileType(url)
         if fileType == SupportedFileTypes.unknown{
-            AlertsManager.showFileNotSupportedAlert(self)
+            showError(errorMessage: "The file type is not supported!")
             return
         }
         SoundsFilesManger.copyFile(url, self)
