@@ -52,6 +52,18 @@ class ShareExtensionHandler{
                 }
             })
         }
+        if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypeURL))) {
+            videoURL = true
+            itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypeURL), options: nil, completionHandler: { (sharedData, error) in
+                DispatchQueue.main.async {
+                    if let sharedURL = sharedData as? URL{
+                        delegate.handleDidFinished(youtubeURL: sharedURL.absoluteURL.absoluteString)
+                    }else{
+                        delegate.handleDidFailed()
+                    }
+                }
+            })
+        }
         if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypePlainText))) {
             videoURL = true
             itemProviders[0].loadItem(forTypeIdentifier: String(kUTTypePlainText), options: nil, completionHandler: { (sharedData, error) in

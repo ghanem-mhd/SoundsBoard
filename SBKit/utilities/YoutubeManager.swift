@@ -21,7 +21,12 @@ public protocol YoutubeManagerDelegate: class {
 public class YoutubeManager{
     
     public static func downloadVideo(youtubeURL:String, delegate: YoutubeManagerDelegate){
-        let videoIDOptional = URLComponents(string: youtubeURL)?.queryItems?.first(where: { $0.name == "v" })?.value
+        var videoIDOptional:String?
+        if youtubeURL.hasPrefix("https://youtu.be/"){
+            videoIDOptional = youtubeURL.replacingOccurrences(of: "https://youtu.be/", with: "")
+        }else{
+            videoIDOptional = URLComponents(string: youtubeURL)?.queryItems?.first(where: { $0.name == "v" })?.value
+        }
         guard let videoID = videoIDOptional else{
             delegate.URLNotSupported()
             return
