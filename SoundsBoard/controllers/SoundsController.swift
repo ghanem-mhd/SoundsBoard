@@ -50,10 +50,7 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
     }
     
     func initializeFetchedResultsController() {
-        let fetchRequest = NSFetchRequest<SoundObject>(entityName: "SoundObject")
-        let favoriteSort = NSSortDescriptor(key: "isFavorite", ascending: false)
-        let nameSort = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [favoriteSort, nameSort]
+        let fetchRequest = CoreDataManager.shared.getSoundsControllerFetchReqest()
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         guard let controller = fetchedResultsController else{
             return

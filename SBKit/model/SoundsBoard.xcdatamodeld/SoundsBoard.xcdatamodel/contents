@@ -4,10 +4,11 @@
         <attribute name="fileName" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="sortId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="volume" optional="YES" attributeType="Float" defaultValueString="1" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="SoundObject" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="SoundObject" positionX="-63" positionY="-18" width="128" height="133"/>
     </elements>
 </model>

@@ -47,10 +47,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     }
     
     func initializeFetchedResultsController() {
-        let fetchRequest = NSFetchRequest<SoundObject>(entityName: "SoundObject")
-        let nameSort = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [nameSort]
-        fetchRequest.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
+        let fetchRequest = CoreDataManager.shared.getWidgetFetchReqest()
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         guard let controller = fetchedResultsController else{
             return

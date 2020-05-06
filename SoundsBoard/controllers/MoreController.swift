@@ -14,7 +14,6 @@ import SBKit
 class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var tableView:UITableView?
-    var fetchRequest: NSFetchRequest<SoundObject>?
     var moc: NSManagedObjectContext!
     var fetchedResultsController: NSFetchedResultsController<SoundObject>!
     
@@ -34,23 +33,10 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
         initializeFetchedResultsController()
     }
     
-    // Creates a NSFetchRequest and NSFetchedResultsController and fetches the data
     func initializeFetchedResultsController() {
-        
-        // create fetch request and saves it in an attribute
-        self.fetchRequest = NSFetchRequest<SoundObject>(entityName: "SoundObject")
-        
-        // add NSSortDescriptor to the fetch request orderung the results by name
-        let nameSort = NSSortDescriptor(key: "name", ascending: true)
-        self.fetchRequest!.sortDescriptors = [nameSort]
-        
-        // creates NSFetchedResultsController and assigns its fetchRequest and target moc
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: self.fetchRequest!, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        
-        // set delegate so class methods will be called on certain events
+        let fetchRequest = CoreDataManager.shared.getMoreControllerFetchReqest()
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
-        
-        // fetch results, will be accessable in fetchedResultsController
         do {
             try fetchedResultsController.performFetch()
         } catch {
@@ -64,7 +50,6 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // instead of using static source, the fetchedResultsController is used
         guard let sections = fetchedResultsController.sections else {
             fatalError("No sections in fetchedResultsController")
         }
@@ -74,7 +59,6 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SoundCellView", for: indexPath) as! SoundTableCellView
-        // instead of using static source, the fetchedResultsController is used
         guard let soundObject = self.fetchedResultsController?.object(at: indexPath) else {
             fatalError("Attempt to configure cell without a managed object")
         }
@@ -108,8 +92,12 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
         }
     }
     
-    // callback if NSFetchedResultsController updates its Rows
+    var changeIsUserDriven = false
+    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        if (changeIsUserDriven) {
+        }
         switch type {
         case .insert:
             tableView?.insertRows(at: [newIndexPath!], with: .fade)
@@ -118,11 +106,11 @@ class MoreController: UIViewController, NSFetchedResultsControllerDelegate, UITa
         case .update:
             tableView?.reloadRows(at: [indexPath!], with: .fade)
         case .move:
-            tableView?.moveRow(at: indexPath!, to: newIndexPath!)
-            if let cell = tableView?.cellForRow(at: indexPath!) as? SoundTableCellView {
-                let updatedSoundObject = fetchedResultsController.object(at: newIndexPath!)
-                cell.update(updatedSoundObject)
-            }
+            let indexPath = indexPath!
+            let newIndexPath = newIndexPath!
+            print("indexPath \(indexPath.row)")
+            print("newIndexPath \(newIndexPath.row)")
+            tableView?.moveRow(at: indexPath, to: newIndexPath)
         default:
             break
         }

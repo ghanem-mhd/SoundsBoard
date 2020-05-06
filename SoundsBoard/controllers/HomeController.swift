@@ -27,6 +27,9 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
         
         self.navigationItem.leftBarButtonItem = editButton
         editButtonToggle(isEnabled: false)
+        
+        //CoreDataManager.shared.deleteAll()
+        //CoreDataManager.shared.create(numberOfSound: 5)
     }
     
     @objc func editButtonClicked(_ sender: Any){

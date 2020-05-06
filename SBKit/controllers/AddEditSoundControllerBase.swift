@@ -443,23 +443,8 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     }
     
     public func saveNewSound(_ soundName:String, _ soundImage:UIImage?, _ soundFileName:String){
-        if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
-            let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
-            let volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
-            soundObject.setValue(soundName, forKeyPath: "name")
-            soundObject.setValue(volume, forKeyPath: "volume")
-            if let image = soundImage{
-                soundObject.setValue(image.pngData(), forKeyPath: "image")
-            }
-            soundObject.setValue(soundFileName, forKeyPath: "fileName")
-            do {
-                try moc.save()
-                soundSaved = true
-            } catch let error as NSError {
-                print(error)
-                moc.rollback()
-            }
-        }
+        let volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
+        soundSaved = CoreDataManager.shared.saveNewSound(soundName, volume, soundImage, soundFileName)
     }
     
     

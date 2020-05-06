@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 
 class PersistentContainer: NSPersistentContainer {
@@ -24,6 +25,8 @@ class PersistentContainer: NSPersistentContainer {
 
 
 public class CoreDataManager {
+    
+    private static let mangedObjectName = "SoundObject"
     
     public static let shared = CoreDataManager()
     public var errorHandler: (Error) -> Void = {_ in }
@@ -83,17 +86,90 @@ public class CoreDataManager {
         }
     }
     
-    public func createDummy(){
-        let moc = managedContext
-        if let soundEntity = NSEntityDescription.entity(forEntityName: "SoundObject", in: moc){
-            let soundObject = NSManagedObject(entity: soundEntity, insertInto: moc)
-            soundObject.setValue(randomString(length: 5), forKeyPath: "name")
-            do {
-                try moc.save()
-            } catch let error as NSError {
-                print(error)
-                moc.rollback()
-            }
+    public func getSoundsControllerFetchReqest() -> NSFetchRequest<SoundObject>{
+        let fetchRequest = NSFetchRequest<SoundObject>(entityName: CoreDataManager.mangedObjectName)
+        let favoriteSort = NSSortDescriptor(key: "isFavorite", ascending: false)
+        let sortId = NSSortDescriptor(key: "sortId", ascending: true)
+        fetchRequest.sortDescriptors = [favoriteSort, sortId]
+        return fetchRequest
+    }
+    
+    public func getMoreControllerFetchReqest() -> NSFetchRequest<SoundObject>{
+        let fetchRequest = NSFetchRequest<SoundObject>(entityName: CoreDataManager.mangedObjectName)
+        let sortId = NSSortDescriptor(key: "sortId", ascending: true)
+        fetchRequest.sortDescriptors = [sortId]
+        return fetchRequest
+    }
+    
+    public func getWidgetFetchReqest() -> NSFetchRequest<SoundObject>{
+        let fetchRequest = NSFetchRequest<SoundObject>(entityName: CoreDataManager.mangedObjectName)
+        let sortId = NSSortDescriptor(key: "sortId", ascending: true)
+        fetchRequest.sortDescriptors = [sortId]
+        fetchRequest.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
+        return fetchRequest
+    }
+    
+    public func create(numberOfSound:Int){
+        for n in 1...numberOfSound {
+            saveNewSound("\(n)th", 0.5, nil,"")
+        }
+    }
+    
+    public func test() -> [SoundObject]?{
+        do {
+            let sounds = try managedContext.fetch(getMoreControllerFetchReqest())
+            return sounds
+        } catch let error as NSError {
+            print(error)
+            return nil
+        }
+    }
+    
+    public func deleteAll(){
+        let fetchRequest = NSFetchRequest<SoundObject>(entityName: CoreDataManager.mangedObjectName)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
+        do {
+            try managedContext.execute(deleteRequest)
+        } catch let error as NSError {
+            print(error)
+        }
+    }
+    
+    public func saveNewSound(_ soundName:String, _ volume: Float, _ soundImage:UIImage?, _ soundFileName:String)-> Bool {
+        guard let soundEntity = NSEntityDescription.entity(forEntityName: CoreDataManager.mangedObjectName, in: managedContext) else{
+            return false
+        }
+        let soundObject = NSManagedObject(entity: soundEntity, insertInto: managedContext)
+        soundObject.setValue(soundName, forKeyPath: "name")
+        soundObject.setValue(volume, forKeyPath: "volume")
+        soundObject.setValue(soundFileName, forKeyPath: "fileName")
+        if let image = soundImage{
+            soundObject.setValue(image.pngData(), forKeyPath: "image")
+        }
+        let soundsCount = getSoundsCount()
+        if soundsCount == -1{
+            return false
+        }else{
+            soundObject.setValue(soundsCount, forKeyPath: "sortId")
+        }
+        do {
+            try managedContext.save()
+            return true
+        } catch let error as NSError {
+            print(error)
+            managedContext.rollback()
+            return false
+        }
+    }
+    
+    public func getSoundsCount() -> Int{
+        let fetchRequest = NSFetchRequest<SoundObject>(entityName: CoreDataManager.mangedObjectName)
+        do {
+            let count = try managedContext.count(for: fetchRequest)
+            return count
+        } catch let error as NSError {
+            print(error)
+            return -1
         }
     }
     
@@ -103,7 +179,7 @@ public class CoreDataManager {
     }
     
     private func getFavoritesCount() -> Int{
-        let fetchRequest = NSFetchRequest<SoundObject>(entityName: "SoundObject")
+        let fetchRequest = NSFetchRequest<SoundObject>(entityName: CoreDataManager.mangedObjectName)
         fetchRequest.predicate = NSPredicate(format: "isFavorite == %@", NSNumber(value: true))
         do {
             let count = try managedContext.count(for: fetchRequest)

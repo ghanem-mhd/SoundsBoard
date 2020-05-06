@@ -92,7 +92,7 @@ class SoundTableCellView: UITableViewCell{
     }
     
     public func update(_ soundObject : SoundObject) {
-        label.text = soundObject.name
+        label.text = String("\(soundObject.name!) - \(soundObject.sortId)")
         if let soundImageData = soundObject.image{
             soundImage.image = UIImage(data: soundImageData)
         }else{
