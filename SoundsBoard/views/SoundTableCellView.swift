@@ -16,7 +16,7 @@ class SoundTableCellView: UITableViewCell{
     
     static let cornerRadius:CGFloat = 10.0
     
-     var favoriteClick : (() -> ())?
+    var favoriteClick : (() -> ())?
     
     public let label: UILabel = {
         let label = UILabel()
@@ -78,7 +78,7 @@ class SoundTableCellView: UITableViewCell{
         addSubview(favoriteClickArea)
         let gesture = UITapGestureRecognizer(target: self, action:  #selector(self.buttonClicked))
         favoriteClickArea.addGestureRecognizer(gesture)
-
+        
         favoriteClickArea.snp.makeConstraints{ (make) -> Void in
             make.centerY.equalTo(self.snp.centerY)
             make.height.equalTo(self.contentView.snp.height)
@@ -92,9 +92,13 @@ class SoundTableCellView: UITableViewCell{
     }
     
     public func update(_ soundObject : SoundObject) {
-        label.text = String("\(soundObject.name!) - \(soundObject.sortId)")
+        label.text = String("\(soundObject.name!)")
         if let soundImageData = soundObject.image{
-            soundImage.image = UIImage(data: soundImageData)
+            if let image = UIImage(data: soundImageData){
+                if let scaledData = image.jpegData(compressionQuality: 0.1){
+                    soundImage.image = UIImage(data: scaledData)
+                }
+            }
         }else{
             if let placeholder = UIImage(named: "baseline_image_black_48pt"){
                 soundImage.image = placeholder

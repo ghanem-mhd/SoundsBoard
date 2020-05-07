@@ -444,7 +444,13 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     
     public func saveNewSound(_ soundName:String, _ soundImage:UIImage?, _ soundFileName:String){
         let volume = VolumeManager.getVolumeValue(volumeSegmentControl.selectedSegmentIndex)
-        soundSaved = CoreDataManager.shared.saveNewSound(soundName, volume, soundImage, soundFileName)
+        let savedSound = CoreDataManager.shared.saveNewSound(soundName, volume, soundImage, soundFileName)
+        if let sound = savedSound{
+            NotificationCenter.default.post(name: Constants.soundSavedNotification, object: nil, userInfo: [Constants.soundSavedUserInfo:sound])
+            soundSaved = true
+        }else{
+            soundSaved = false
+        }
     }
     
     

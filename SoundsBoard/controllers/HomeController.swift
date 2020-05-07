@@ -23,23 +23,17 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
         print(SoundsFilesManger.getFilesFromDocumentsFolder2() ?? "")
         
         self.delegate = self
-        
-        
         self.navigationItem.leftBarButtonItem = editButton
         editButtonToggle(isEnabled: false)
         
         //CoreDataManager.shared.deleteAll()
-        //CoreDataManager.shared.create(numberOfSound: 5)
+        //CoreDataManager.shared.create(numberOfSound: 10)
     }
     
     @objc func editButtonClicked(_ sender: Any){
         if let controller = selectedViewController as? MoreController{
             controller.onEditButtonClicked(editButton)
         }
-    }
-    
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {

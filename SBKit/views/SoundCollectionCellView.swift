@@ -101,7 +101,11 @@ public class SoundCollectionCellView: UICollectionViewCell {
     public func update(_ soundObject : SoundObject) {
         label.text = soundObject.name
         if let soundImageData = soundObject.image{
-            image.image = UIImage(data: soundImageData)
+            if let soundImage = UIImage(data: soundImageData){
+                if let scaledData = soundImage.jpegData(compressionQuality: 0.5){
+                    image.image = UIImage(data: scaledData)
+                }
+            }
         }else{
             image.image = nil
         }

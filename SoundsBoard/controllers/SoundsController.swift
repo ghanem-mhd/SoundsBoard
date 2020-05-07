@@ -6,9 +6,6 @@
 //  Copyright © 2020 Mohammed Ghannm. All rights reserved.
 //
 import UIKit
-
-
-let reuseIdentifier = "CellIdentifer";
 import Foundation
 import SnapKit
 import CoreData
@@ -18,120 +15,90 @@ import SBKit
 
 class SoundsController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
-    var collectionView: UICollectionView!
-    var cellId = "Cell"
-    var moc: NSManagedObjectContext!
-    var fetchedResultsController: NSFetchedResultsController<SoundObject>?
-    
-    let sectionInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-    let itemsPerRow: CGFloat = 3
+    private var collectionView: UICollectionView!
+    private var soundsList : [SoundObject] = []
+    private let refreshControl = UIRefreshControl()
+    private let sectionInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.moc = CoreDataManager.shared.persistentContainer.viewContext
-        
+        setUpNotification()
+        setUpCollectionView()
+        setUpReferchControl()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        updateCollectionViewData()
+    }
+    
+    private func setUpNotification(){
+        NotificationCenter.default.addObserver(self, selector: #selector(onSoundSaved(_:)), name: Constants.soundSavedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    private func setUpCollectionView(){
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = sectionInsets
         
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(SoundCollectionCellView.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(SoundCollectionCellView.self, forCellWithReuseIdentifier: "Cell")
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .white
         collectionView.dragInteractionEnabled = true
         self.view.addSubview(collectionView)
-        
-        initializeFetchedResultsController()
-        
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
-        collectionView.addGestureRecognizer(longPressGesture)
     }
     
-    func initializeFetchedResultsController() {
-        let fetchRequest = CoreDataManager.shared.getSoundsControllerFetchReqest()
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        guard let controller = fetchedResultsController else{
-            return
+    private func setUpReferchControl(){
+        if #available(iOS 10.0, *) {
+            collectionView.refreshControl = refreshControl
+        } else {
+            collectionView.addSubview(refreshControl)
         }
-        controller.delegate = self
-        do {
-            try controller.performFetch()
-        } catch {
-            fatalError("Failed to initialize FetchedResultsController: \(error)")
-        }
+        refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+        let paddingSpace = sectionInsets.left * (CGFloat(Constants.itemsPerRow) + 1)
         let availableWidth = view.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
+        let widthPerItem = availableWidth / CGFloat(Constants.itemsPerRow)
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let controller = fetchedResultsController, let sections = controller.sections else {
-            fatalError("No sections in fetchedResultsController")
+        if section == 0 {
+            return soundsList.count
+        } else {
+            return 0
         }
-        let sectionInfo = sections[section]
-        return sectionInfo.numberOfObjects
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SoundCollectionCellView
-        guard let controller = fetchedResultsController else {
-            fatalError("Attempt to configure cell without a managed object")
-        }
-        let soundObject = controller.object(at: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! SoundCollectionCellView
+        let soundObject = soundsList[indexPath.row]
         cell.update(soundObject)
         return cell
     }
     
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        switch type {
-        case .insert:
-            collectionView.insertItems(at: [newIndexPath!])
-        case .delete:
-            collectionView.deleteItems(at: [indexPath!])
-        case .update:
-            collectionView.reloadItems(at: [indexPath!])
-        case .move:
-            collectionView.moveItem(at: indexPath!, to: newIndexPath!)
-        default:
-            break
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        collectionView.endEditing(true)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let controller = fetchedResultsController else {
-            fatalError("Attempt to configure cell without a managed object")
-        }
-        let clickedSound = controller.object(at: indexPath)
+        let clickedSound = soundsList[indexPath.row]
         let cell = collectionView.cellForItem(at: indexPath)
         
         UIView.animate(withDuration: 0.3,
-                         animations: {
-                          cell?.alpha = 0.8
-          }) { (completed) in
-              UIView.animate(withDuration: 0.3,
-                             animations: {
-                              cell?.alpha = 1
-              })
-          }
+                       animations: {
+                        cell?.alpha = 0.8
+        }) { (completed) in
+            UIView.animate(withDuration: 0.3,
+                           animations: {
+                            cell?.alpha = 1
+            })
+        }
         
         if let soundGeneratedName = clickedSound.fileName{
             AudioPlayer.sharedInstance.play(soundFileName: soundGeneratedName, volume: clickedSound.volume)
@@ -142,33 +109,90 @@ class SoundsController: UIViewController, UICollectionViewDataSource, UICollecti
         return false
     }
     
-    @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
-        if gesture.state != .ended {
-            return
-        }
-        let indexPath = self.collectionView.indexPathForItem(at: gesture.location(in: collectionView))
-        if let indexPath = indexPath {
-            let touchedSound = fetchedResultsController?.object(at: indexPath)
-            if let soundName = touchedSound?.fileName{
-                let activityVC = UIActivityViewController(activityItems: [SoundsFilesManger.getSoundURL(soundName)],applicationActivities: nil)
-                activityVC.popoverPresentationController?.sourceView = self.view
-                self.present(activityVC, animated: true, completion: nil)
-            }
-        } else {
-            print("Could not find index path")
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        guard fetchedResultsController != nil else {
-            fatalError("No fetchedResultsController")
-        }
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         AudioPlayer.sharedInstance.stop()
     }
     
+    @objc func onSoundSaved(_ notification:Notification) {
+        print("onSoundSaved Sounds Controller")
+        if let data = notification.userInfo as? [String: SoundObject]{
+            if let savedSound = data[Constants.soundSavedUserInfo]{
+                soundsList.append(savedSound)
+                collectionView?.reloadData()
+            }
+        }
+    }
+    
+    @objc func willEnterForeground() {
+        updateCollectionViewData()
+    }
+    
+    @objc private func refreshData(_ sender: Any) {
+        updateCollectionViewData()
+        self.refreshControl.endRefreshing()
+    }
+    
+    private func updateCollectionViewData(){
+        if let sounds = CoreDataManager.shared.getAllSoundsForSoundsController(){
+            soundsList = sounds
+        }
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @available(iOS 13.0, *)
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { suggestedActions in
+            return self.makeContextMenu(soundObject: self.soundsList[indexPath.row])
+        })
+    }
+    
+    @available(iOS 13.0, *)
+    func makeContextMenu(soundObject:SoundObject) -> UIMenu {
+        let share = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { action in
+            self.shareSound(soundObject: soundObject)
+        }
+        let edit = UIAction(title: "Edit", image: UIImage(systemName: "square.and.pencil")) { action in
+            self.editSound(soundObject: soundObject)
+        }
+        let delete = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { action in
+            self.deleteSound(soundObject: soundObject)
+        }
+        if let soundName = soundObject.name{
+            return UIMenu(title: soundName, children: [edit, share, delete])
+        }else{
+            return UIMenu(title: "Main Menu", children: [edit, share, delete])
+        }
+    }
+    
+    private func shareSound(soundObject:SoundObject){
+        if let soundName = soundObject.fileName{
+            let activityVC = UIActivityViewController(activityItems: [SoundsFilesManger.getSoundURL(soundName)],applicationActivities: nil)
+            activityVC.popoverPresentationController?.sourceView = self.view
+            self.present(activityVC, animated: true, completion: nil)
+        }
+    }
+    
+    private func editSound(soundObject:SoundObject){
+        let addEditSoundController = AddEditSoundController()
+        addEditSoundController.state = .Edit
+        addEditSoundController.editableSound = soundObject
+        if let controller = self.navigationController{
+            controller.pushViewController(addEditSoundController, animated: true)
+        }
+    }
+    
+    private func deleteSound(soundObject:SoundObject){
+        let isDeleted = CoreDataManager.shared.deleteSound(deletedSound: soundObject)
+        if isDeleted{
+           updateCollectionViewData()
+        }
+    }
 }
 
 

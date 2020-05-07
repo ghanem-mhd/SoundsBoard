@@ -94,7 +94,7 @@ public class CoreDataManager {
         return fetchRequest
     }
     
-    public func getMoreControllerFetchReqest() -> NSFetchRequest<SoundObject>{
+    public func getAllSoundsFetchReqest() -> NSFetchRequest<SoundObject>{
         let fetchRequest = NSFetchRequest<SoundObject>(entityName: CoreDataManager.mangedObjectName)
         let sortId = NSSortDescriptor(key: "sortId", ascending: true)
         fetchRequest.sortDescriptors = [sortId]
@@ -115,9 +115,19 @@ public class CoreDataManager {
         }
     }
     
-    public func test() -> [SoundObject]?{
+    public func getAllSoundsForMoreController() -> [SoundObject]?{
         do {
-            let sounds = try managedContext.fetch(getMoreControllerFetchReqest())
+            let sounds = try managedContext.fetch(getAllSoundsFetchReqest())
+            return sounds
+        } catch let error as NSError {
+            print(error)
+            return nil
+        }
+    }
+    
+    public func getAllSoundsForSoundsController() -> [SoundObject]?{
+        do {
+            let sounds = try managedContext.fetch(getSoundsControllerFetchReqest())
             return sounds
         } catch let error as NSError {
             print(error)
@@ -135,9 +145,24 @@ public class CoreDataManager {
         }
     }
     
-    public func saveNewSound(_ soundName:String, _ volume: Float, _ soundImage:UIImage?, _ soundFileName:String)-> Bool {
-        guard let soundEntity = NSEntityDescription.entity(forEntityName: CoreDataManager.mangedObjectName, in: managedContext) else{
+    public func deleteSound(deletedSound sound:SoundObject) -> Bool{
+        do {
+            let soundFileName = sound.fileName
+            managedContext.delete(sound)
+            try managedContext.save()
+            if let fileName = soundFileName{
+                SoundsFilesManger.deleteFile(SoundsFilesManger.getSoundURL(fileName))
+            }
+            return true
+        } catch let error as NSError {
+            print("Error while deleting entry: \(error.userInfo)")
             return false
+        }
+    }
+    
+    public func saveNewSound(_ soundName:String, _ volume: Float, _ soundImage:UIImage?, _ soundFileName:String)-> SoundObject? {
+        guard let soundEntity = NSEntityDescription.entity(forEntityName: CoreDataManager.mangedObjectName, in: managedContext) else{
+            return nil
         }
         let soundObject = NSManagedObject(entity: soundEntity, insertInto: managedContext)
         soundObject.setValue(soundName, forKeyPath: "name")
@@ -146,19 +171,45 @@ public class CoreDataManager {
         if let image = soundImage{
             soundObject.setValue(image.pngData(), forKeyPath: "image")
         }
-        let soundsCount = getSoundsCount()
+        var soundsCount = getSoundsCount()
         if soundsCount == -1{
-            return false
+            return nil
         }else{
+            soundsCount = soundsCount - 1
             soundObject.setValue(soundsCount, forKeyPath: "sortId")
         }
         do {
             try managedContext.save()
-            return true
+            return soundObject as? SoundObject
         } catch let error as NSError {
             print(error)
             managedContext.rollback()
-            return false
+            return nil
+        }
+    }
+    
+    public func updateSoundsOrder(soundsList:[SoundObject]){
+        for (index, sound) in soundsList.enumerated() {
+            sound.sortId = Int32(index)
+        }
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print(error)
+        }
+    }
+    
+    public func toggleIsFavorite(_ soundObject: SoundObject, maxFavoriteReached: (() -> Void)){
+        if !soundObject.isFavorite && CoreDataManager.shared.maxFavoriteReached(){
+            maxFavoriteReached()
+            return
+        }
+        soundObject.isFavorite = !soundObject.isFavorite
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print(error)
+            managedContext.rollback()
         }
     }
     

@@ -51,6 +51,7 @@ class ShareExtensionHandler{
                     }
                 }
             })
+            return
         }
         if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypeURL))) {
             videoURL = true
@@ -63,6 +64,7 @@ class ShareExtensionHandler{
                     }
                 }
             })
+            return
         }
         if (itemProviders[0].hasItemConformingToTypeIdentifier(String(kUTTypePlainText))) {
             videoURL = true
