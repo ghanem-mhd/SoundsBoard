@@ -39,6 +39,8 @@ open class AddEditSoundControllerBase: UIViewController, UINavigationControllerD
     override public func viewDidLoad() {
         super.viewDidLoad()
         
+        SoundsFilesManger.clearDownloadCasheDirectory()
+        
         self.moc = CoreDataManager.shared.persistentContainer.viewContext
         
         self.title = "Create new Sound"

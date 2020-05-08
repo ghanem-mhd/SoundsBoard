@@ -87,6 +87,24 @@ public class SoundsFilesManger{
         let appGroup = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupID)
         return appGroup?.appendingPathComponent("Library", isDirectory:  true)
     }
+
+    static func getDownloadCasheDirectory() -> URL {
+        let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
+        return URL(fileURLWithPath: cachePath).appendingPathComponent("downloads")
+    }
+    
+    static func clearDownloadCasheDirectory(){
+        do {
+            let fileManager = FileManager.default
+            let items = try fileManager.contentsOfDirectory(atPath: getDownloadCasheDirectory().path)
+            for filePath in items {
+                print("Deleting \(filePath)")
+                try fileManager.removeItem(atPath: getDownloadCasheDirectory().path + "/" + filePath)
+            }
+        } catch let error as NSError {
+            print(error)
+        }
+    }
     
     public static func getAppGroupDirectorySoundURL(_ soundFileName:String) -> URL {
         return getAppGroupDirectory()!.appendingPathComponent(soundFileName) //TODO

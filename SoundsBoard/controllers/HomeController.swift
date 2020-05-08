@@ -17,11 +17,7 @@ class HomeController: UITabBarController,UITabBarControllerDelegate {
     lazy var editButton = UIBarButtonItem(title: "Edit", style: .done, target: self, action: #selector(editButtonClicked))
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        print(SoundsFilesManger.getFilesFromDocumentsFolder2() ?? "")
-        
+        super.viewDidLoad()        
         self.delegate = self
         self.navigationItem.leftBarButtonItem = editButton
         editButtonToggle(isEnabled: false)
