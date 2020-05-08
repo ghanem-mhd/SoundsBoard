@@ -642,7 +642,7 @@ extension AddEditSoundControllerBase: ShareExtensionHandlerDelegate{
 extension AddEditSoundControllerBase: YoutubeManagerDelegate{
     
     public func URLNotSupported() {
-        showError(errorMessage: "Only youtube vidoes are supported!")
+        showError(errorMessage: "Only youtube videos are supported!")
     }
     
     public func downloadDidStart() {
