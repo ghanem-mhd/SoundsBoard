@@ -35,3 +35,8 @@ Soundboard is an iOS app and widget for creating custom sounds board. Sounds can
 - [NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView): A collection of awesome loading animations.
 
 ## Project modules
+The project is consists of the following modules:
+- SoundsBoard: The main app.
+- SBShare: The share extension to allow adding new content to the app.
+- SBWidget: The widget to play the favorite sounds.
+- SBKit: Extention to share code between the first three modules.
