@@ -1,5 +1,19 @@
 # SoundsBoard
 
+Soundboard is an iOS app and widget for creating custom sounds board. Sounds can be recorded directly from the app or created from audio and video files including Youtube videos.
+
+## Features
+- Sounds can be added from:
+  - Recroder within the app.
+  - Audio/video files.
+  - Youtube videos.
+- Vidoes will be converted autoamticlly.
+- Name and thumbnail for each sound.
+- Trim length of the sound.
+- Shortcut to allow Siri to play any sound within the app.
+- Widget to easily play favorite sounds.
+
+
 ## Project Build
 
 ### Using CocoaPods
