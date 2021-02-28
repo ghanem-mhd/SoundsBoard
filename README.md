@@ -27,5 +27,11 @@ Soundboard is an iOS app and widget for creating custom sounds board. Sounds can
 5. In case you changed the app group name. Head to this [file](https://github.com/ghanem-mhd/SoundsBoardApp/blob/master/SBKit/utilities/Constants.swift) and change the appGroupID constant.
 
 ## Dependencies
+- [AudioKit](https://github.com/AudioKit/AudioKit): Swift audio synthesis, processing, & analysis platform for iOS, macOS and tvOS.
+- [SnapKit](https://github.com/SnapKit/SnapKit): A Swift Autolayout DSL for iOS & OS X.
+- [SwiftySound](https://github.com/adamcichy/SwiftySound): A simple library that lets you play sounds with a single line of code.
+- [WARangeSlider](https://github.com/warchimede/RangeSlider): A simple range slider made in Swift.
+- [SDDownloadManager](https://github.com/SagarSDagdu/SDDownloadManager): A simple, robust and elegant download manager supporting simultaneous downloads.
+- [NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView): A collection of awesome loading animations.
 
 ## Project modules
