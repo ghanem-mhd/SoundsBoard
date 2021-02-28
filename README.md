@@ -13,25 +13,19 @@ Soundboard is an iOS app and widget for creating custom sounds board. Sounds can
 - Shortcut to allow Siri to play any sound within the app.
 - Widget to easily play favorite sounds.
 
+## Getting Started
+### Requirements
+- iOS 12.0+
+- Xcode 11.0
+- CocoaPods 1.10.1+
 
-## Project Build
+### Installation
+1. Make sure you have [CocoaPods](http://cocoapods.org) installed. You can install it with the following command: `gem install cocoapods`
+2. Clone this repository.
+3. Go to the project's directory and run `pod install` to install the third party dependencies.
+4. Open 'SoundsBoard.xcworkspace' via Xcode.
+5. In case you changed the app group name. Head to this [file](https://github.com/ghanem-mhd/SoundsBoardApp/blob/master/SBKit/utilities/Constants.swift) and change the appGroupID constant.
 
-### Using CocoaPods
+## Dependencies
 
-First, install [CocoaPods](http://cocoapods.org) with the following command:
-
-```bash
-$ gem install cocoapods
-```
-
-Then, run the following command inside the project directory before opening the project with Xcode:
-
-```bash
-$ pod install
-```
-
-Then if Pod installation completed successfully, Open 'SoundsBoard.xcworkspace' via Xcode.
-
-### App Group
-
-In case you changed the app group name. Head to this [file](https://github.com/ghanem-mhd/SoundsBoardApp/blob/master/SBKit/utilities/Constants.swift) and change the appGroupID constant.
+## Project modules
