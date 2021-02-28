@@ -65,7 +65,7 @@ public class AddEditSoundController: AddEditSoundControllerBase, UIDocumentPicke
         inputTypesView.spacing          = 16
         
         openRecorderButton.setTitle("Record Audio", for: .normal)
-        openFileButton.setTitle("Pick Audio File", for: .normal)
+        openFileButton.setTitle("Pick File", for: .normal)
         
         openRecorderButton.clipsToBounds = true
         openRecorderButton.layer.borderWidth = 0.5
