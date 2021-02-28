@@ -17,7 +17,7 @@ end
 
 target 'SBKit' do
     shared_pods
-    pod 'AudioKit', '4.9.5'
+    pod 'AudioKit', '4.9.4'
 end
 
 target 'SBWidget' do
