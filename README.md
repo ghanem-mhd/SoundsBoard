@@ -2,6 +2,11 @@
 
 Soundboard is an iOS app and widget for creating custom sounds board. Sounds can be recorded directly from the app or created from audio and video files including Youtube videos.
 
+<p align="center">
+    <img alt="SoundsBoard" src="https://github.com/ghanem-mhd/SoundsBoard/blob/master/Screenshots/preview.png">
+</p>
+
+
 ## Features
 - Sounds can be added from:
   - Recroder within the app.
